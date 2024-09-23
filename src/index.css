@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Scrollbar stilleri */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Scrollbar arka plan rengi */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #7C93B0;
+    border-radius: 1rem;
+    /* Scrollbar kaydırıcı rengi */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #5a6f8d;
+    /* Hover efekti rengi */
+}
+
+body {
+    overflow-x: hidden;
+}

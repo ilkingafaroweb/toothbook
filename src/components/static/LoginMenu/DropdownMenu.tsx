@@ -1,0 +1,74 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { MENU_ROUTES } from '../../../config';
+import { Button } from '../../UI';
+
+export const DropdownMenu: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const toggleButtonRef = useRef<HTMLDivElement>(null);
+
+  const handleToggle = () => {
+    setIsOpen(prev => !prev);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(event.target as Node) &&
+      !toggleButtonRef.current?.contains(event.target as Node)
+    ) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (menuRef.current) {
+      if (isOpen) {
+        menuRef.current.style.height = `${menuRef.current.scrollHeight}px`;
+        menuRef.current.style.opacity = '1';
+      } else {
+        menuRef.current.style.height = '0px';
+        menuRef.current.style.opacity = '0';
+      }
+    }
+  }, [isOpen]);
+
+  return (
+    <div className="relative">
+      <Button color="bg-brandSecondary" text="Username" onClick={handleToggle} size='min-w-48 relative z-10' />
+      <div
+        ref={menuRef}
+        className={`absolute bg-dropdown border rounded-b-2xl border-dropdown shadow-xl -mt-6 pt-6 pb-2 h-max right-0 w-48 overflow-hidden transition-all duration-300 ease-in-out`}
+        style={{ height: '0px', opacity: '0' }}
+      >
+        {
+          MENU_ROUTES.filter(route => !route.isHidden).map(route => (
+            <Link
+              to={route.path}
+              className="block mx-4 border-b 
+              border-accordionColor p-2 
+              text-gray-800 hover:bg-dropdownHover"
+            >
+              {route.name}
+            </Link>
+          ))
+        }
+        <button
+          className="inline-block w-40 mx-4 p-2 text-left text-gray-800 hover:bg-dropdownHover"
+          onClick={onLogout}
+        >
+          Logout
+        </button>
+      </div>
+    </div>
+  );
+};
