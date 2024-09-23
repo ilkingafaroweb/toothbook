@@ -91,7 +91,7 @@ export const Navbar = () => {
 
             {/* Buttons at the Bottom */}
             <div className="flex flex-col items-center space-y-5">
-              <Link to='referrals'>
+              <Link className='w-full' to='referrals'>
                 <Button
                   color="bg-brandPrimary"
                   text="Referrals"
