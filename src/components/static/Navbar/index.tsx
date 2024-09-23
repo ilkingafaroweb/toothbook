@@ -15,7 +15,7 @@ export const Navbar = () => {
     } else {
       document.body.style.overflow = '';
     }
-    
+
     // Cleanup: Re-enable scroll on body when the component is unmounted
     return () => {
       document.body.style.overflow = '';
@@ -66,9 +66,8 @@ export const Navbar = () => {
 
         {/* Mobile Menu (Responsive) */}
         <div
-          className={`fixed inset-0 bg-white z-50 p-5 transition-transform duration-300 ease-out ${
-            isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'
-          }`}
+          className={`fixed inset-0 bg-white z-50 p-5 transition-transform duration-300 ease-out ${isMobileMenuOpen ? 'translate-y-0' : '-translate-y-full'
+            }`}
         >
           <div className="relative h-full flex flex-col space-y-6">
             <div className="flex justify-between">
@@ -92,16 +91,18 @@ export const Navbar = () => {
 
             {/* Buttons at the Bottom */}
             <div className="flex flex-col items-center space-y-5">
-              <Button 
-                color="bg-brandPrimary" 
-                text="Referrals" 
-                icon={referrals_icon} 
-                size="w-full" 
-              />
-              <Button 
-                color="bg-brandSecondary" 
-                text="Login" 
-                size="w-full" 
+              <Link to='referrals'>
+                <Button
+                  color="bg-brandPrimary"
+                  text="Referrals"
+                  icon={referrals_icon}
+                  size="w-full"
+                />
+              </Link>
+              <Button
+                color="bg-brandSecondary"
+                text="Login"
+                size="w-full"
               />
             </div>
           </div>
