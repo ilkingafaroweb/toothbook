@@ -2,7 +2,6 @@ import React from 'react';
 import { Button } from '../../UI';
 import { useLogin } from '../../../contexts';
 import { DropdownMenu } from './DropdownMenu';
-import { Link } from 'react-router-dom';
 
 export const LoginMenu: React.FC = () => {
 
