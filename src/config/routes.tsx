@@ -16,7 +16,6 @@ export interface RouteConfig {
   children?: RouteConfig[];
 }
 
-
 export const NAVBAR_ROUTES: RouteConfig[] = [
   {
     path: "/",

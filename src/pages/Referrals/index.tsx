@@ -1,17 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { RouteProps } from '../../types';
-import { ResponsiveImage } from '../../components';
+import { Loading, Error, ResponsiveImage } from '../../components';
 import { refWoman } from '../../assets';
 import { ReferralForm, ReferralLink, ReferralsList } from './components';
+import { useApi } from '../../hooks';
+import apiEndpoints from '../../apiEndpoints';
 
+interface ReferralsData {
+    clientName: string;
+    rewardStatus: string;
+    registrationDate: string;
+}
 
 export const Referrals: React.FC<RouteProps> = () => {
 
-    const referralsData = [
-        { clientName: 'John Doe', rewardStatus: 'Pending', registrationDate: '2024-09-15' },
-        { clientName: 'Jane Smith', rewardStatus: 'Completed', registrationDate: '2024-09-16' },
-        { clientName: 'Mike Johnson', rewardStatus: 'In Progress', registrationDate: '2024-09-17' },
-    ];
+    const { callApi: callReferralLinkApi, loading: loadingReferralLink, error: errorReferralLink, response: responseReferralLink } = useApi();
+    const { callApi: callReferralsApi, loading: loadingReferrals, error: errorReferrals, response: responseReferrals } = useApi();
+    
+    const [referralLink, setReferralLink] = useState('');
+    const [referralsData, setReferralsData] = useState<ReferralsData[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            await callReferralLinkApi({ endpoint: apiEndpoints.referrals.link });
+            await callReferralsApi({ endpoint: apiEndpoints.referrals.data });
+        })();
+    }, []);
+
+    useEffect(() => {
+        if (responseReferrals) {
+            setReferralsData(responseReferrals.referrals);
+        }
+    }, [responseReferrals]);
+
+    useEffect(() => {
+        if (responseReferralLink) {
+            setReferralLink(responseReferralLink);
+        }
+    }, [responseReferralLink]);
 
     return (
         <React.Fragment>
@@ -24,13 +50,13 @@ export const Referrals: React.FC<RouteProps> = () => {
                                 EARN 20$
                             </p>
                             <p className='lg:text-xl text-black opacity-65'>
-                                Refer your friends, classmate or anyone who is enrolled in college or university. 
-                                Every time someone books and visits a new dentist through your Stu-dent link, <span className='text-accentColor'>you get 20$</span> 
+                                Refer your friends, classmate or anyone who is enrolled in college or university.
+                                Every time someone books and visits a new dentist through your Stu-dent link, <span className='text-accentColor'>you get 20$</span>
                             </p>
                         </div>
                         <div className='lg:centered lg:space-x-0 space-y-4 lg:w-[600px] w-full flex-col'>
                             <div className='flex justify-between w-full space-x-4'>
-                                <ReferralLink />
+                                <ReferralLink loading={loadingReferralLink} error={errorReferralLink} link={referralLink} />
                             </div>
                             <div className='flex justify-between w-full space-x-4'>
                                 <ReferralForm />
@@ -55,7 +81,16 @@ export const Referrals: React.FC<RouteProps> = () => {
                         Note that your reward will be sent after your referral visits one of our practice, and gets a reward.
                     </p>
                 </div>
-                <ReferralsList referrals={referralsData} />
+                {
+                    loadingReferrals ? (
+                        <Loading />
+                    ) : errorReferrals ? (
+                        <Error />
+                    ) : (
+                        <ReferralsList referrals={referralsData} />
+                    )
+                }
+
             </div>
         </React.Fragment>
     );

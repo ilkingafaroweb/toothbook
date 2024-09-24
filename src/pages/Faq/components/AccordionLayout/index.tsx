@@ -2,34 +2,38 @@ import { AccordionGroup } from "../AccordionGroup";
 import { faqImages } from "../../../../assets";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAnglesDown } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useApi } from "../../../../hooks";
+import apiEndpoints from "../../../../apiEndpoints";
+import { Error, Loading } from "../../../../components";
 
 export const AccordionLayout = () => {
 
+    const { callApi, loading, error, response } = useApi();
+
     const [expandSection, setExpandSection] = useState<string | null>(null);
+
+    const [forPatients, setForPatients] = useState<any[]>([]);
+    const [forDentists, setForDentists] = useState<any[]>([]);
 
     const handleToggle = (section: string) => {
         setExpandSection(expandSection === section ? null : section);
     };
 
-    const forPatient = [
-        { title: 'Title 1', content: 'Content for accordion item 1' },
-        { title: 'Title 2', content: 'Content for accordion item 2' },
-        { title: 'Title 3', content: 'Content for accordion item 3' },
-        { title: 'Title 4', content: 'Content for accordion item 4' },
-        { title: 'Title 5', content: 'Content for accordion item 5' },
-    ];
-
-    const forDentist = [
-        { title: 'Title 1', content: 'Content for accordion item 1' },
-        { title: 'Title 2', content: 'Content for accordion item 2' },
-        { title: 'Title 3', content: 'Content for accordion item 3' },
-        { title: 'Title 4', content: 'Content for accordion item 4' },
-        { title: 'Title 5', content: 'Content for accordion item 5' },
-    ];
+    useEffect(() => {
+        (async () => await callApi({ endpoint: apiEndpoints.faq.get }))();
+    }, []);
 
 
-    return (
+    useEffect(() => {
+        if (response) {
+            setForPatients(response.forPatients || []);
+            setForDentists(response.forDentists || []);
+        }
+    }, [response]);
+
+
+    return loading ? <Loading /> : error ? <Error /> : (
         <div className="w-full flex lg:flex-row flex-col lg:space-x-24 lg:space-y-0 space-y-12">
             <div className="relative lg:w-1/2 w-full space-y-12">
                 <img src={faqImages.patient} className="absolute lg:-top-11 lg:left-1/3 left-[35%] -top-10 -z-10" alt="patient" />
@@ -40,11 +44,11 @@ export const AccordionLayout = () => {
                     </button>
                 </div>
                 <div className="lg:block hidden">
-                    <AccordionGroup items={forPatient} />
+                    <AccordionGroup items={forPatients} />
                 </div>
                 {/* Mobile view */}
                 <div className={`lg:hidden overflow-hidden transition-max-height duration-300 ease-in-out ${expandSection === "forPatient" ? 'h-max pb-6' : 'h-0'}`}>
-                    <AccordionGroup items={forPatient} />
+                    <AccordionGroup items={forPatients} />
                 </div>
             </div>
             <div className="relative lg:w-1/2 w-full space-y-12">
@@ -56,11 +60,11 @@ export const AccordionLayout = () => {
                     </button>
                 </div>
                 <div className="lg:block hidden">
-                    <AccordionGroup items={forDentist} />
+                    <AccordionGroup items={forDentists} />
                 </div>
                 {/* Mobile accordion view */}
                 <div className={`lg:hidden overflow-hidden transition-max-height duration-300 ease-in-out ${expandSection === "forDentist" ? 'h-max pb-6' : 'h-0'}`}>
-                    <AccordionGroup items={forDentist} />
+                    <AccordionGroup items={forDentists} />
                 </div>
             </div>
         </div>

@@ -15,8 +15,8 @@ export default {
         'bold': 700,
       },
       colors: {
-        brandPrimary: '#FFAF1E', 
-        brandSecondary: '#7C93B0', 
+        brandPrimary: '#FFAF1E',
+        brandSecondary: '#7C93B0',
 
         accentColor: '#E13A33',
         textBlack: 'rgba(0, 0, 0, 0.80)',
@@ -27,7 +27,7 @@ export default {
 
         carouselTextColor: '#667085',
         formBackground: '#F9F9F9',
-        
+
         accordionColor: '#9CAFC8',
         accordionTitle: '#626262',
         accordionContent: '#ADADAD',

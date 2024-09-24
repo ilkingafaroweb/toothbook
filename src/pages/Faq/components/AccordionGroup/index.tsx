@@ -2,11 +2,15 @@ import { useState } from 'react';
 import { AccordionItem } from '../AccordionItem';
 
 interface AccordionGroupProps {
-  items: { title: string; content: string }[];
+  items: { 
+    id: number;
+    question: string; 
+    answer: string 
+  }[];
 }
 
 export const AccordionGroup: React.FC<AccordionGroupProps> = ({ items }) => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null); 
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggleItem = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -14,13 +18,13 @@ export const AccordionGroup: React.FC<AccordionGroupProps> = ({ items }) => {
 
   return (
     <div className="space-y-4">
-      {items.map((item, index) => (
+      {items.map((item) => (
         <AccordionItem
-          key={index}
-          title={item.title}
-          content={item.content}
-          isOpen={openIndex === index} 
-          onClick={() => toggleItem(index)} 
+          key={item.id}
+          title={item.question}
+          content={item.answer}
+          isOpen={openIndex === item.id}
+          onClick={() => toggleItem(item.id)}
         />
       ))}
     </div>
