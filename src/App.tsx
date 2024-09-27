@@ -1,38 +1,43 @@
-import { BrowserRouter as Router, useRoutes } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { DefaultLayout } from './layouts';
-import { OfferProvider, LoginProvider } from './contexts';
+import { OfferProvider, LoginProvider, useLogin } from './contexts';
 import { ErrorBoundary } from './components/error';
-import { NAVBAR_ROUTES, MENU_ROUTES, CLINIC_ROUTES, AUTH_ROUTES } from './config';
+import { NAVBAR_ROUTES, MENU_ROUTES, CLINIC_ROUTES } from './config';
 import { createRoutes } from './utils';
-
+import AuthModal from './components/modals/AuthModal';
+import { useEffect } from 'react';
 
 const AppRoutes = () => {
-  // const location = useLocation();
+  const { showAuth, setShowAuth } = useLogin();
 
-  // const [isOpen, setIsOpen] = useState(false)
+  useEffect(() => {
+    if (showAuth) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
 
-  // useEffect(() => {
-  //   if (location.pathname === '/login' || '/register') {
-  //     setIsOpen(true)
-  //   }else{
-  //     setIsOpen(false)
-  //   }
-  // }, [location])
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [showAuth]);
 
   const allRoutes = [
-    ...AUTH_ROUTES,
-
     ...createRoutes(NAVBAR_ROUTES),
     ...createRoutes(MENU_ROUTES),
     ...createRoutes(CLINIC_ROUTES),
   ];
 
-  const routes = useRoutes(allRoutes);
-
   return (
     <>
-      {routes}
-      {/* <AuthModal isOpen={isOpen} onClose={closeModal} /> */}
+      <Routes>
+        {allRoutes.map((route) => (
+          <Route key={route.path} path={route.path} element={route.element} />
+        ))}
+      </Routes>
+      {
+        <AuthModal isOpen={showAuth} isLogin={true} onClose={() => setShowAuth(false)} />
+      }
     </>
   );
 };

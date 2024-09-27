@@ -2,11 +2,29 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MENU_ROUTES } from '../../../config';
 import { Button } from '../../UI';
+import { useLogin } from '../../../contexts';
 
 export const DropdownMenu: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleButtonRef = useRef<HTMLDivElement>(null);
+  const [userName, setUserName] = useState<string>('');
+
+  const { isAuthenticated } = useLogin()
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const message = localStorage.getItem('message');
+
+      if (message && message.trim()) {
+        const words = message.split(' ');
+  
+        const remainingWords = words.slice(1).join(' ');
+  
+        setUserName(remainingWords);
+      }
+    }
+  }, [isAuthenticated]);
 
   const handleToggle = () => {
     setIsOpen(prev => !prev);
@@ -44,7 +62,7 @@ export const DropdownMenu: React.FC<{ onLogout: () => void }> = ({ onLogout }) =
 
   return (
     <div className="relative">
-      <Button color="bg-brandSecondary" text="Username" onClick={handleToggle} size='min-w-48 relative z-10' />
+      <Button color="bg-brandSecondary" text={userName} onClick={handleToggle} size='min-w-48 relative z-10' />
       <div
         ref={menuRef}
         className={`absolute bg-dropdown border rounded-b-2xl border-dropdown shadow-xl -mt-6 pt-6 pb-2 h-max right-0 w-48 overflow-hidden transition-all duration-300 ease-in-out`}

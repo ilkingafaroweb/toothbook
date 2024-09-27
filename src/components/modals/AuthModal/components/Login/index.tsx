@@ -1,72 +1,78 @@
 import React from 'react';
+import { Button, Input } from '../../../../UI';
+
+import { useLogin } from '../../../../../contexts';
 
 interface LoginFormProps {
-  onSubmit: (email: string, password: string) => void;
+  onSubmit: (formData: object) => void;
   onSwitchToSignUp: () => void;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, onSwitchToSignUp }) => {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+
+  const { login, isLoading } = useLogin()
+
+  const [formData, setFormData] = React.useState({
+    loginPass: '',
+    password: ''
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(email, password);
+    login(formData)
+    onSubmit(formData);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
   };
 
   return (
-    <>
-      <form className="mt-4" onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            className="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+    <form className="space-y-5" onSubmit={handleSubmit}>
+      <Input
+        name='loginPass'
+        placeholder='Type email or phone number'
+        isValid={true}
+        value={formData.loginPass}
+        onChange={handleChange}
+      />
 
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            className="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+      <Input
+        type='password'
+        name='password'
+        placeholder='Password'
+        isValid={true}
+        value={formData.password}
+        onChange={handleChange}
+      />
 
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
-        >
-          Login
+      <div className="text-right">
+        <button type='button' className="text-brandPrimary hover:underline">
+          Forgot Password ?
         </button>
-      </form>
+      </div>
 
-      <div className="mt-4 text-center">
+      <Button
+        text='Login'
+        color='bg-brandPrimary'
+        size='w-full'
+        isLoading={isLoading}
+      />
+
+      <div className="text-center">
         <button
+          type='button'
           onClick={onSwitchToSignUp}
-          className="text-blue-500 hover:underline"
+          className="text-black opacity-80"
         >
-          Don’t have an account? Sign up for free!
+          Don’t have an account? <span className="text-brandPrimary underline">Sign up for free!</span>
         </button>
       </div>
-
-      <div className="mt-4 text-center">
-        <a href="#" className="text-blue-500 hover:underline">
-          Forgot Password?
-        </a>
-      </div>
-    </>
+    </form>
   );
 };

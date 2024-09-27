@@ -11,6 +11,7 @@ export const useApi = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [response, setResponse] = useState<any>(null);
+  const token = localStorage.getItem('token')
 
   const callApi = async ({ method = "GET", endpoint, data }: ApiOptions) => {
     setLoading(true);
@@ -19,6 +20,9 @@ export const useApi = () => {
     const config: AxiosRequestConfig = {
       url: endpoint,
       method: method,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
       ...(data && { data }),
     };
 
@@ -26,7 +30,7 @@ export const useApi = () => {
       const result = await axios(config);
       setResponse(result.data);
     } catch (err: any) {
-      setError(err.message || "An error occurred");
+      setError(err.message);
     } finally {
       setLoading(false);
     }

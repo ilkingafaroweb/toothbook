@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import { Button } from '../../../../components';
+import apiEndpoints from '../../../../apiEndpoints';
+import { useApi } from '../../../../hooks';
 
 interface FormData {
   name: string;
@@ -11,6 +13,15 @@ interface FormData {
 }
 
 export const AccountForm = () => {
+
+  const { callApi, response } = useApi();
+
+  useEffect(() => {
+    if (response) {
+      console.log(response);
+    }
+  },[response])
+
   const [formData, setFormData] = useState<FormData>({
     name: '',
     surname: '',
@@ -26,6 +37,10 @@ export const AccountForm = () => {
     { code: '+33', name: 'France' },
     { code: '+91', name: 'India' },
   ];
+
+  useEffect(() => {
+    callApi({ endpoint: apiEndpoints.profile.get });
+  }, []); 
 
   const [errors, setErrors] = useState<Partial<FormData>>({});
 

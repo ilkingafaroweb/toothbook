@@ -5,14 +5,9 @@ import { DropdownMenu } from './DropdownMenu';
 
 export const LoginMenu: React.FC = () => {
 
-  const { isAuthenticated, login, logout } = useLogin();
+  const { setShowAuth, isAuthenticated, logout } = useLogin();
 
-  const handleLogin = () => {
-    const user = { id: '1', name: 'John Doe', email: 'john@example.com' }; 
-    login(user);
-  };
-
-  const handleLogout = () => {
+    const handleLogout = () => {
     logout();
   };
 
@@ -21,9 +16,7 @@ export const LoginMenu: React.FC = () => {
       {isAuthenticated ? (
         <DropdownMenu onLogout={handleLogout} />
       ) : (
-        // <Link to='./login'>
-          <Button color="bg-brandSecondary" text="Login" onClick={handleLogin} />
-        // </Link>
+        <Button color="bg-brandSecondary" text="Login" onClick={()=>setShowAuth(true)}  />
       )}
     </div>
   );

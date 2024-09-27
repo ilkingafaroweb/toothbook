@@ -27,8 +27,8 @@ export const AccordionLayout = () => {
 
     useEffect(() => {
         if (response) {
-            setForPatients(response.forPatients || []);
-            setForDentists(response.forDentists || []);
+            setForPatients(response.forPatients);
+            setForDentists(response.forDentists);
         }
     }, [response]);
 

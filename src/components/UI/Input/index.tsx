@@ -2,6 +2,8 @@ import React from 'react';
 
 interface InputProps {
   icon?: string;
+  name?: string;
+  type?: string;
   value?: string;
   placeholder?: string;
   readonly?: boolean;
@@ -10,17 +12,18 @@ interface InputProps {
   loading?: boolean;
 }
 
-export const Input: React.FC<InputProps> = ({ icon, value, placeholder, readonly, isValid, onChange, loading }) => {
+export const Input: React.FC<InputProps> = ({ icon, name, type, value, placeholder, readonly, isValid, onChange, loading }) => {
   return (
-    <div className={`flex items-center border ${!isValid && 'border-accentColor'} rounded-xl px-3 py-2.5 space-x-2 w-full`}>
-      {icon && <img src={icon} alt='icon' />}
+    <div className={`flex items-center border ${!isValid && 'border-accentColor'} rounded-xl w-full`}>
+      {icon && <img className='ml-2' src={icon} alt='icon' />}
       <input
-        type="text"
+        type={type ? `${type}` : 'text'}
         value={value}
+        name={name}
         readOnly={readonly}
         placeholder={placeholder}
         onChange={onChange}
-        className={`flex-1 outline-none ${loading && 'animate-pulse'}`}
+        className={`flex-1 outline-none rounded-xl p-2 ${loading && 'animate-pulse'} focus:border focus:border-brandPrimary`}
       />
     </div>
   );

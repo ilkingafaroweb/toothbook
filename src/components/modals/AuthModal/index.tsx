@@ -1,67 +1,80 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LoginForm, RegisterForm } from './components';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { login_image, auth_x, register_image } from '../../../assets';
+import { useLogin } from '../../../contexts';
+import { ErrorMessage, SuccessMessage } from './components/Status';
 
 interface AuthModalProps {
-  isOpen?: boolean
+  isOpen?: boolean;
+  isLogin?: boolean;
   onClose?: () => void;
 }
 
-const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose }) => {
-  const navigate = useNavigate()
-  const location = useLocation()
-  const [isSignUp, setIsSignUp] = useState(false);
+const AuthModal: React.FC<AuthModalProps> = ({ isOpen, isLogin, onClose }) => {
 
-  useEffect(() => {
-    if (location.pathname === '/login') {
-      setIsSignUp(false);
-    } else {
-      setIsSignUp(true);
-    }
-  }, [location]);
-  
+  const [isSignUp, setIsSignUp] = useState(!isLogin);
+
+  const { successMessage, errorMessage } = useLogin()
+
+  const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+  };
 
   const handleSignUpClick = () => {
-    navigate('/register')
+    setIsSignUp(true)
   };
 
   const handleBackToLoginClick = () => {
-    navigate('/login')
+    setIsSignUp(false)
   };
 
-  const handleLoginSubmit = (email: string, password: string) => {
-    // Handle login logic here
-    console.log('Login:', { email, password });
+  const handleLoginSubmit = (formData: object) => {
+    console.log('Login:', formData);
   };
 
-  const handleRegisterSubmit = (name: string, email: string, password: string) => {
-    // Handle registration logic here
-    console.log('Register:', { name, email, password });
+  const handleRegisterSubmit = (formData: object) => {
+    console.log('Register:', formData);
   };
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 50); // 50ms bekle, form yüklendiğinde hemen animasyonu tetikle
+    return () => clearTimeout(timer); // Cleanup timeout
+  }, []);
 
   return (
-    <div className={`${isOpen ? 'fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50' : 'hidden'}`}>
+    <div onClick={onClose} className={`${isOpen ? 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50' : 'hidden'}`}>
       <div className="bg-white w-full max-w-max mx-auto rounded-lg shadow-lg overflow-hidden">
-        <div className={`relative md:flex transition-transform duration-700 ease-in-out`}>
+        <div onClick={(e) => handleModalClick(e)} className={`relative md:flex transition-transform duration-500 ease-in-out`}>
+          {/* X button */}
+          <button className="absolute top-3 right-3 z-50" onClick={onClose}>
+            <img src={auth_x} alt="auth-x" />
+          </button>
           {/* Left Side (Image) */}
           <div
-            className={`z-10 md:w-1/2 bg-center transition-transform duration-700 ease-in-out ${isSignUp ? 'translate-x-full' : 'translate-x-0'}`}            
+            className={`z-10 md:w-1/2 bg-center transition-transform duration-300 ease-in-out ${isSignUp ? 'translate-x-full' : 'translate-x-0'}`}
           >
-            <img className='' src="https://i2.pngimg.me/thumb/f/720/compngwingyijxu.jpg" />
+            <img src={!isSignUp ? login_image : register_image} alt="login-img" />
           </div>
 
           {/* Right Side (Form) */}
-          <div className={`w-full bg-white md:w-1/2 p-8 transition-transform duration-700 ease-in-out ${isSignUp ? '-translate-x-full' : 'translate-x-0'}`}>
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-semibold">{isSignUp ? 'Register' : 'Login'}</h2>
-              <button className="text-gray-500 hover:text-gray-700" onClick={onClose}>
-                ✕
-              </button>
+          <div className={`w-full flex flex-col justify-center space-y-7 bg-white md:w-1/2 p-16 transition-all transform duration-300 ease-in-out 
+            ${isSignUp ? '-translate-x-full' : 'translate-x-0'}
+            ${isVisible ? 'opacity-100' : 'opacity-0'}`
+          }>
+            <div className="flex flex-col justify-between items-start">
+              <SuccessMessage successMessage={successMessage} />
+              <ErrorMessage errorMessage={errorMessage} />
+              <h2 className="text-3xl font-bold text-brandSecondary">{!isSignUp ? 'Welcome back!' : 'Create an account'}</h2>
+              <p className='font-medium text-accordionTitle'>{!isSignUp ? "Please enter your details" : "Let’s get started"}</p>
             </div>
-            {isSignUp ? (
-              <RegisterForm onSubmit={handleRegisterSubmit} onSwitchToLogin={handleBackToLoginClick} />
-            ) : (
+            {!isSignUp ? (
               <LoginForm onSubmit={handleLoginSubmit} onSwitchToSignUp={handleSignUpClick} />
+            ) : (
+              <RegisterForm onSubmit={handleRegisterSubmit} onSwitchToLogin={handleBackToLoginClick} />
             )}
           </div>
         </div>

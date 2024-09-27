@@ -7,6 +7,12 @@ const apiEndpoints = {
   referrals: {
     data: `${API_BASE_URL}/ReferralManagement/getuserreferrals`,
     link: `${API_BASE_URL}/ReferralManagement/getuserreferrallink`,
+  },
+  login: {
+    post: `${API_BASE_URL}/Identity/Account/Login`
+  },
+  profile: {
+    get: `${API_BASE_URL}/Identity/Account/GetUserProfile`
   }
 };
 

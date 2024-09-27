@@ -1,81 +1,97 @@
 import React from 'react';
+import { Button, Input } from '../../../../UI';
 
 interface RegisterFormProps {
-  onSubmit: (name: string, email: string, password: string) => void;
+  onSubmit: (formData: object) => void;
   onSwitchToLogin: () => void;
 }
 
 export const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit, onSwitchToLogin }) => {
-  const [name, setName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [formData, setFormData] = React.useState({
+    name: '',
+    surname: '',
+    email: '',
+    phoneNumber: '',
+    password: '',
+    confirmPassword: ''
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(name, email, password);
+    onSubmit(formData);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
   };
 
   return (
-    <>
-      <form className="mt-4 bg-white" onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-            Name
-          </label>
-          <input
-            id="name"
-            type="text"
-            className="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
+    <form className="space-y-3" onSubmit={handleSubmit}>
+      <Input
+        name='name'
+        placeholder='Name'
+        isValid={true}
+        value={formData.name}
+        onChange={handleChange}
+      />
+      <Input
+        name='surname'
+        placeholder='Surname'
+        isValid={true}
+        value={formData.surname}
+        onChange={handleChange}
+      />
+      <Input
+        name='email'
+        placeholder='Email'
+        isValid={true}
+        value={formData.email}
+        onChange={handleChange}
+      />
+      <Input
+        type='tel'
+        name='phoneNumber'
+        placeholder='Phone number'
+        isValid={true}
+        value={formData.phoneNumber}
+        onChange={handleChange}
+      />
+      <Input
+        type='password'
+        name='password'
+        placeholder='Password'
+        isValid={true}
+        value={formData.password}
+        onChange={handleChange}
+      />
+      <Input
+        type='password'
+        name='confirmPassword'
+        placeholder='Confirm password'
+        isValid={true}
+        value={formData.confirmPassword}
+        onChange={handleChange}
+      />
+      <Button
+        text='Create account'
+        color='bg-brandPrimary'
+        size='w-full'
+      />
 
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-            Email
-          </label>
-          <input
-            id="email"
-            type="email"
-            className="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            className="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500"
-            placeholder="Create a password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-
+      <div className="text-center">
         <button
-          type="submit"
-          className="w-full bg-green-500 text-white py-3 px-4 rounded-lg hover:bg-green-600 transition duration-200"
-        >
-          Register
-        </button>
-      </form>
-
-      <div className="mt-4 text-center">
-        <button
+          type='button'
           onClick={onSwitchToLogin}
-          className="text-blue-500 hover:underline"
+          className="text-brandPrimary"
         >
-          Already have an account? Login here!
+          Already have an account ? <span className="underline">Log In!</span>
         </button>
       </div>
-    </>
+    </form>
   );
 };

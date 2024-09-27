@@ -1,6 +1,5 @@
 import React from 'react';
 import { Home, ClinicPartners, About, Faq, Contact, Profile, Referrals } from '../pages';
-import AuthModal from '../components/modals/AuthModal';
 
 interface RouteProps {
   path: string;
@@ -119,15 +118,4 @@ export const CLINIC_ROUTES: RouteConfig[] = [
   //     },
   //   ],
   // },
-];
-
-export const AUTH_ROUTES = [
-  {
-    path: "/login",
-    element: <AuthModal />,
-  },
-  {
-    path: "/register",
-    element: <AuthModal />,
-  },
 ];
