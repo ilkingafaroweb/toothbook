@@ -24,7 +24,7 @@ export const Navbar = () => {
     };
   }, [isMobileMenuOpen]);
 
-  const toggleMobileMenu = () => {
+  const toggleMobileMenu: any = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
 
