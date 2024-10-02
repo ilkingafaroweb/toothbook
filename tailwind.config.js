@@ -61,6 +61,12 @@ export default {
       backdropBlur: {
         'custom-blur': '10px',
       },
+      backgroundImage: {
+        'orange-gradient': 'linear-gradient(216deg, rgba(255, 175, 30, 0.00) -22.41%, #FFAF1E 88.65%);',
+        'green-gradient' : 'linear-gradient(205deg, rgba(131, 229, 67, 0.60) -0.35%, #56A621 97.63%);',
+        'blue-gradient' : 'linear-gradient(214deg, rgba(91, 144, 248, 0.60) -8.94%, #125DC1 100%);',
+        'red-gradient' : 'linear-gradient(214deg, rgba(225, 58, 51, 0.60) -14%, #E13A33 107.79%);'
+      }
     },
   },
   plugins: [

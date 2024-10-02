@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, ClinicPartners, About, Faq, Contact, Profile, Referrals } from '../pages';
+import { ClinicPartners, About, Faq, Contact, Profile, Referrals } from '../pages';
 
 interface RouteProps {
   path: string;
@@ -16,12 +16,6 @@ export interface RouteConfig {
 }
 
 export const NAVBAR_ROUTES: RouteConfig[] = [
-  {
-    path: "/",
-    name: "Home",
-    isHidden: false,
-    element: (props) => <Home {...props} />,
-  },
   {
     path: "/clinic-partners",
     name: "Clinic Partners",

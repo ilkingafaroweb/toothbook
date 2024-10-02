@@ -2,18 +2,16 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface OfferContextType {
   isOfferVisible: boolean;
-  hideOffer: () => void;
+  setIsOfferVisible: (visible: boolean) => void;
 }
 
 const OfferContext = createContext<OfferContextType | undefined>(undefined);
 
 export const OfferProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isOfferVisible, setIsOfferVisible] = useState(true);
-
-  const hideOffer = () => setIsOfferVisible(false);
+  const [isOfferVisible, setIsOfferVisible] = useState(!!sessionStorage.getItem('offer') || false);
 
   return (
-    <OfferContext.Provider value={{ isOfferVisible, hideOffer }}>
+    <OfferContext.Provider value={{ isOfferVisible, setIsOfferVisible }}>
       {children}
     </OfferContext.Provider>
   );

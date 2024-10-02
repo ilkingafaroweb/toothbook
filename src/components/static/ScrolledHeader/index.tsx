@@ -42,7 +42,7 @@ export const ScrolledHeader: React.FC<ScrolledHeaderProps> = ({ replacementCompo
                         !isVisible ? 'animate-slide-down' : 'opacity-0 -translate-y-full'
                     }`}
                 >
-                    <OfferBanner />
+                    <OfferBanner  />
 
                     <div className="container mx-auto flex items-center justify-between py-3 px-5 lg:px-21">
                         {/* Brand logo */}

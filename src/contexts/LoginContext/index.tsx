@@ -50,14 +50,28 @@ export const LoginProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   }, [loading])
 
   useEffect(() => {
-    if(response){
-      setSuccessMessage(response.message)
-    }
-  },[response])
+    setIsLoading(false)
+    setSuccessMessage(null)
+    setErrorMessage(null)
+  }, [showAuth])
 
+  useEffect(() => {
+    {response &&  setSuccessMessage(response.message)}
+  },[response])
+  
   useEffect(() => {
     setErrorMessage(error)
   },[error])
+
+  useEffect(() => {
+    if (!!successMessage) {
+      const timer = setTimeout(() => {
+        setShowAuth(false);
+      }, 2000);
+  
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage])
 
   const login = async (user: User) => {
     try {

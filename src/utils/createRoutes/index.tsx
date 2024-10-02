@@ -11,7 +11,7 @@ export const createRoutes = (routes: RouteConfig[]): RouteObject[] => {
         children: route.children ? createRoutes(route.children) : undefined,
       })),
     {
-      path: '*',
+      path: '',
       element: <Navigate to="/" replace />
     }
   ];

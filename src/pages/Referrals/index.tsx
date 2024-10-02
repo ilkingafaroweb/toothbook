@@ -1,46 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { RouteProps } from '../../types';
-import { Loading, Error, ResponsiveImage } from '../../components';
+import { ResponsiveImage } from '../../components';
 import { refWoman } from '../../assets';
 import { ReferralForm, ReferralLink, ReferralsList } from './components';
-import { useApi } from '../../hooks';
-import apiEndpoints from '../../apiEndpoints';
-
-interface ReferralsData {
-    clientName: string;
-    rewardStatus: string;
-    registrationDate: string;
-}
 
 export const Referrals: React.FC<RouteProps> = () => {
-
-    const { callApi: callReferralLinkApi, loading: loadingReferralLink, error: errorReferralLink, response: responseReferralLink } = useApi();
-    const { callApi: callReferralsApi, loading: loadingReferrals, error: errorReferrals, response: responseReferrals } = useApi();
-    
-    const [referralLink, setReferralLink] = useState('');
-    const [referralsData, setReferralsData] = useState<ReferralsData[]>([]);
-
-    useEffect(() => {
-        (async () => {
-            await callReferralLinkApi({ endpoint: apiEndpoints.referrals.link });
-            await callReferralsApi({ endpoint: apiEndpoints.referrals.data });
-        })();
-    }, []);
-
-    useEffect(() => {
-        if (responseReferrals) {
-            setReferralsData(responseReferrals.referrals);
-        }
-    }, [responseReferrals]);
-
-    useEffect(() => {
-        if (responseReferralLink) {
-            setReferralLink(responseReferralLink);
-        }
-    }, [responseReferralLink]);
-
     return (
-        <React.Fragment>
+        <>
             <div className='w-full centered'>
                 <div className='centered-between cover flex-col md:flex-row'>
                     <div className='lg:w-1/2 w-full centered flex-col space-y-6 lg:mb-12 mb-8'>
@@ -56,7 +22,7 @@ export const Referrals: React.FC<RouteProps> = () => {
                         </div>
                         <div className='lg:centered lg:space-x-0 space-y-4 lg:w-[600px] w-full flex-col'>
                             <div className='flex justify-between w-full space-x-4'>
-                                <ReferralLink loading={loadingReferralLink} error={errorReferralLink} link={referralLink} />
+                                <ReferralLink />
                             </div>
                             <div className='flex justify-between w-full space-x-4'>
                                 <ReferralForm />
@@ -81,17 +47,8 @@ export const Referrals: React.FC<RouteProps> = () => {
                         Note that your reward will be sent after your referral visits one of our practice, and gets a reward.
                     </p>
                 </div>
-                {
-                    loadingReferrals ? (
-                        <Loading />
-                    ) : errorReferrals ? (
-                        <Error />
-                    ) : (
-                        <ReferralsList referrals={referralsData} />
-                    )
-                }
-
+                <ReferralsList />
             </div>
-        </React.Fragment>
+        </>
     );
 };

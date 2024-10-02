@@ -69,9 +69,10 @@ export const DropdownMenu: React.FC<{ onLogout: () => void }> = ({ onLogout }) =
         style={{ height: '0px', opacity: '0' }}
       >
         {
-          MENU_ROUTES.filter(route => !route.isHidden).map(route => (
+          MENU_ROUTES.filter(route => !route.isHidden).map((route, key) => (
             <Link
               to={route.path}
+              key={key}
               className="block mx-4 border-b 
               border-accordionColor p-2 
               text-gray-800 hover:bg-dropdownHover"

@@ -4,19 +4,21 @@ import { brandLogo, burger_icon, x_icon_dark, referrals_icon } from '../../../as
 import { Button } from '../../UI';
 import { NAVBAR_ROUTES } from '../../../config';
 import { LoginMenu } from '../LoginMenu';
+import { useLogin } from '../../../contexts';
 
 export const Navbar = () => {
+  const { setShowAuth } = useLogin();
+  const token = localStorage.getItem('token')
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [initialPath, setInitialPath] = useState('/')
 
   useEffect(() => {
-    // Disable scroll on body when menu is open
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
 
-    // Cleanup: Re-enable scroll on body when the component is unmounted
     return () => {
       document.body.style.overflow = '';
     };
@@ -26,18 +28,29 @@ export const Navbar = () => {
     setMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  useEffect(() => {
+    if(location.pathname === '/findyourdentist' || !!sessionStorage.getItem('offer')){
+      setInitialPath('findyourdentist')
+    }
+  }, [])
+
   return (
     <>
       <nav className="bg-white shadow-bottom">
-        <div className="container mx-auto px-5 lg:px-21 py-4 flex justify-between items-center">
+        <div className="container mx-auto px-5 2xl:px-21 py-4 flex justify-between items-center">
           {/* Brand Logo */}
           <div className="flex justify-center items-center space-x-16">
-            <Link to='/'>
+            <Link to={initialPath}>
               <img src={brandLogo} alt="brandLogo" className="h-16" />
             </Link>
 
             {/* Menu Links (Desktop) */}
             <ul className="hidden md:flex space-x-10">
+              <li>
+                <Link to={initialPath} className="py-2 px-4 rounded opacity-65 font-semi-bold">
+                  Home
+                </Link>
+              </li>
               {NAVBAR_ROUTES.filter(route => !route.isHidden).map(route => (
                 <li key={route.path}>
                   <Link to={route.path} className="py-2 px-4 rounded opacity-65 font-semi-bold">
@@ -50,9 +63,19 @@ export const Navbar = () => {
 
           {/* Buttons (Desktop) */}
           <div className="hidden md:flex space-x-4">
-            <Link to='referrals'>
-              <Button color="bg-brandPrimary" text="Referrals" icon={referrals_icon} />
-            </Link>
+            {token ? (
+              <Link to="referrals">
+                <Button color="bg-brandPrimary" text="Referrals" icon={referrals_icon} />
+              </Link>
+            ) : (
+              <Button
+                color="bg-brandPrimary"
+                text="Referrals"
+                icon={referrals_icon}
+                onClick={() => setShowAuth(true)}
+              />
+            )}
+
             <LoginMenu />
           </div>
 
@@ -71,7 +94,7 @@ export const Navbar = () => {
         >
           <div className="relative h-full flex flex-col space-y-6">
             <div className="flex justify-between">
-              <Link to='/'>
+              <Link to={initialPath}>
                 <img src={brandLogo} alt="brandLogo" className="h-8" />
               </Link>
 
@@ -82,6 +105,9 @@ export const Navbar = () => {
 
             {/* Menu Links */}
             <div className="flex flex-col items-center justify-start flex-grow space-y-4">
+              <Link key={initialPath} to={initialPath} onClick={toggleMobileMenu} className="w-full text-start rounded opacity-65 font-semi-bold">
+                Home
+              </Link>
               {NAVBAR_ROUTES.filter(route => !route.isHidden).map(route => (
                 <Link key={route.path} to={route.path} onClick={toggleMobileMenu} className="w-full text-start rounded opacity-65 font-semi-bold">
                   {route.name}
@@ -91,14 +117,24 @@ export const Navbar = () => {
 
             {/* Buttons at the Bottom */}
             <div className="flex flex-col items-center space-y-5">
-              <Link className='w-full' to='referrals'>
+              {token ? (
+                <Link className='w-full' to='referrals'>
+                  <Button
+                    color="bg-brandPrimary"
+                    text="Referrals"
+                    icon={referrals_icon}
+                    size="w-full"
+                  />
+                </Link>
+              ) : (
                 <Button
                   color="bg-brandPrimary"
                   text="Referrals"
                   icon={referrals_icon}
                   size="w-full"
+                  onClick={() => setShowAuth(true)}
                 />
-              </Link>
+              )}
               <Button
                 color="bg-brandSecondary"
                 text="Login"

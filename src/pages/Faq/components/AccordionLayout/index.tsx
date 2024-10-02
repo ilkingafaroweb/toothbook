@@ -21,9 +21,8 @@ export const AccordionLayout = () => {
     };
 
     useEffect(() => {
-        (async () => await callApi({ endpoint: apiEndpoints.faq.get }))();
+        callApi({ endpoint: apiEndpoints.faq.get });
     }, []);
-
 
     useEffect(() => {
         if (response) {

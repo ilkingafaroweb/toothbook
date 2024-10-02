@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Swal from 'sweetalert2';
 import { Button } from '../../../../components';
+import { useApi } from '../../../../hooks';
+import apiEndpoints from '../../../../apiEndpoints';
 
 interface FormData {
   fullName: string;
@@ -19,6 +21,24 @@ export const ContactForm = () => {
 
   const [errors, setErrors] = useState<Partial<FormData>>({});
   const messageRef = useRef<HTMLTextAreaElement>(null);
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  const { callApi, response, loading, error } = useApi();
+
+  useEffect(() => {
+    setIsLoading(loading)
+  }, [loading])
+
+  useEffect(() => {
+    {response && setSuccessMessage(response) }
+  }, [response])
+
+  useEffect(() => {
+    setErrorMessage(error)
+  }, [error])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -63,19 +83,25 @@ export const ContactForm = () => {
       return;
     }
 
-    try {
-      console.log(formData);
+    await callApi({
+      method: "POST",
+      endpoint: apiEndpoints.contact.post,
+      data: formData,
+    });
 
-      await Swal.fire({
+    {
+      successMessage && Swal.fire({
         icon: 'success',
         title: 'Success',
-        text: 'Your message has been sent!',
+        text: `${successMessage}`,
       });
-    } catch (error) {
-      await Swal.fire({
+    }
+
+    {
+      errorMessage && Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Something went wrong. Please try again.',
+        text: `${errorMessage}`,
       });
     }
   };
@@ -152,7 +178,7 @@ export const ContactForm = () => {
         text='Send'
         color='bg-brandPrimary'
         size='lg:w-48 w-full m-auto'
-        hover={true}
+        isLoading={isLoading}
       />
     </form>
   );

@@ -1,14 +1,17 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { DefaultLayout } from './layouts';
-import { OfferProvider, LoginProvider, useLogin } from './contexts';
-import { ErrorBoundary } from './components/error';
+import { OfferProvider, LoginProvider, useLogin, useOffer } from './contexts';
 import { NAVBAR_ROUTES, MENU_ROUTES, CLINIC_ROUTES } from './config';
 import { createRoutes } from './utils';
 import AuthModal from './components/modals/AuthModal';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { Home } from './pages';
 
 const AppRoutes = () => {
-  const { showAuth, setShowAuth } = useLogin();
+  const { showAuth } = useLogin();
+  const [initialPath, setInitialPath] = useState('/')
+  const {setIsOfferVisible} = useOffer()
+  const location = useLocation()
 
   useEffect(() => {
     if (showAuth) {
@@ -22,8 +25,24 @@ const AppRoutes = () => {
     };
   }, [showAuth]);
 
+  useEffect(() => {
+    if(location.pathname === '/findyourdentist' || !!sessionStorage.getItem('offer')){
+      sessionStorage.setItem('offer', 'true')
+      setInitialPath('findyourdentist')
+      setIsOfferVisible(true)
+    }
+  }, [])
+
   const allRoutes = [
-    ...createRoutes(NAVBAR_ROUTES),
+    ...createRoutes([
+      ...NAVBAR_ROUTES,
+      {
+        path: initialPath,
+        name: "Home",
+        isHidden: false,
+        element: (props) => <Home {...props} />,
+      },
+    ]),
     ...createRoutes(MENU_ROUTES),
     ...createRoutes(CLINIC_ROUTES),
   ];
@@ -36,7 +55,7 @@ const AppRoutes = () => {
         ))}
       </Routes>
       {
-        <AuthModal isOpen={showAuth} isLogin={true} onClose={() => setShowAuth(false)} />
+        <AuthModal />
       }
     </>
   );
@@ -44,7 +63,6 @@ const AppRoutes = () => {
 
 export const App = () => {
   return (
-    <ErrorBoundary>
       <OfferProvider>
         <LoginProvider>
           <Router>
@@ -54,6 +72,5 @@ export const App = () => {
           </Router>
         </LoginProvider>
       </OfferProvider>
-    </ErrorBoundary>
   );
 };

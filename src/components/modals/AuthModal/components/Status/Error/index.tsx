@@ -10,7 +10,7 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({ errorMessage }) => {
   if (!errorMessage) return null; 
 
   return (
-    <div className='w-full flex justify-start items-center mb-3 bg-accentColor bg-opacity-60'>
+    <div className='w-full flex justify-start items-center mt-3 bg-accentColor bg-opacity-60'>
       <div className='h-full w-max text-center px-2 py-1 bg-accentColor'>
         <FontAwesomeIcon icon={faTriangleExclamation} size='lg' className='text-white' />
       </div>
