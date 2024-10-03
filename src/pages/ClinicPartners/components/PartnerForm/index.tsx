@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../../../components";
 import { useApi } from "../../../../hooks";
 import apiEndpoints from "../../../../apiEndpoints";
@@ -14,6 +14,22 @@ interface FormData {
 export const PartnerForm: React.FC = () => {
 
     const { callApi, loading, error, response } = useApi();
+
+    useEffect(() => {
+        response && Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: `${response}`,
+        });
+    }, [response])
+
+    useEffect(() => {
+        error && Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: `${error}`,
+        });
+    }, [error])
 
     const [errors, setErrors] = useState<Partial<FormData>>({});
     const [formData, setFormData] = useState<FormData>({
@@ -67,35 +83,18 @@ export const PartnerForm: React.FC = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!validateForm()) {
             return
         }
 
-        callApi({
+        await callApi({
             method: "POST",
             endpoint: apiEndpoints.partners.post,
             data: formData,
         });
-
-        {
-            response && Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: `${response}`,
-            });
-        }
-
-        {
-            error && Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: `${error}`,
-            });
-        }
-
     };
 
     return (

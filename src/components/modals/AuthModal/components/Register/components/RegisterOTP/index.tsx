@@ -1,12 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../../../../../../UI";
+import { useApi } from "../../../../../../../hooks";
+import apiEndpoints from "../../../../../../../apiEndpoints";
+import Swal from "sweetalert2";
+import { useLogin } from "../../../../../../../contexts";
 
 interface RegisterOTPProps {
     onBack: () => void;
 }
 
 export const RegisterOTP: React.FC<RegisterOTPProps> = ({ onBack }) => {
+    const { callApi, loading, error, response } = useApi();
     const [otp, setOtp] = useState<string[]>(['', '', '', '', '']);
+    const { setShowAuth } = useLogin()
+    const email = localStorage.getItem('email')
+
+    useEffect(() => {
+        response && Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: `${response}`,
+        }).then(() => {
+            setShowAuth(false);
+        });
+    }, [response])
+
+    useEffect(() => {
+        error && Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: `${error}`,
+        })
+    }, [error])
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const value = e.target.value;
@@ -37,12 +62,18 @@ export const RegisterOTP: React.FC<RegisterOTPProps> = ({ onBack }) => {
         }
     };
 
-
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (otp.every((digit) => digit !== '')) {
             const otpCode = otp.join('');
-            console.log("Entered OTP:", otpCode);
+            await callApi({
+                method: "POST",
+                endpoint: apiEndpoints.register.otpCheck,
+                params: {
+                    email: email,
+                    token: otpCode
+                }
+            });
         } else {
 
         }
@@ -64,7 +95,7 @@ export const RegisterOTP: React.FC<RegisterOTPProps> = ({ onBack }) => {
                     />
                 ))}
             </div>
-            <Button text="Continue" color="bg-brandPrimary" size="w-full" />
+            <Button text="Continue" color="bg-brandPrimary" size="w-full" isLoading={loading} />
             <Button text='Back' color="bg-brandSecondary" size="w-full" hover={true} button={true} onClick={onBack} />
         </form>
     );

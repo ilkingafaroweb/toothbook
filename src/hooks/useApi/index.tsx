@@ -5,32 +5,50 @@ type ApiOptions = {
   method?: Method;
   endpoint: string;
   data?: any;
+  params?: Record<string, any>;
 };
 
 export const useApi = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [response, setResponse] = useState<any>(null);
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('token');
 
-  const callApi = async ({ method = "GET", endpoint, data }: ApiOptions) => {
+  const callApi = async ({ method = "GET", endpoint, data, params }: ApiOptions) => {
     setLoading(true);
     setError(null);
+    setResponse(null); // Yeni bir istek geldiğinde önceki yanıtı temizle
 
     const config: AxiosRequestConfig = {
       url: endpoint,
       method: method,
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
+      ...(params && { params }),
       ...(data && { data }),
     };
 
     try {
       const result = await axios(config);
-      setResponse(result.data);
+
+      if (result.status === 200 || result.status === 201) {
+        if (result.data.success) {
+          setResponse(result.data.success);
+        } else if (result.data) {
+          setResponse(result.data);
+        } else {
+          setResponse("Success");
+        }
+      } else {
+        setError(response.data);
+      }
     } catch (err: any) {
-      setError(err.message);
+      if (err.response) {
+        setError(err.response?.data); 
+      } else {
+        setError(err.response); // Ağ hatası durumunda
+      }
     } finally {
       setLoading(false);
     }

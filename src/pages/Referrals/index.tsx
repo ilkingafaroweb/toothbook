@@ -3,10 +3,11 @@ import { RouteProps } from '../../types';
 import { ResponsiveImage } from '../../components';
 import { refWoman } from '../../assets';
 import { ReferralForm, ReferralLink, ReferralsList } from './components';
+import { DefaultLayout } from '../../layouts';
 
 export const Referrals: React.FC<RouteProps> = () => {
     return (
-        <>
+        <DefaultLayout>
             <div className='w-full centered'>
                 <div className='centered-between cover flex-col md:flex-row'>
                     <div className='lg:w-1/2 w-full centered flex-col space-y-6 lg:mb-12 mb-8'>
@@ -49,6 +50,6 @@ export const Referrals: React.FC<RouteProps> = () => {
                 </div>
                 <ReferralsList />
             </div>
-        </>
+        </DefaultLayout>
     );
 };

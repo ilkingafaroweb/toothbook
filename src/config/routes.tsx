@@ -1,5 +1,5 @@
 import React from 'react';
-import { ClinicPartners, About, Faq, Contact, Profile, Referrals } from '../pages';
+import { ClinicPartners, About, Faq, Contact, Profile, Referrals, MyBookings, BookingDetails, Steps } from '../pages';
 
 interface RouteProps {
   path: string;
@@ -53,7 +53,7 @@ export const MENU_ROUTES: RouteConfig[] = [
     path: "/bookings",
     name: "My Bookings",
     isHidden: false,
-    element: (props) => <ClinicPartners {...props} />,
+    element: (props) => <MyBookings {...props} />,
   },
   {
     path: "/referrals",
@@ -62,6 +62,42 @@ export const MENU_ROUTES: RouteConfig[] = [
     element: (props) => <Referrals {...props} />,
   },
 ];
+
+export const NESTED_ROUTES: RouteConfig[] = [
+  {
+    path: "bookings/:bookingId",
+    name: "Booking Details",
+    isHidden: false,
+    element: (props) => <BookingDetails {...props} />,
+  },
+]
+
+export const STEPS_ROUTES: RouteConfig[] = [
+  {
+    path: "/steps/giftcard",
+    name: "Gift Card",
+    isHidden: false,
+    element: (props) => <Steps {...props} />,
+  },
+  {
+    path: "/steps/services",
+    name: "Services",
+    isHidden: false,
+    element: (props) => <Steps {...props} />,
+  },
+  {
+    path: "/steps/insuranceQuestion",
+    name: "Do you have an insurance?",
+    isHidden: false,
+    element: (props) => <Steps {...props} />,
+  },
+  {
+    path: "/steps/dentistQuestion",
+    name: "How do you feel about going to dentist?",
+    isHidden: false,
+    element: (props) => <Steps {...props} />,
+  },
+]
 
 export const CLINIC_ROUTES: RouteConfig[] = [
   // {

@@ -14,7 +14,7 @@ interface InputProps {
 
 export const Input: React.FC<InputProps> = ({ icon, name, type, value, placeholder, readonly, isValid, onChange, loading }) => {
   return (
-    <div className={`flex items-center ${icon && 'border group-focus:border-brandPrimary'} ${!isValid && 'border-accentColor'} rounded-xl w-full`}>
+    <div className={`flex items-center ${icon && 'border group-focus:border-brandPrimary'} ${!isValid && 'border border-accentColor'} rounded-xl w-full`}>
       {icon && <img className='ml-2' src={icon} alt='icon' />}
       <input
         type={type ? `${type}` : 'text'}

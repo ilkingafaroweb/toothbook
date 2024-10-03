@@ -62,10 +62,10 @@ export const DropdownMenu: React.FC<{ onLogout: () => void }> = ({ onLogout }) =
 
   return (
     <div className="relative">
-      <Button color="bg-brandSecondary" text={userName} onClick={handleToggle} size='min-w-48 relative z-10' />
+      <Button color="bg-brandSecondary" text={userName} onClick={handleToggle} size='min-w-48 relative z-20' />
       <div
         ref={menuRef}
-        className={`absolute bg-dropdown border rounded-b-2xl border-dropdown shadow-xl -mt-6 pt-6 pb-2 h-max right-0 w-48 overflow-hidden transition-all duration-300 ease-in-out`}
+        className={`absolute bg-dropdown border rounded-b-2xl z-10 border-dropdown shadow-xl -mt-6 pt-6 pb-2 h-max right-0 w-48 overflow-hidden transition-all duration-300 ease-in-out`}
         style={{ height: '0px', opacity: '0' }}
       >
         {

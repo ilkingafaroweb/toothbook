@@ -33,7 +33,17 @@ export default {
         accordionContent: '#ADADAD',
 
         dropdown: '#F4F4F4',
-        dropdownHover: '#E6E6E6'
+        dropdownHover: '#E6E6E6',
+
+        bookingStatus: '#FFF5E3',
+        bookingButton: '#F7F8FC',
+        bookingAccept: '#40D437',
+        bookingDecline: '#E93434',
+        bookingView: '#4C779E',
+        bookingApplied: '#3EB336',
+
+
+        selectedServices: 'rgba(111, 191, 58, 0.20)'
       },
       keyframes: {
         slideDown: {
@@ -47,6 +57,8 @@ export default {
       boxShadow: {
         'bottom': '0px 2px 6px 0px rgba(122, 122, 122, 0.08)',
         'carousel': '0px 1px 3px 0px rgba(16, 24, 40, 0.10), 0px 1px 2px 0px rgba(16, 24, 40, 0.06)',
+        'table' : '0px 10px 80px 0px rgba(0, 0, 0, 0.11), 0px 2px 13px 0px rgba(0, 0, 0, 0.05)',
+        'systemMessage': "0px 2px 9px 0px rgba(0, 0, 0, 0.25) inset"
       },
       padding: {
         '21': '5.25rem',
