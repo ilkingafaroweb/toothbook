@@ -12,6 +12,9 @@ const apiEndpoints = {
   login: {
     post: `${API_BASE_URL}/Identity/Account/Login`
   },
+  // forgotPassword: {
+  //   email:
+  // },
   profile: {
     get: `${API_BASE_URL}/Identity/Account/GetUserProfile`,
     patch: `${API_BASE_URL}/Identity/Account/PatchUserProfile`

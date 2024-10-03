@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Input } from "../../../../../../UI";
-import { useApi } from "../../../../../../../hooks";
-import apiEndpoints from "../../../../../../../apiEndpoints";
+// import { useApi } from "../../../../../../../hooks";
+// import apiEndpoints from "../../../../../../../apiEndpoints";
 
 interface EmailStepProps {
   onContinue: () => void;
@@ -10,7 +10,7 @@ interface EmailStepProps {
 
 export const EmailStep: React.FC<EmailStepProps> = ({ onContinue, onBack }) => {
 
-  const { callApi, loading, error, response } = useApi();
+  // const { callApi } = useApi();
 
   const [formData, setFormData] = React.useState({
     loginPass: '',
@@ -27,7 +27,7 @@ export const EmailStep: React.FC<EmailStepProps> = ({ onContinue, onBack }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    callApi({ endpoint: apiEndpoints })
+    // callApi({ endpoint: apiEndpoints })
 
     onContinue();
   };
