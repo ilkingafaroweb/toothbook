@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { Button, OfferBanner } from '../../components';
 import { ProgressBar } from '../../pages/Steps/components';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { brandLogo } from '../../assets';
 
 interface LayoutProps {
     children: ReactNode;
@@ -51,6 +52,9 @@ export const StepsLayout = ({ children }: LayoutProps) => {
     return (
         <div className="flex flex-col min-h-screen">
             <OfferBanner />
+            <div className='w-full lg:px-24 pt-6'>
+                <img src={brandLogo} alt='' />
+            </div>
             <ProgressBar step={step} />
 
             <main className="flex-grow container lg:mx-auto px-6 lg:py-6 pb-24">

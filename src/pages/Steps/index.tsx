@@ -95,10 +95,16 @@ export const Steps: React.FC<RouteProps> = () => {
                             <ServiceCardSelector />
                         </div>
                     </div>
-                ) : (step === 3 || 4) ? (
+                )  : step === 5 ? (
+                    <div className="flex flex-col items-center gap-3">
+                        <div className="flex flex-col items-center gap-2 w-[470px]">
+                            <h1 className="text-black lg:text-2xl text-xl text-left font-semibold">How do you feel about going to dentist?</h1>
+                            <p className="text-black opacity-65 font-semibold">Please choose the option that best describes your feelings. We need to understand your dental anxiety and find the best match for you.</p>
+                            <EndQuestion />
+                        </div>
+                    </div>
+                ) : (
                     <FirstQuestion step={step} setStep={setStep} />
-                ) : step === 5 && (
-                    <EndQuestion />
                 )
             }
         </StepsLayout>
