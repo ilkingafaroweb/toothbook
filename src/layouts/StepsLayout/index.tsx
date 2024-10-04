@@ -52,8 +52,8 @@ export const StepsLayout = ({ children }: LayoutProps) => {
     return (
         <div className="flex flex-col min-h-screen">
             <OfferBanner />
-            <div className='w-full lg:px-24 pt-6'>
-                <img src={brandLogo} alt='' />
+            <div className='w-full lg:px-24 px-6 lg:pt-6 pt-3'>
+                <img src={brandLogo} alt='brand-logo' />
             </div>
             <ProgressBar step={step} />
 

@@ -65,7 +65,7 @@ export const EndQuestion: React.FC = () => {
                         placeholder="Other"
                         value={otherText}
                         onChange={handleOtherTextChange}
-                        className="mt-2 p-2 lg:w-[470px] rounded-lg border border-gray-300"
+                        className="mt-2 p-2 lg:w-[470px] w-full rounded-lg border border-gray-300"
                     />
                 )}
             </div>
