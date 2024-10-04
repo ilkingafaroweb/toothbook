@@ -12,6 +12,7 @@ interface LayoutProps {
 }
 
 export const StepsLayout = ({ children }: LayoutProps) => {
+    const initialPath = sessionStorage.getItem('offer') ? "/findyourdentist" : "/"
     const location = useLocation();
     const navigate = useNavigate();
     const [step, setStep] = useState<number>(0);
@@ -69,7 +70,11 @@ export const StepsLayout = ({ children }: LayoutProps) => {
     }, []);
 
     const handleBack = () => {
-        setStep((prevStep) => Math.max(prevStep - 1, 1)); 
+        if (step === 1) {
+            navigate(initialPath)
+        } else {
+            setStep((prevStep) => Math.max(prevStep - 1, 1)); 
+        }
     };
 
     const handleContinue = async () => {
