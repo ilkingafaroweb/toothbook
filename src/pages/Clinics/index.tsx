@@ -33,6 +33,18 @@ export const Clinics: React.FC<RouteProps> = ({ name }) => {
     }, [response]);
 
     useEffect(() => {
+        if (responseClinics) {
+            setClinics(responseClinics.clinics);
+            if (responseClinics.clinics.length > 0) {
+                setMapCenter({
+                    lat: responseClinics.clinics[0].latitude,
+                    lng: responseClinics.clinics[0].longitude,
+                });
+            }
+        }
+    }, [responseClinics]);
+
+    useEffect(() => {
         if (coordinates.lat !== null && coordinates.lng !== null) {
             searchClinics({
                 endpoint: apiEndpoints.clinics.search,
@@ -157,7 +169,7 @@ export const Clinics: React.FC<RouteProps> = ({ name }) => {
                                         mapLink={clinic.mapURL}
                                         imageURL={clinic.imageURL}
                                         excellence={clinic.inlineTag === 'excellence'}
-                                        topRated={clinic.topRated === 'toprated'}
+                                        topRated={clinic.onTopTag === 'toprated'}
                                         recommended={clinic.inlineTag === 'high'}
                                         best={clinic.inlineTag === 'best'}
                                     />
