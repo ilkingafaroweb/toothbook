@@ -79,7 +79,7 @@ export const Clinics: React.FC<RouteProps> = ({ name }) => {
                                         mapLink={clinic.mapURL}
                                         imageURL={clinic.imageURL}
                                         excellence={clinic.inlineTag === 'excellence'}
-                                        topRated={clinic.topRated === 'topRated'}
+                                        topRated={clinic.topRated === 'toprated'}
                                         recommended={clinic.inlineTag === 'high'}
                                         best={clinic.inlineTag === 'best'}
                                     />

@@ -41,10 +41,6 @@ export const Home: React.FC<RouteProps> = () => {
             const latLng = await getLatLng(results[0]);
             setAddress(selectedAddress);
             setCoordinates(latLng);
-
-            setTimeout(() => {
-                navigate('/steps/giftcard');
-            }, 1000)
            
         } catch (error) {
             console.error('Error fetching geocode data: ', error);

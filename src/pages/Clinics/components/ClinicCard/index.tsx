@@ -47,7 +47,6 @@ export const ClinicCard: React.FC<ClinicCardProps> = ({
                 </div>
             }
 
-
             <div className='space-y-2 pb-6'>
                 <div className='py-2 flex items-center justify-start gap-3'>
                     <span className='w-16 h-16 border rounded-full'>
