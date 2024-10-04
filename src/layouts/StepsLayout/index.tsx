@@ -41,6 +41,19 @@ export const StepsLayout = ({ children }: LayoutProps) => {
         navigate(pathMap[step]);
     }, [step]);
 
+    useEffect(() => {
+    
+        const handlePopState = () => {
+            setStep((prevStep) => Math.max(prevStep - 1, 1));
+        };
+
+        window.addEventListener('popstate', handlePopState);
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, []);
+
     const handleBack = () => {
         setStep((prevStep) => Math.max(prevStep - 1, 1)); 
     };
