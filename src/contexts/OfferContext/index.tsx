@@ -8,7 +8,7 @@ interface OfferContextType {
 const OfferContext = createContext<OfferContextType | undefined>(undefined);
 
 export const OfferProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isOfferVisible, setIsOfferVisible] = useState(!!sessionStorage.getItem('offer') || false);
+  const [isOfferVisible, setIsOfferVisible] = useState(sessionStorage.getItem('offer') === 'true' || false);
 
   return (
     <OfferContext.Provider value={{ isOfferVisible, setIsOfferVisible }}>

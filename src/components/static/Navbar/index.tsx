@@ -64,7 +64,7 @@ export const Navbar = () => {
           {/* Buttons (Desktop) */}
           <div className="hidden md:flex space-x-4">
             {token ? (
-              <Link to="referrals">
+              <Link to="/referrals">
                 <Button color="bg-brandPrimary" text="Referrals" icon={referrals_icon} />
               </Link>
             ) : (

@@ -5,14 +5,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { brandLogo } from '../../assets';
 import { useApi } from '../../hooks';
 import apiEndpoints from '../../apiEndpoints';
-import { useStepsContext } from '../../contexts';
+import { useOffer, useStepsContext } from '../../contexts';
 
 interface LayoutProps {
     children: ReactNode;
 }
 
 export const StepsLayout = ({ children }: LayoutProps) => {
-    const initialPath = sessionStorage.getItem('offer') ? "/findyourdentist" : "/"
+    const { isOfferVisible } = useOffer()
     const location = useLocation();
     const navigate = useNavigate();
     const [step, setStep] = useState<number>(0);
@@ -71,7 +71,11 @@ export const StepsLayout = ({ children }: LayoutProps) => {
 
     const handleBack = () => {
         if (step === 1) {
-            navigate(initialPath)
+            if (isOfferVisible) {
+                navigate('/findyourdentist');
+            } else {
+                navigate('/');
+            }
         } else {
             setStep((prevStep) => Math.max(prevStep - 1, 1)); 
         }

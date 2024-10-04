@@ -69,8 +69,8 @@ export const GiftCardSelector: React.FC<GiftCardSelectorProps> = ({ giftCards })
       </div>
   
       {/* Seçili kart varsa inputları göster */}
-      {selectedCard && (
-        <div className="lgw-1/2 space-y-4">
+      {!!selectedCard && (
+        <div className="lg:w-1/2 space-y-4">
           <div>
             <h1 className='text-black opacity-80'>In order to activate your gift card, add your email address</h1>
             <p className='text-black opacity-40'>Once you've visited the dentist, we'll send you instructions on how to claim.</p>
@@ -87,5 +87,4 @@ export const GiftCardSelector: React.FC<GiftCardSelectorProps> = ({ giftCards })
       )}
     </>
   );
-  
 };
