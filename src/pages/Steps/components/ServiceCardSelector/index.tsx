@@ -129,7 +129,7 @@ export const ServiceCardSelector: React.FC = () => {
             {sortedServiceCards.map((serviceCard: ServiceCard) => (
                 <div
                     key={serviceCard.id}
-                    className={`h-20 lg:w-[calc(50%-1rem)] w-full border rounded-lg flex items-center cursor-pointer p-4 ${selectedCards.includes(serviceCard.id) ? 'border-brandPrimary' : 'border-gray-300'}`}
+                    className={`h-20 lg:w-[calc(50%-1rem)] w-full border rounded-lg flex items-center cursor-pointer p-4 ${selectedCards.includes(serviceCard.id) ? 'border-brandPrimary bg-brandPrimary bg-opacity-20' : 'border-gray-300'}`}
                     onClick={() => handleSelectCard(serviceCard.id)}
                 >
                     {/* Checkbox */}
@@ -140,7 +140,7 @@ export const ServiceCardSelector: React.FC = () => {
                             onChange={() => handleSelectCard(serviceCard.id)}
                             className="hidden"
                         />
-                        <span className={`w-6 h-6 flex items-center justify-center border-2 rounded ${selectedCards.includes(serviceCard.id) ? 'bg-brandPrimary border-brandPrimary' : 'border-gray-300'}`}>
+                        <span className={`w-6 h-6 flex items-center justify-center border-2 rounded ${selectedCards.includes(serviceCard.id) ? 'bg-brandPrimary border-brandPrimary ' : 'border-gray-300'}`}>
                             {selectedCards.includes(serviceCard.id) && (
                                 <span className="text-white">&#10003;</span> // Checkmark
                             )}
