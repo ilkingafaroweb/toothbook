@@ -47,5 +47,29 @@ import star from "./star.svg";
 export const carouselIcons = {
   prev,
   next,
-  star
+  star,
+};
+
+import topRated from "./clinic-top.svg";
+import clinicStar from "./clinic-star.svg";
+import excellence from "./clinic-excellence.svg";
+import locationClinic from "./clinic-location.svg";
+import distance from "./clinic-distance.svg";
+import phone from "./clinic-phone.svg";
+import accept from "./clinic-accept.svg";
+import stonks from "./clinic-stonks.svg";
+import best from './clinic-best.svg'
+import recommended from './clinic-recommended.svg'
+
+export const clinicCardIcons = {
+  topRated,
+  clinicStar,
+  excellence,
+  locationClinic,
+  distance,
+  phone,
+  accept,
+  stonks,
+  best,
+  recommended
 };

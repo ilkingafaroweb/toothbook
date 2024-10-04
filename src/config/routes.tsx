@@ -1,5 +1,5 @@
 import React from 'react';
-import { ClinicPartners, About, Faq, Contact, Profile, Referrals, MyBookings, BookingDetails, Steps } from '../pages';
+import { ClinicPartners, About, Faq, Contact, Profile, Referrals, MyBookings, BookingDetails, Steps, Clinics } from '../pages';
 
 interface RouteProps {
   path: string;
@@ -106,52 +106,10 @@ export const STEPS_ROUTES: RouteConfig[] = [
 ]
 
 export const CLINIC_ROUTES: RouteConfig[] = [
-  // {
-  //   path: "/clinics",
-  //   name: "Clinics",
-  //   isHidden: false,
-  //   element: (props) => <Clinics {...props} />,
-  //   children: [
-  //     {
-  //       path: ":clinicId",
-  //       name: "Clinic Profile",
-  //       isHidden: false,
-  //       element: (props) => <ClinicProfile {...props} />,
-  //       children: [
-  //         {
-  //           path: "details",
-  //           name: "Details",
-  //           isHidden: false,
-  //           element: (props) => <ClinicDetails {...props} />,
-  //         },
-  //         {
-  //           path: "reviews",
-  //           name: "Clinic Reviews",
-  //           isHidden: false,
-  //           element: (props) => <ClinicReviews {...props} />,
-  //           children: [
-  //             {
-  //               path: "about",
-  //               name: "About",
-  //               isHidden: false,
-  //               element: (props) => <About {...props} />,
-  //             },
-  //             {
-  //               path: "gallery",
-  //               name: "Gallery",
-  //               isHidden: false,
-  //               element: (props) => <Gallery {...props} />,
-  //             },
-  //             {
-  //               path: "reviews",
-  //               name: "Reviews",
-  //               isHidden: false,
-  //               element: (props) => <Reviews {...props} />,
-  //             },
-  //           ],
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
+  {
+    path: "/clinics",
+    name: "Select your clinic",
+    isHidden: false,
+    element: (props) => <Clinics {...props} />,
+  },
 ];

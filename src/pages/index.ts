@@ -12,3 +12,4 @@ export * from './MyBookings';
 export * from './BookingDetails'
 
 export * from './Steps'
+export * from './Clinics'

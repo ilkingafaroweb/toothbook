@@ -50,7 +50,12 @@ const apiEndpoints = {
     services: `${API_BASE_URL}/Interactive/Steps/getservices`,
     otherServices: `${API_BASE_URL}/Interactive/Steps/getotherservices`,
     getMainInsurances: `${API_BASE_URL}/Interactive/Steps/getinsurancecompanies`,
-    getOtherInsurances: `${API_BASE_URL}/Interactive/Steps/getotherinsurancecompanies`
+    getOtherInsurances: `${API_BASE_URL}/Interactive/Steps/getotherinsurancecompanies`,
+    postStepsData: `${API_BASE_URL}/Interactive/Steps/logsteps`,
+  },
+
+  clinics : {
+    list:`${API_BASE_URL}/Clinic/getclinics`,
   }
 };
 

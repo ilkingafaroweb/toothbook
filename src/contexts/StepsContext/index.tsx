@@ -4,8 +4,8 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 interface StepsData {
   email: string;
   address: string;
-  longitude: number;
-  latitude: number;
+  longitude: number | null;
+  latitude: number | null;
   giftCardId: number;
   services: number[];
   insurance: string;

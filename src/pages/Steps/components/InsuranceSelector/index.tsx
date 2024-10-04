@@ -31,7 +31,7 @@ export const InsuranceSelector: React.FC = () => {
             const selectedInsurance = insuranceCompanies.find(company => company.name === stepsData.insurance);
             setSelectedCard(selectedInsurance ? selectedInsurance.id : null); 
         }
-    }, [stepsData.insurance, insuranceCompanies]);
+    }, [stepsData, insuranceCompanies]);
 
     useEffect(() => {
         let insuranceName = '';
@@ -50,7 +50,7 @@ export const InsuranceSelector: React.FC = () => {
             ...prev,
             insurance: insuranceName,
         }));
-    }, [selectedCard, selectedOtherInsurances, insuranceCompanies]);
+    }, [selectedCard, selectedOtherInsurances]);
     
 
     useEffect(() => {
@@ -127,7 +127,7 @@ export const InsuranceSelector: React.FC = () => {
                         {insuranceCompanies.map((insuranceCard: InsuranceCard) => (
                             <div
                                 key={insuranceCard.id}
-                                className={`h-20 lg:w-[calc(25%-1rem)] w-full border rounded-lg flex justify-center items-center cursor-pointer ${selectedCard === insuranceCard.id ? 'border-brandPrimary' : 'border-gray-300'
+                                className={`h-20 lg:w-[calc(25%-1rem)] w-full border rounded-lg flex justify-center items-center cursor-pointer ${selectedCard === insuranceCard.id ? 'border-brandPrimary bg-brandPrimary bg-opacity-20' : 'border-gray-300'
                                     }`}
                                 onClick={() => handleSelectCard(insuranceCard.id)}
                             >

@@ -1,19 +1,55 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PlacesAutocomplete, { geocodeByAddress, getLatLng }  from 'react-places-autocomplete';
 import { RouteProps } from '../../types';
-import { location_icon, welcome_img, welcome_img_desktop, InsurancePartnersIcons, benefitIcons, stepsIcons } from '../../assets';
-import { Button, Input, ResponsiveImage, Metrics } from '../../components';
+import { welcome_img, welcome_img_desktop, InsurancePartnersIcons, benefitIcons, stepsIcons } from '../../assets';
+import { Button, ResponsiveImage, Metrics, Loading } from '../../components';
 import { Benefits, InsurancePartners } from './components';
 import { FeedbackCarousel } from './components/FeedbackCarousel';
 import Steps from './components/Steps';
 import { DefaultLayout } from '../../layouts';
+import { useStepsContext } from '../../contexts';
 
 export const Home: React.FC<RouteProps> = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const { setStepsData } = useStepsContext()
 
-    const handleFind = () => {
-        navigate('/steps/giftcard')
-    }
+    const [address, setAddress] = useState<string>('');
+    const [coordinates, setCoordinates] = useState<{ lat: number | null, lng: number | null }>({ lat: null, lng: null });
+
+    useEffect(() => {
+        {address && setStepsData((prev) => ({
+            ...prev,
+            address: address
+        }))}
+    }, [address])
+
+    useEffect(() => {
+        if (coordinates.lat !== null && coordinates.lng !== null) {
+            setStepsData((prev) => ({
+                ...prev,
+                longitude: coordinates.lng,
+                latitude: coordinates.lat,
+            }));
+        }
+    }, [coordinates]);
+    
+
+    const handleSelect = async (selectedAddress: string) => {
+        try {
+            const results = await geocodeByAddress(selectedAddress);
+            const latLng = await getLatLng(results[0]);
+            setAddress(selectedAddress);
+            setCoordinates(latLng);
+
+            setTimeout(() => {
+                navigate('/steps/giftcard');
+            }, 1000)
+           
+        } catch (error) {
+            console.error('Error fetching geocode data: ', error);
+        }
+    };
 
     return (
         <DefaultLayout>
@@ -31,16 +67,56 @@ export const Home: React.FC<RouteProps> = () => {
                                 </p>
                             </div>
                             <div className='lg:centered lg:space-x-6 lg:space-y-0 lg:w-[600px] w-full lg:flex-row flex-col space-y-3'>
-                                <Input
-                                    icon={location_icon}
-                                    placeholder='Enter your location'
-                                    isValid={true}
-                                />
+                                {/* Google Autocomplete Input */}
+                                <PlacesAutocomplete
+                                    value={address}
+                                    onChange={setAddress}
+                                    onSelect={handleSelect}
+                                >
+                                    {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                                        <div className='relative w-full'>
+                                            <input
+                                                {...getInputProps({
+                                                    placeholder: 'Enter your location',
+                                                    className: 'input-location border border-gray-300 rounded-lg p-2 w-full outline-none focus:border-brandPrimary',
+                                                })}
+                                            />
+                                            {/* Autocomplete Suggestions Dropdown */}
+                                            <div className="absolute top-full left-0 w-full bg-white shadow-lg z-10">
+                                                {loading && <div className="p-2 text-gray-500">
+                                                        <Loading />
+                                                    </div>}
+                                                
+                                                {suggestions?.map(suggestion => {
+                                                    const className = suggestion.active
+                                                        ? 'bg-gray-200 cursor-pointer p-2'
+                                                        : 'bg-white cursor-pointer p-2 hover:bg-gray-100';
+                                                    
+                                                    const style = {
+                                                        backgroundColor: suggestion.active ? '#fafafa' : '#ffffff',
+                                                        cursor: 'pointer',
+                                                    };
+                                                    
+                                                    return (
+                                                        <div
+                                                            {...getSuggestionItemProps(suggestion, {
+                                                                className,
+                                                                style,
+                                                            })}
+                                                        >
+                                                            <span>{suggestion.description}</span>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
+                                </PlacesAutocomplete>
                                 <Button
                                     text='Find a dentist'
                                     color='bg-brandPrimary'
                                     size='w-full lg:w-max'
-                                    onClick={handleFind}
+                                    onClick={() => navigate('/steps/giftcard')}
                                 />
                             </div>
                         </div>

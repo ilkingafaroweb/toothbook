@@ -43,7 +43,10 @@ export default {
         bookingApplied: '#3EB336',
 
 
-        selectedServices: 'rgba(111, 191, 58, 0.20)'
+        selectedServices: 'rgba(111, 191, 58, 0.20)',
+        mapBackground: 'rgba(252, 221, 182, 0.50)',
+
+        clinicSuccess: '#6FBF3A'
       },
       keyframes: {
         slideDown: {

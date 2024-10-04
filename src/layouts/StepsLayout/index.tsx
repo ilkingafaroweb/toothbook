@@ -3,6 +3,9 @@ import { Button, OfferBanner } from '../../components';
 import { ProgressBar } from '../../pages/Steps/components';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { brandLogo } from '../../assets';
+import { useApi } from '../../hooks';
+import apiEndpoints from '../../apiEndpoints';
+import { useStepsContext } from '../../contexts';
 
 interface LayoutProps {
     children: ReactNode;
@@ -12,6 +15,17 @@ export const StepsLayout = ({ children }: LayoutProps) => {
     const location = useLocation();
     const navigate = useNavigate();
     const [step, setStep] = useState<number>(0);
+
+    const { stepsData } = useStepsContext() 
+
+    const { callApi, response, loading } = useApi()
+
+    useEffect(() => {
+        if(response){
+            sessionStorage.setItem('clinicsLog', response)
+            navigate('/clinics')
+        }
+    }, [response])
 
     useEffect(() => {
         setStep(1)
@@ -58,8 +72,16 @@ export const StepsLayout = ({ children }: LayoutProps) => {
         setStep((prevStep) => Math.max(prevStep - 1, 1)); 
     };
 
-    const handleContinue = () => {
-        setStep((prevStep) => Math.min(prevStep + 1, 5));
+    const handleContinue = async () => {
+        if (step === 5) {
+            callApi({
+                method: 'POST',
+                endpoint: apiEndpoints.steps.postStepsData,
+                data: stepsData
+            })
+        } else {
+            setStep((prevStep) => Math.min(prevStep + 1, 5));
+        }
     };
 
     return (
@@ -85,6 +107,7 @@ export const StepsLayout = ({ children }: LayoutProps) => {
                     text="Continue"
                     color='bg-brandPrimary'
                     onClick={handleContinue}
+                    isLoading={loading}
                     hover={true}
                 />
 
@@ -94,6 +117,7 @@ export const StepsLayout = ({ children }: LayoutProps) => {
                     text="Continue"
                     color='bg-brandPrimary'
                     onClick={handleContinue}
+                    isLoading={loading}
                     size='w-[80%] mx-auto'
                 />
             </div>
