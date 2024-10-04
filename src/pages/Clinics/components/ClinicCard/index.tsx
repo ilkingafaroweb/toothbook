@@ -36,7 +36,7 @@ export const ClinicCard: React.FC<ClinicCardProps> = ({
     best = false
 }) => {
     return (
-        <div className="lg:w-[32%] flex flex-col justify-between clinic-card border border-opacity-20 p-3 space-y-3 rounded-xl ">
+        <div className="lg:w-[calc(33.33333%-1rem)] flex flex-col justify-between clinic-card border border-opacity-20 p-3 space-y-3 rounded-xl ">
 
             {
                 topRated && <div className='py-2 px-3 flex items-center justify-start gap-3'>
@@ -77,7 +77,7 @@ export const ClinicCard: React.FC<ClinicCardProps> = ({
                     <p className='opacity-65'>{address}</p>
                 </div>
                 <div className="flex items-center justify-start">
-                    <div className='flex gap-2 bg-opacity-20 w-1/2 rounded-xl'>
+                    <div className='flex gap-2 bg-opacity-20 w-max rounded-xl'>
                         <img src={clinicCardIcons.distance} alt="distance" />
                         <p className='opacity-65 font-semibold'>{distance} km away</p>
                     </div>
