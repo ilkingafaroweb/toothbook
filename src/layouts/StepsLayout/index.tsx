@@ -62,6 +62,7 @@ export const StepsLayout = ({ children }: LayoutProps) => {
                     text='Back'
                     color='bg-brandSecondary'
                     onClick={handleBack}
+                    hover={true}
                 />
                 <Button
                     text="Continue"
