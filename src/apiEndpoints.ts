@@ -48,7 +48,9 @@ const apiEndpoints = {
   steps: {
     giftcard: `${API_BASE_URL}/Interactive/Steps/getgiftcards`,
     services: `${API_BASE_URL}/Interactive/Steps/getservices`,
-    otherServices: `${API_BASE_URL}/Interactive/Steps/getotherservices`
+    otherServices: `${API_BASE_URL}/Interactive/Steps/getotherservices`,
+    getMainInsurances: `${API_BASE_URL}/Interactive/Steps/getinsurancecompanies`,
+    getOtherInsurances: `${API_BASE_URL}/Interactive/Steps/getotherinsurancecompanies`
   }
 };
 

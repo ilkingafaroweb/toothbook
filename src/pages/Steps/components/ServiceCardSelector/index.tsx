@@ -3,6 +3,7 @@ import { x_icon_dark } from '../../../../assets'; // Assuming x_icon_dark is imp
 import { useApi } from '../../../../hooks'; // Assuming useApi is defined and properly typed
 import apiEndpoints from '../../../../apiEndpoints';
 import { Error, Loading } from '../../../../components';
+import { useStepsContext } from '../../../../contexts';
 
 interface ServiceCard {
     id: number;
@@ -10,18 +11,76 @@ interface ServiceCard {
     imageURL: string;
 }
 
+export const ServiceCardSelector: React.FC = () => {
 
-interface ServiceCardSelectorProps {
-    serviceCards: ServiceCard[];
-}
+    const { stepsData, setStepsData } = useStepsContext();
 
-export const ServiceCardSelector: React.FC<ServiceCardSelectorProps> = ({ serviceCards }) => {
     const { callApi, loading, error, response } = useApi();
-    const [selectedCards, setSelectedCards] = useState<number[]>([]);
+    const { callApi: getServiceCards, response: responseServiceCards } = useApi()
+
+    const [serviceCards, setServiceCards] = useState<ServiceCard[]>([])
+
+    const [selectedCards, setSelectedCards] = useState<number[]>(stepsData.services);
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
-    const [otherServices, setOtherServices] = useState<ServiceCard[]>([]); // Define state with ServiceCard type
+    const [otherServices, setOtherServices] = useState<ServiceCard[]>([]); 
     const [otherSelected, setOtherSelected] = useState<number[]>([]);
+
+    useEffect(() => {
+        if (selectedCards && selectedCards.includes(7)) {
+            setIsDropdownVisible(true)
+        }else{
+            setIsDropdownVisible(false)
+        }
+    }, [selectedCards]); 
+    
+
+    useEffect(() => {
+        console.log(otherSelected);
+    }, [otherSelected])
+
+    useEffect(() => {
+        getServiceCards({ endpoint: apiEndpoints.steps.services })
+    }, [])
+
+    useEffect(() => {
+        { responseServiceCards && setServiceCards(responseServiceCards.services) }
+    }, [responseServiceCards])
+
+
+    useEffect(() => {
+        if (stepsData.services) {
+            const selectedCards = stepsData.services.filter(serviceId => serviceId >= 1 && serviceId <= 7);
+            
+            const otherSelected = stepsData.services.filter(serviceId => serviceId < 1 || serviceId > 7);
+    
+            setSelectedCards(selectedCards);
+            setOtherSelected(otherSelected);
+        }
+    }, []); 
+    
+    
+
+    useEffect(() => {
+        if (selectedCards || otherSelected) {
+            setStepsData((prev) => {
+                const existingServices = prev.services || [];
+    
+                const newServices = [
+                    ...existingServices,
+                    ...(selectedCards || []),
+                    ...(otherSelected || [])
+                ];
+    
+                const uniqueServices = Array.from(new Set(newServices));
+    
+                return {
+                    ...prev,
+                    services: uniqueServices
+                };
+            });
+        }
+    }, [selectedCards, otherSelected]);
 
     const handleSelectCard = (id: number) => {
         const newSelectedCards = selectedCards.includes(id)
@@ -29,10 +88,6 @@ export const ServiceCardSelector: React.FC<ServiceCardSelectorProps> = ({ servic
             : [...selectedCards, id];
 
         setSelectedCards(newSelectedCards);
-
-        if (id === 7) {
-            setIsDropdownVisible(!isDropdownVisible);
-        }
     };
 
     const handleOtherSelected = (id: number) => {
@@ -115,7 +170,7 @@ export const ServiceCardSelector: React.FC<ServiceCardSelectorProps> = ({ servic
                                         {otherSelected.map(cardId => {
                                             const card = otherServices.find(c => c.id === cardId);
                                             return (
-                                                <div key={cardId} className="flex items-center bg-selectedServices text-white rounded-full py-2 px-3 mr-2 mb-2">
+                                                <div key={cardId} className="flex items-center bg-selectedServices text-white rounded-full py-2 px-3 m-1">
                                                     <span className='text-black opacity-80'>{card?.name}</span>
                                                     <button onClick={() => handleRemoveSelectedCard(cardId)} className="ml-2">
                                                         <img src={x_icon_dark} alt="Remove icon" />

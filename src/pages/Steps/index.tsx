@@ -3,8 +3,10 @@ import { RouteProps } from "../../types";
 import { StepsLayout } from "../../layouts";
 import { useApi } from "../../hooks";
 import apiEndpoints from "../../apiEndpoints";
-import { FirstQuestion, GiftCardSelector, ServiceCardSelector } from "./components";
+import { EndQuestion, FirstQuestion, GiftCardSelector, ServiceCardSelector } from "./components";
 import { Error, Loading } from "../../components";
+import { useNavigate } from "react-router-dom";
+import { useStepsContext } from "../../contexts";
 
 interface Cards {
     id: number;
@@ -13,37 +15,58 @@ interface Cards {
 }
 
 export const Steps: React.FC<RouteProps> = () => {
+
+    const { stepsData } = useStepsContext()
+
+    useEffect(() => {
+        console.log("Steps data --->", stepsData);
+    }, [stepsData])
+
+    const navigate = useNavigate()
     const [step, setStep] = useState<number>(0);
 
     const { callApi: getGiftcards, loading: loadingGiftcards, error: errorGiftcards, response: responseGiftcards } = useApi()
-    const { callApi: getServiceCards, loading: loadingServiceCards, error: errorServiceCards, response: responseServiceCards } = useApi()
 
     const [giftCards, setGiftCards] = useState<Cards[]>([])
-    const [serviceCards, setServiceCards] = useState<Cards[]>([])
+
+    useEffect(() => {
+        console.log("Step --->", step);
+    }, [step])
+    
 
     useEffect(() => {
         const stepMap: Record<string, number> = {
             '/steps/giftcard': 1,
             '/steps/services': 2,
             '/steps/insuranceQuestion': 3,
-            '/steps/dentistQuestion': 4,
+            '/steps/insuranceSelect': 4,
+            '/steps/dentistQuestion': 5,
         };
 
         setStep(stepMap[location.pathname] || 1);
     }, [location.pathname]);
 
     useEffect(() => {
+        const pathMap: Record<number, string> = {
+            1: '/steps/giftcard',
+            2: '/steps/services',
+            3: '/steps/insuranceQuestion',
+            4: '/steps/insuranceSelect',
+            5: '/steps/dentistQuestion',
+        };
+
+        navigate(pathMap[step]);
+    }, [step]);
+
+    useEffect(() => {
         getGiftcards({ endpoint: apiEndpoints.steps.giftcard })
-        getServiceCards({ endpoint: apiEndpoints.steps.services })
+        
     }, [])
 
     useEffect(() => {
         { responseGiftcards && setGiftCards(responseGiftcards.giftCards) }
     }, [responseGiftcards])
 
-    useEffect(() => {
-        { responseServiceCards && setServiceCards(responseServiceCards.services) }
-    }, [responseServiceCards])
 
     return (
         <StepsLayout>
@@ -69,19 +92,13 @@ export const Steps: React.FC<RouteProps> = () => {
                     <div className="flex flex-col items-center gap-6">
                         <div className="flex flex-col items-start gap-2 w-full lg:max-w-[1000px]">
                             <h1 className="text-black opacity-80 lg:text-3xl text-2xl text-center font-semibold mb-3">Which services are you interested in?</h1>
-                            {
-                                loadingServiceCards ? (<Loading />) : errorServiceCards ? (<Error />) : (
-                                    <ServiceCardSelector serviceCards={serviceCards} />
-                                )
-                            }
+                            <ServiceCardSelector />
                         </div>
                     </div>
-                ) : step === 3 ? (
-                    <FirstQuestion />
-                ) : step === 4 && (
-                    <div className="text-9xl">
-                        4
-                    </div>
+                ) : (step === 3 || 4) ? (
+                    <FirstQuestion step={step} setStep={setStep} />
+                ) : step === 5 && (
+                    <EndQuestion />
                 )
             }
         </StepsLayout>

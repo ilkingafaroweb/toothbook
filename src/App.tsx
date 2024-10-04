@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { OfferProvider, LoginProvider, useLogin, useOffer } from './contexts';
+import { OfferProvider, LoginProvider, useLogin, useOffer, StepsProvider } from './contexts';
 import { NAVBAR_ROUTES, MENU_ROUTES, CLINIC_ROUTES, NESTED_ROUTES, STEPS_ROUTES } from './config';
 import { createRoutes } from './utils';
 import AuthModal from './components/modals/AuthModal';
@@ -65,12 +65,14 @@ const AppRoutes = () => {
 export const App = () => {
 
   return (
-    <OfferProvider>
-      <LoginProvider>
-        <Router>
-          <AppRoutes />
-        </Router>
-      </LoginProvider>
-    </OfferProvider>
+    <StepsProvider>
+      <OfferProvider>
+        <LoginProvider>
+          <Router>
+            <AppRoutes />
+          </Router>
+        </LoginProvider>
+      </OfferProvider>
+    </StepsProvider>
   );
 };

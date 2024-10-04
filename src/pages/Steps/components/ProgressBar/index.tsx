@@ -32,7 +32,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({ step }) => {
             {/* Step 4: Question & dentist */}
             <div className="relative flex-1 flex items-center">
                 <div
-                    className={`progress-line rounded-xl h-1 flex-1 transition-all duration-500 ${step >= 4 ? 'bg-brandPrimary' : 'bg-gray-300'
+                    className={`progress-line rounded-xl h-1 flex-1 transition-all duration-500 ${step >= 5 ? 'bg-brandPrimary' : 'bg-gray-300'
                         }`}
                 />
             </div>

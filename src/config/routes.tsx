@@ -92,6 +92,12 @@ export const STEPS_ROUTES: RouteConfig[] = [
     element: (props) => <Steps {...props} />,
   },
   {
+    path: "/steps/insuranceSelect",
+    name: "Do you have an insurance?",
+    isHidden: false,
+    element: (props) => <Steps {...props} />,
+  },
+  {
     path: "/steps/dentistQuestion",
     name: "How do you feel about going to dentist?",
     isHidden: false,

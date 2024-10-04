@@ -21,7 +21,8 @@ export const StepsLayout = ({ children }: LayoutProps) => {
             '/steps/giftcard': 1,
             '/steps/services': 2,
             '/steps/insuranceQuestion': 3,
-            '/steps/dentistQuestion': 4,
+            '/steps/insuranceSelect': 4,
+            '/steps/dentistQuestion': 5,
         };
 
         setStep(stepMap[location.pathname] || 1);
@@ -32,7 +33,8 @@ export const StepsLayout = ({ children }: LayoutProps) => {
             1: '/steps/giftcard',
             2: '/steps/services',
             3: '/steps/insuranceQuestion',
-            4: '/steps/dentistQuestion',
+            4: '/steps/insuranceQuestion',
+            5: '/steps/dentistQuestion',
         };
 
         navigate(pathMap[step]);
@@ -43,7 +45,7 @@ export const StepsLayout = ({ children }: LayoutProps) => {
     };
 
     const handleContinue = () => {
-        setStep((prevStep) => Math.min(prevStep + 1, 4));
+        setStep((prevStep) => Math.min(prevStep + 1, 5));
     };
 
     return (
@@ -65,6 +67,7 @@ export const StepsLayout = ({ children }: LayoutProps) => {
                     text="Continue"
                     color='bg-brandPrimary'
                     onClick={handleContinue}
+                    hover={true}
                 />
 
             </div>
