@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { OfferProvider, LoginProvider, useLogin, useOffer, StepsProvider } from './contexts';
+import { OfferProvider, LoginProvider, useLogin, useOffer, StepsProvider, BookingProvider } from './contexts';
 import { NAVBAR_ROUTES, MENU_ROUTES, CLINIC_ROUTES, NESTED_ROUTES, STEPS_ROUTES } from './config';
 import { createRoutes } from './utils';
 import AuthModal from './components/modals/AuthModal';
 import { useEffect, useState } from 'react';
 import { Home } from './pages';
+import { BookingModal } from './components';
 
 const AppRoutes = () => {
   const { showAuth } = useLogin();
@@ -55,9 +56,8 @@ const AppRoutes = () => {
           <Route key={route.path} path={route.path} element={route.element} />
         ))}
       </Routes>
-      {
-        <AuthModal />
-      }
+      <AuthModal />
+      <BookingModal />
     </>
   );
 };
@@ -65,14 +65,16 @@ const AppRoutes = () => {
 export const App = () => {
 
   return (
-    <StepsProvider>
-      <OfferProvider>
-        <LoginProvider>
-          <Router>
-            <AppRoutes />
-          </Router>
-        </LoginProvider>
-      </OfferProvider>
-    </StepsProvider>
+    <BookingProvider>
+      <StepsProvider>
+        <OfferProvider>
+          <LoginProvider>
+            <Router>
+              <AppRoutes />
+            </Router>
+          </LoginProvider>
+        </OfferProvider>
+      </StepsProvider>
+    </BookingProvider>
   );
 };

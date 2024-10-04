@@ -9,6 +9,7 @@ import { GoogleMap } from '@react-google-maps/api';
 import PlacesAutocomplete, {geocodeByAddress, getLatLng }  from 'react-places-autocomplete';
 
 
+
 export const Clinics: React.FC<RouteProps> = ({ name }) => {
     const { callApi, response, loading, error } = useApi();
     const { callApi: searchClinics, response: responseClinics, loading: loadingClinics , error: errorClinics } = useApi();

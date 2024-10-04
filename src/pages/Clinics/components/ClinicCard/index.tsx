@@ -1,6 +1,7 @@
 import React from 'react';
 import { clinicCardIcons } from '../../../../assets';
 import { Button } from '../../../../components';
+import { useBooking } from '../../../../contexts';
 
 interface ClinicCardProps {
     name: string;
@@ -35,18 +36,23 @@ export const ClinicCard: React.FC<ClinicCardProps> = ({
     recommended = false,
     best = false
 }) => {
+
+    const { openBooking } = useBooking()
+
     return (
         <div className="lg:w-[calc(33.33333%-1rem)] flex flex-col justify-between clinic-card border border-opacity-20 p-3 space-y-3 rounded-xl ">
 
-            {
-                topRated && <div className='py-2 px-3 flex items-center justify-start gap-3'>
-                    <span className='w-8 h-8 bg-accentColor bg-opacity-20 p-2 rounded-full'>
-                        <img src={clinicCardIcons.topRated} alt="top-rated-icon" />
-                    </span>
-                    <p className="top-rated text-accentColor font-semibold">TOP RATED</p>
-                </div>
-            }
+            <div className='py-2 px-3 flex items-center justify-start gap-3'>
+                {
+                    topRated && <>
+                        <span className='w-8 h-8 bg-accentColor bg-opacity-20 p-2 rounded-full'>
+                            <img src={clinicCardIcons.topRated} alt="top-rated-icon" />
+                        </span>
+                        <p className="top-rated text-accentColor font-semibold">TOP RATED</p>
+                    </>
+                }
 
+            </div>
             <div className='space-y-2 pb-6'>
                 <div className='py-2 flex items-center justify-start gap-3'>
                     <span className='w-16 h-16 border rounded-full'>
@@ -109,6 +115,7 @@ export const ClinicCard: React.FC<ClinicCardProps> = ({
                     text='Book now'
                     color='bg-brandPrimary'
                     size='w-full'
+                    onClick={openBooking}
                 />
             </div>
         </div>
