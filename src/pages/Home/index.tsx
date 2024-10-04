@@ -68,6 +68,9 @@ export const Home: React.FC<RouteProps> = () => {
                                     value={address}
                                     onChange={setAddress}
                                     onSelect={handleSelect}
+                                    searchOptions={{
+                                        componentRestrictions: { country: 'CA' } 
+                                    }}
                                 >
                                     {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                                         <div className='relative w-full'>
