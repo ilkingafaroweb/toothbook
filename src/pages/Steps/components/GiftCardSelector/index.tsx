@@ -47,7 +47,7 @@ export const GiftCardSelector: React.FC<GiftCardSelectorProps> = ({ giftCards })
           <div
             key={giftCard.id}
             className={`h-20 lg:w-[calc(33.333%-1rem)] w-full border rounded-lg flex justify-center items-center cursor-pointer ${
-              selectedCard === giftCard.id ? 'border-brandPrimary' : 'border-gray-300'
+              selectedCard === giftCard.id ? 'border-brandPrimary bg-brandPrimary bg-opacity-20' : 'border-gray-300'
             }`}
             onClick={() => handleSelectCard(giftCard.id)}
           >
