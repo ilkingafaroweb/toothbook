@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng }  from 'react-places-autocomplete';
 import { RouteProps } from '../../types';
-import { welcome_img, welcome_img_desktop, InsurancePartnersIcons, benefitIcons, stepsIcons } from '../../assets';
+import { welcome_img, welcome_img_desktop, InsurancePartnersIcons, benefitIcons, stepsIcons, location_icon } from '../../assets';
 import { Button, ResponsiveImage, Metrics, Loading } from '../../components';
 import { Benefits, InsurancePartners } from './components';
 import { FeedbackCarousel } from './components/FeedbackCarousel';
@@ -74,12 +74,16 @@ export const Home: React.FC<RouteProps> = () => {
                                 >
                                     {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
                                         <div className='relative w-full'>
-                                            <input
-                                                {...getInputProps({
-                                                    placeholder: 'Enter your location',
-                                                    className: 'input-location border border-gray-300 rounded-lg p-2 w-full outline-none focus:border-brandPrimary',
-                                                })}
-                                            />
+                                            <div className='flex items-center border border-gray-300 rounded-xl'>
+                                                <img className='ml-2' src={location_icon} alt="location-icon" />
+                                                <input
+                                                    {...getInputProps({
+                                                        placeholder: 'Enter your location',
+                                                        className: 'input-location rounded-xl p-2 w-full outline-none',
+                                                    })}
+                                                />
+                                            </div>
+                                            
                                             {/* Autocomplete Suggestions Dropdown */}
                                             <div className="absolute top-full left-0 w-full bg-white shadow-lg z-10">
                                                 {loading && <div className="p-2 text-gray-500">
