@@ -26,48 +26,50 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                 <div className='flex justify-between'>
                     <div className='flex flex-col space-y-4'>
                         <div className='py-2 flex items-center justify-start gap-3'>
-                            <span className='w-16 h-16 border rounded-full'>
-                                <img src={clinicCardIcons.clinicStar} alt={name} className="w-16 object-cover rounded-full" />
+                            <span className='lg:w-16 lg:h-16 w-12 h-12 border rounded-full'>
+                                <img src={clinicCardIcons.clinicStar} alt={name} className="w-full object-cover rounded-full" />
                             </span>
-                            <p className="text-3xl opacity-85 font-semibold">CITY SOUTH DENTAL clinic</p>
+                            <p className="lg:text-3xl text-xl opacity-85 font-semibold">CITY SOUTH DENTAL clinic</p>
                         </div>
                         <div className="flex gap-2 bg-opacity-20 w-full rounded-xl">
-                            <img src={clinicCardIcons.locationClinic} alt="location" />
-                            <p className='opacity-65'>374 Kerr St, Oakville, ON L6K 3B8, Canada</p>
+                            <div className='flex gap-2 items-center lg:w-max w-auto'>
+                                <img src={clinicCardIcons.locationClinic} alt="location" />
+                                <p className='opacity-65 lg:text-lg text-sm'>374 Kerr St, Oakville, ON L6K 3B8, Canada</p>
+                            </div>
                             <a
                                 href=''
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="text-blue-500 font-semibold underline ml-2 hover:text-blue-700 transition duration-200"
+                                className="lg:w-max w-1/2 lg:text-lg text-sm text-blue-500 font-semibold underline lg:ml-2 hover:text-blue-700 transition duration-200"
                             >
                                 Show on map
                             </a>
                         </div>
                         <div className="flex gap-2 bg-opacity-20 w-full rounded-xl">
                             <img src={clinicCardIcons.phone} alt="phone" />
-                            <p className='opacity-65'>905-844-0006</p>
+                            <p className='opacity-65 lg:text-lg text-sm'>905-844-0006</p>
                         </div>
-                        <div className='flex gap-5 py-6'>
-                            <div className='flex lg:flex-row flex-col items-center gap-2'>
+                        <div className='flex lg:flex-row flex-col gap-5 py-6'>
+                            <div className='flex items-center gap-2'>
                                 <span className='w-8 h-8 bg-blue-100 p-2 rounded-full'>
                                     <img src={clinicCardIcons.satisfaction} alt="top-rated-icon" />
                                 </span>
-                                <p className="text-blue-500 font-semibold">100% patient satisfaction</p>
+                                <p className="text-blue-500 font-semibold lg:text-lg text-sm">100% patient satisfaction</p>
                             </div>
                             <div className='flex items-center gap-2'>
                                 <span className='w-8 h-8 bg-blue-100 p-2 rounded-full'>
                                     <img src={clinicCardIcons.like} alt="top-rated-icon" />
                                 </span>
-                                <p className="text-blue-500 font-semibold">Best patient review</p>
+                                <p className="text-blue-500 font-semibold lg:text-lg text-sm">Best patient review</p>
                             </div>
                             <div className='flex items-center gap-2'>
                                 <span className='w-8 h-8 bg-green-50 p-2 rounded-full'>
                                     <img src={clinicCardIcons.accept} alt="top-rated-icon" />
                                 </span>
-                                <p className="text-green-500 font-medium">Accept your insurance</p>
+                                <p className="text-green-500 font-medium lg:text-lg text-sm">Accept your insurance</p>
                             </div>
                         </div>
-                        <div className='w-full lg:max-w-[800px] flex items-center gap-10 p-3 border rounded-xl'>
+                        <div className='w-full lg:max-w-[800px] flex lg:flex-row flex-col items-center lg:gap-10 gap-4 p-3 border rounded-xl'>
                             <img
                                 src={
                                     inlineTag === 'excellence'
@@ -79,26 +81,29 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                                 }
                                 alt="icon"
                             />
-                            <div className='w-2/5'>
-                                <h1 className='text-lg opacity-90 font-semibold'>{
-                                    inlineTag === 'excellence' 
-                                        ? 'Excellence in Patience Care' 
-                                        : inlineTag === 'best' 
-                                            ? 'Best Choice of the Month' 
+                            <div className='lg:w-2/5 w-full px-5'>
+                                <h1 className='lg:text-lg text-center text-xl opacity-90 font-semibold'>{
+                                    inlineTag === 'excellence'
+                                        ? 'Excellence in Patience Care'
+                                        : inlineTag === 'best'
+                                            ? 'Best Choice of the Month'
                                             : inlineTag === 'high'
                                                 ? 'Highly recommended' : ''
                                 }</h1>
-                                <p className='font-medium opacity-90'>One of the best on Toothbook, according to our patients</p>
+                                <p className='font-medium opacity-90 lg:text-lg text-center text-sm'>One of the best on Toothbook, according to our patients</p>
                             </div>
-                            <div className='w-max flex flex-col items-center justify-center'>
-                                <h1 className='text-2xl font-medium'>4.5</h1>
-                                <div>
-                                    <img src={clinicCardIcons.clinicStar} alt="star" />
+                            <div className='mx-auto flex justify-center items-center gap-12'>
+                                <div className='w-max flex lg:flex-col flex-row lg:gap-0 gap-3 items-center justify-center'>
+                                    <h1 className='lg:text-2xl font-medium text-sm'>4.5</h1>
+                                    <div>
+                                        <img src={clinicCardIcons.clinicStar} alt="star" />
+                                    </div>
+                                </div>
+                                <div className='lg:pl-8 pl-4 h-full flex items-center justify-center border-l-2'>
+                                    <p>( 750 reviews )</p>
                                 </div>
                             </div>
-                            <div className='w-1/5 h-full flex items-center justify-center border-l-2'>
-                                <p>( 750 reviews )</p>
-                            </div>
+
                         </div>
                     </div>
                     <div className='hidden lg:flex flex-col w-max gap-2'>

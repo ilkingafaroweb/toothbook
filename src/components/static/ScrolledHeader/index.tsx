@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { brandLogo, location_icon } from '../../../assets';
-import { Button, Input } from '../../UI';
+import { Button } from '../../UI';
 import { OfferBanner } from '../OfferBanner';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { useNavigate } from 'react-router-dom';
