@@ -1,11 +1,58 @@
 import React from 'react'
-import { clinicAboutIcons } from '../../../../assets'
+import { clinicAboutIcons, clinicCardIcons } from '../../../../assets'
 import { GoogleMap, Marker } from '@react-google-maps/api'
 
 export const About: React.FC = () => {
 
     const long = 49.8402033
     const lat = 40.4047907
+
+    const services = [
+        "Bonding",
+        "Bridges / Dentures",
+        "Checkup & Cleaning",
+        "Crown / Cap",
+        "Filling",
+        "Gum Surgery",
+        "Implants",
+        "Nitrous Sedation",
+        "Root Canal",
+        "Sleep Apnea",
+        "TMJ",
+        "Tooth Extraction",
+        "Urgent Issue",
+        "Veneers",
+        "Whitening",
+        "Wisdom Teeth Removal"
+    ];
+
+    const doctors = [
+        {
+          name: "Dr. Leyla Aliyeva",
+          rate: "4.8",
+          imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
+        },
+        {
+          name: "Dr. Murad Həsənov",
+          rate: "4.7",
+          imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
+        },
+        {
+          name: "Dr. Nigar Məhəmmədova",
+          rate: "4.9",
+          imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
+        },
+        {
+          name: "Dr. Elvin İsmayılov",
+          rate: "4.6",
+          imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
+        }
+      ];
+      
+
+    const midIndex = Math.ceil(services.length / 2);
+    const firstHalf = services.slice(0, midIndex);
+    const secondHalf = services.slice(midIndex);
 
     return (
         <div className="min-w-full">
@@ -99,21 +146,98 @@ export const About: React.FC = () => {
                         />
                     </GoogleMap>
                 </div>
-                <div className='flex gap-16 my-6'>
-                    <div className='w-2/6 flex flex-col gap-2'>
+                <div className='flex lg:flex-row flex-col lg:gap-16 gap-6 my-6'>
+                    <div className='lg:w-2/6 flex flex-col gap-2'>
                         <h1 className='opacity-65 text-2xl font-semibold'>Working Hours</h1>
                         <span className='border-b w-full'></span>
-                        <div>
-                            
+                        <div className='flex gap-8 py-4'>
+                            <div className='flex flex-col gap-4'>
+                                <p>Monday</p>
+                                <p>Tuesday</p>
+                                <p>Wednesday</p>
+                                <p>Thursday</p>
+                                <p>Friday</p>
+                                <p>Saturday</p>
+                                <p>Sunday</p>
+                            </div>
+                            <div className='flex flex-col gap-4'>
+                                <p className='text-brandPrimary'>10:00 am  /  06:00 pm</p>
+                                <p className='text-brandPrimary'>10:00 am  /  06:00 pm</p>
+                                <p className='text-brandPrimary'>10:00 am  /  06:00 pm</p>
+                                <p className='text-accentColor'>CLOSED</p>
+                                <p className='text-brandPrimary'>10:00 am  /  06:00 pm</p>
+                                <p className='text-brandPrimary'>10:00 am  /  06:00 pm</p>
+                                <p className='text-brandPrimary'>10:00 am  /  06:00 pm</p>
+                            </div>
                         </div>
                     </div>
-                    <div className='w-1/6 flex flex-col gap-2'>
+                    <div className='lg:w-1/6 flex flex-col gap-2'>
                         <h1 className='opacity-65 text-2xl font-semibold'>Link</h1>
                         <span className='border-b w-full'></span>
+                        <div className='flex flex-col py-4 gap-4'>
+                            <a href='' className='flex gap-3 opacity-75'>
+                                <img src={clinicAboutIcons.websiteLink} alt="website" />
+                                <p>Website</p>
+                            </a>
+                            <a href='' className='flex gap-3 opacity-75'>
+                                <img src={clinicAboutIcons.locationLink} alt="location" />
+                                <p>Show on map</p>
+                            </a>
+                            <a href='' className='flex gap-3 opacity-75'>
+                                <img src={clinicAboutIcons.googleLink} alt="google" />
+                                <p>Google Profile</p>
+                            </a>
+                        </div>
                     </div>
-                    <div className='w-3/6 flex flex-col gap-2'>
+                    <div className='lg:w-3/6 flex flex-col gap-2'>
                         <h1 className='opacity-65 text-2xl font-semibold'>Good to know</h1>
                         <span className='border-b w-full'></span>
+                        <p className='py-4 opacity-70 text-black'>Languages: <span className='opacity-90 font-semibold'>English, French</span></p>
+                    </div>
+                </div>
+                <div className='flex flex-col gap-6'>
+                    <div className='flex flex-col w-full'>
+                        <h1 className='text-2xl opacity-80 font-semibold mb-2'>Services</h1>
+                        <span className='border-b-2 w-full'></span>
+                    </div>
+                    <div className="flex flex-wrap lg:flex-row flex-col">
+                        <div className="w-1/2">
+                            {firstHalf.map((service, index) => (
+                                <p key={index} className="opacity-90 font-medium">
+                                    {service}
+                                </p>
+                            ))}
+                        </div>
+                        <div className="w-1/2">
+                            {secondHalf.map((service, index) => (
+                                <p key={index} className="opacity-90 font-medium">
+                                    {service}
+                                </p>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+                <div className='flex flex-col gap-6'>
+                    <div className='flex flex-col w-full'>
+                        <h1 className='text-2xl opacity-80 font-semibold mb-2'>Doctors</h1>
+                        <span className='border-b-2 w-full'></span>
+                    </div>
+                    <div className="flex flex-wrap lg:-mx-2">
+                        {doctors.map((doctor, index) => (
+                            <div
+                                key={index}
+                                className="flex items-center border rounded-lg lg:w-[calc(33.33333%-1rem)] w-full lg:mx-2 mb-4 p-2 gap-2"
+                            >
+                                <img src={doctor.imageURL} alt={doctor.name} className="w-16 h-16 rounded-full border" />
+                                <div className="p-4 flex flex-col gap-1">
+                                    <h1 className="text-lg font-semibold">{doctor.name}</h1>
+                                    <div className='flex items-center gap-2'>
+                                        <img src={clinicCardIcons.clinicStar} alt="" />
+                                        <p className="text-sm text-gray-600">{doctor.rate}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

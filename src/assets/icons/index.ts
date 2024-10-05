@@ -93,11 +93,18 @@ import family from './clinic-about-family.svg'
 import accessibility from './clinic-about-accessibility.svg'
 import anxiety from './clinic-about-anxiety.svg'
 
+import websiteLink from './clinic-about-website.svg'
+import locationLink from './clinic-about-location.svg'
+import googleLink from './clinic-about-google.svg'
+
 export const clinicAboutIcons = {
   aboutSatisfaction,
   state,
   lang,
   family,
   accessibility,
-  anxiety
+  anxiety,
+  websiteLink,
+  locationLink,
+  googleLink
 }
