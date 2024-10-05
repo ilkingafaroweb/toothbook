@@ -1,9 +1,11 @@
 import React from 'react';
 import { clinicCardIcons } from '../../../../assets';
 import { Button } from '../../../../components';
-import { useBooking } from '../../../../contexts';
+import { useBooking, useClinicContext } from '../../../../contexts';
+import { useNavigate } from 'react-router-dom';
 
 interface ClinicCardProps {
+    clinicId: number;
     name: string;
     rating: number;
     reviews: number;
@@ -14,13 +16,12 @@ interface ClinicCardProps {
     bookingCount: number;
     mapLink: string;
     imageURL: string;
-    excellence?: boolean;
-    topRated?: boolean;
-    recommended?: boolean;
-    best?: boolean
+    inlineTag: string;
+    onTopTag: string;
 }
 
 export const ClinicCard: React.FC<ClinicCardProps> = ({
+    clinicId,
     name,
     rating,
     reviews,
@@ -31,20 +32,27 @@ export const ClinicCard: React.FC<ClinicCardProps> = ({
     bookingCount,
     mapLink,
     imageURL,
-    excellence = false,
-    topRated = false,
-    recommended = false,
-    best = false
+    inlineTag,
+    onTopTag
 }) => {
 
-    const { openBooking } = useBooking()
+    const navigate = useNavigate()
+    const { openBooking } = useBooking();
+    const { setInlineTag, setOnTopTag } = useClinicContext();
+
+
+    const handleClick = () => {
+        setInlineTag(inlineTag);
+        setOnTopTag(onTopTag)
+        navigate(`/clinics/${clinicId}`);
+    };
+
 
     return (
-        <div className="lg:w-[calc(33.33333%-1rem)] flex flex-col justify-between clinic-card border border-opacity-20 p-3 space-y-3 rounded-xl ">
-
+        <div onClick={handleClick} className="lg:w-[calc(33.33333%-1rem)] flex flex-col justify-between clinic-card border border-opacity-20 p-3 space-y-3 rounded-xl cursor-pointer lg:hover:shadow-lg transition-transform transform hover:scale-[102%] active:scale-[98%]">
             <div className='py-2 px-3 flex items-center justify-start gap-3'>
                 {
-                    topRated && <>
+                    !!onTopTag && <>
                         <span className='w-8 h-8 bg-accentColor bg-opacity-20 p-2 rounded-full'>
                             <img src={clinicCardIcons.topRated} alt="top-rated-icon" />
                         </span>
@@ -65,15 +73,15 @@ export const ClinicCard: React.FC<ClinicCardProps> = ({
                     <p>{rating}</p>
                     <p className='text-black opacity-40'> ({reviews} reviews)</p>
                 </div>
-                {excellence && <div className="flex gap-2 bg-accentColor bg-opacity-20 w-max px-2 py-1 rounded-xl">
+                {inlineTag === 'excellence' && <div className="flex gap-2 bg-accentColor bg-opacity-20 w-max px-2 py-1 rounded-xl">
                     <img src={clinicCardIcons.excellence} alt="excellence-icon" />
                     <p className='text-accentColor font-semibold'>Excellence in Patience Care</p>
                 </div>}
-                {recommended && <div className="flex gap-2 bg-accentColor bg-opacity-20 w-max px-2 py-1 rounded-xl">
+                {inlineTag === 'high' && <div className="flex gap-2 bg-accentColor bg-opacity-20 w-max px-2 py-1 rounded-xl">
                     <img src={clinicCardIcons.recommended} alt="recommended-icon" />
                     <p className='text-accentColor font-semibold'>Highly recommended</p>
                 </div>}
-                {best && <div className="flex gap-2 bg-accentColor bg-opacity-20 w-max px-2 py-1 rounded-xl">
+                {inlineTag === 'best' && <div className="flex gap-2 bg-accentColor bg-opacity-20 w-max px-2 py-1 rounded-xl">
                     <img src={clinicCardIcons.best} alt="best-icon" />
                     <p className='text-accentColor font-semibold'>Best Choice of the Month</p>
                 </div>}

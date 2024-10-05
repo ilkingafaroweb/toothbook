@@ -13,3 +13,4 @@ export * from './BookingDetails'
 
 export * from './Steps'
 export * from './Clinics'
+export * from './ClinicProfile'

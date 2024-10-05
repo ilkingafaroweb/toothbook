@@ -1,5 +1,5 @@
 import React from 'react';
-import { ClinicPartners, About, Faq, Contact, Profile, Referrals, MyBookings, BookingDetails, Steps, Clinics } from '../pages';
+import { ClinicPartners, About, Faq, Contact, Profile, Referrals, MyBookings, BookingDetails, Steps, Clinics, ClinicProfile } from '../pages';
 
 interface RouteProps {
   path: string;
@@ -65,10 +65,16 @@ export const MENU_ROUTES: RouteConfig[] = [
 
 export const NESTED_ROUTES: RouteConfig[] = [
   {
-    path: "bookings/:bookingId",
+    path: "/bookings/:bookingId",
     name: "Booking Details",
     isHidden: false,
     element: (props) => <BookingDetails {...props} />,
+  },
+  {
+    path: "/clinics/:clinicId",
+    name: "Clinic Profile",
+    isHidden: false,
+    element: (props) => <ClinicProfile {...props} />,
   },
 ]
 

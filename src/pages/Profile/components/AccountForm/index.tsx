@@ -7,7 +7,7 @@ import { useApi } from '../../../../hooks';
 interface FormData {
   name: string;
   surname: string;
-  phone: string;
+  phoneNumber: string;
   email: string;
   countryCode: string;
 }
@@ -20,7 +20,7 @@ export const AccountForm = () => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
     surname: '',
-    phone: '',
+    phoneNumber: '',
     email: '',
     countryCode: '+1',
   });
@@ -40,12 +40,7 @@ export const AccountForm = () => {
   // Get profile data set local state
 
   useEffect(() => {
-    {responseGetProfile && setFormData(prevData => ({
-      ...prevData,
-      name: responseGetProfile.name,
-      surname: responseGetProfile.surname,
-      phone: responseGetProfile.phoneNumber,
-    }))}
+    {responseGetProfile && setFormData(responseGetProfile)}
   }, [responseGetProfile])
 
   const [errors, setErrors] = useState<Partial<FormData>>({});
@@ -63,7 +58,7 @@ export const AccountForm = () => {
     const formattedValue = value.replace(/[^0-9]/g, '');
     setFormData((prevData) => ({
       ...prevData,
-      phone: formattedValue,
+      phoneNumber: formattedValue,
     }));
   };
 
@@ -76,8 +71,8 @@ export const AccountForm = () => {
     if (!formData.surname) {
       newErrors.surname = 'Please enter your surname';
     }
-    if (!formData.phone || !/^\d{10}$/.test(formData.phone)) {
-      newErrors.phone = 'Phone number must be 10 digits';
+    if (!formData.phoneNumber || !/^\d{10}$/.test(formData.phoneNumber)) {
+      newErrors.phoneNumber = 'Phone number must be 10 digits';
     }
     if (!formData.email || !/^\S+@\S+\.\S+$/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
@@ -177,15 +172,15 @@ export const AccountForm = () => {
                 <label htmlFor="phone" className="block text-sm font-medium text-textBlack">Phone number</label>
                 <input
                   id="phone"
-                  name="phone"
+                  name="phoneNumber"
                   type="text"
-                  value={formData.phone}
+                  value={formData.phoneNumber}
                   onChange={handlePhoneChange}
-                  className={`mt-1 block w-full px-3 py-2 rounded-md shadow-sm focus:outline-none focus:ring-1 ${errors.phone ? 'border border-accentColor' : 'bg-formBackground'} focus:border-brandPrimary sm:text-sm`}
+                  className={`mt-1 block w-full px-3 py-2 rounded-md shadow-sm focus:outline-none focus:ring-1 ${errors.phoneNumber ? 'border border-accentColor' : 'bg-formBackground'} focus:border-brandPrimary sm:text-sm`}
                   placeholder="1234567890"
                   maxLength={10}
                 />
-                {errors.phone && <p className="mt-2 text-sm text-accentColor">{errors.phone}</p>}
+                {errors.phoneNumber && <p className="mt-2 text-sm text-accentColor">{errors.phoneNumber}</p>}
               </div>
             </div>
 

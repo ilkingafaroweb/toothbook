@@ -60,6 +60,12 @@ import accept from "./clinic-accept.svg";
 import stonks from "./clinic-stonks.svg";
 import best from './clinic-best.svg'
 import recommended from './clinic-recommended.svg'
+import gift from './clinic-gift.svg'
+import satisfaction from './clinic-satisfaction.svg'
+import like from './clinic-like.svg'
+import profileBest from './clinic-profile-best.svg'
+import profileExcellence from './clinic-profile-excellence.svg'
+import profileRecommended from './clinic-profile-recommended.svg'
 
 export const clinicCardIcons = {
   topRated,
@@ -71,5 +77,11 @@ export const clinicCardIcons = {
   accept,
   stonks,
   best,
-  recommended
+  recommended,
+  gift,
+  satisfaction,
+  like,
+  profileBest,
+  profileExcellence,
+  profileRecommended,
 };
