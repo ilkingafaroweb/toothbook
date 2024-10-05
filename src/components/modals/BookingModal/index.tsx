@@ -32,7 +32,7 @@ export const BookingModal: React.FC = () => {
         { value: 'doctor3', label: 'Doctor 3' },
     ];
 
-    const { isBookingOpen, bookingData, openBooking, closeBooking } = useBooking();
+    const { isBookingOpen, closeBooking } = useBooking();
 
     const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
