@@ -21,7 +21,7 @@ export const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ children }) => {
   }, []);
 
   if (hasError) {
-    return <div>Bu komponentdə problem var.</div>;
+    return <div className='min-w-full'>Bu komponentdə problem var.</div>;
   }
 
   return <>{children}</>;

@@ -4,7 +4,8 @@ import { DefaultLayout } from '../../layouts'
 import { useClinicContext } from '../../contexts'
 import { clinicCardIcons } from '../../assets'
 import { Button } from '../../components'
-import { About } from './components'
+import { About, Gallery } from './components'
+import { ErrorBoundary } from '../../components/error'
 
 export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
 
@@ -18,12 +19,17 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
         }
     }
 
+    const images: string[] = [
+        "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D",
+        "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D",
+        "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D",
+        "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D",
+        "https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D",
+    ];
+
 
     return (
         <DefaultLayout>
-            {/* <h1>{name}</h1>
-            <p>{inlineTag}</p>
-            <p>{onTopTag}</p> */}
             <div className='flex flex-col space-y-8 my-6 lg:px-[5%]'>
                 {!!onTopTag && (
                     <div className='flex items-center gap-2'>
@@ -169,12 +175,9 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                         <About />
 
                         {/* Gallery Section */}
-                        <div className="min-w-full">
-                            <div className="px-6">
-                                <h2>Gallery Content</h2>
-                                <p>This is the Gallery tab content.</p>
-                            </div>
-                        </div>
+                        <ErrorBoundary>
+                            <Gallery images={images} />
+                        </ErrorBoundary>
 
                         {/* Reviews Section */}
                         <div className="min-w-full">
