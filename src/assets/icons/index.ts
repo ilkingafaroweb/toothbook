@@ -85,3 +85,19 @@ export const clinicCardIcons = {
   profileExcellence,
   profileRecommended,
 };
+
+import aboutSatisfaction from './clinic-about-satisfaction.svg'
+import state from './clinic-about-state.svg'
+import lang from './clinic-about-language.svg'
+import family from './clinic-about-family.svg'
+import accessibility from './clinic-about-accessibility.svg'
+import anxiety from './clinic-about-anxiety.svg'
+
+export const clinicAboutIcons = {
+  aboutSatisfaction,
+  state,
+  lang,
+  family,
+  accessibility,
+  anxiety
+}

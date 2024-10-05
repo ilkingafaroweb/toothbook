@@ -1,13 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { RouteProps } from '../../types'
 import { DefaultLayout } from '../../layouts'
 import { useClinicContext } from '../../contexts'
 import { clinicCardIcons } from '../../assets'
 import { Button } from '../../components'
+import { About } from './components'
 
 export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
 
     const { inlineTag, onTopTag } = useClinicContext()
+
+    const [activeTab, setActiveTab] = useState<'about' | 'gallery' | 'reviews'>('about')
+
+    const handleTabChange = (tab: 'about' | 'gallery' | 'reviews') => {
+        if (tab !== activeTab) {
+            setActiveTab(tab)
+        }
+    }
+
 
     return (
         <DefaultLayout>
@@ -54,19 +64,19 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                                 <span className='w-8 h-8 bg-blue-100 p-2 rounded-full'>
                                     <img src={clinicCardIcons.satisfaction} alt="top-rated-icon" />
                                 </span>
-                                <p className="text-blue-500 font-semibold lg:text-lg text-sm">100% patient satisfaction</p>
+                                <p className="text-blue-500 font-semibold lg:text-lg w-max text-sm">100% patient satisfaction</p>
                             </div>
                             <div className='flex items-center gap-2'>
                                 <span className='w-8 h-8 bg-blue-100 p-2 rounded-full'>
                                     <img src={clinicCardIcons.like} alt="top-rated-icon" />
                                 </span>
-                                <p className="text-blue-500 font-semibold lg:text-lg text-sm">Best patient review</p>
+                                <p className="text-blue-500 font-semibold lg:text-lg w-max text-sm">Best patient review</p>
                             </div>
                             <div className='flex items-center gap-2'>
                                 <span className='w-8 h-8 bg-green-50 p-2 rounded-full'>
                                     <img src={clinicCardIcons.accept} alt="top-rated-icon" />
                                 </span>
-                                <p className="text-green-500 font-medium lg:text-lg text-sm">Accept your insurance</p>
+                                <p className="text-green-500 font-medium lg:text-lg w-max text-sm">Accept your insurance</p>
                             </div>
                         </div>
                         <div className='w-full lg:max-w-[800px] flex lg:flex-row flex-col items-center lg:gap-10 gap-4 p-3 border rounded-xl'>
@@ -81,7 +91,7 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                                 }
                                 alt="icon"
                             />
-                            <div className='lg:w-2/5 w-full px-5'>
+                            <div className='lg:w-2/5 w-full lg:px-0 px-5'>
                                 <h1 className='lg:text-lg text-center text-xl opacity-90 font-semibold'>{
                                     inlineTag === 'excellence'
                                         ? 'Excellence in Patience Care'
@@ -99,8 +109,8 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                                         <img src={clinicCardIcons.clinicStar} alt="star" />
                                     </div>
                                 </div>
-                                <div className='lg:pl-8 pl-4 h-full flex items-center justify-center border-l-2'>
-                                    <p>( 750 reviews )</p>
+                                <div className='lg:pl-8 pl-4 h-20 w-max flex items-center justify-center border-l-2'>
+                                    <p className='opacity-65 font-medium'>( 750 reviews )</p>
                                 </div>
                             </div>
 
@@ -118,7 +128,66 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                         />
                     </div>
                 </div>
+
+
+                {/* Tabs Section with Sliding Black Border */}
+                <div className="relative flex justify-start gap-4 border-b pt-8">
+                    <span className={`absolute bottom-0 h-[2px] bg-black transition-all duration-300 ease-in-out 
+                                        ${activeTab === 'about' ? 'left-0 lg:left-0' : ''}
+                                        ${activeTab === 'gallery' ? 'left-1/3 lg:left-[144px]' : ''}
+                                        ${activeTab === 'reviews' ? 'left-2/3 lg:left-[288px]' : ''} lg:w-32 w-1/3`}
+                    />
+
+                    <button
+                        onClick={() => handleTabChange('about')}
+                        className={`lg:w-32 w-1/3 pb-2 transition-opacity duration-300 relative lg:text-2xl ${activeTab === 'about' ? 'opacity-85' : 'opacity-40'} font-semibold`}
+                    >
+                        About
+                    </button>
+                    <button
+                        onClick={() => handleTabChange('gallery')}
+                        className={`lg:w-32 w-1/3 pb-2 transition-opacity duration-300 relative lg:text-2xl ${activeTab === 'gallery' ? 'opacity-85' : 'opacity-40'} font-semibold`}
+                    >
+                        Gallery
+                    </button>
+                    <button
+                        onClick={() => handleTabChange('reviews')}
+                        className={`lg:w-32 w-1/3 pb-2 transition-opacity duration-300 relative lg:text-2xl ${activeTab === 'reviews' ? 'opacity-85' : 'opacity-40'} font-semibold`}
+                    >
+                        Reviews
+                    </button>
+                </div>
+
+                {/* Content Section with Slide Transition */}
+                <div className="overflow-hidden relative">
+                    <div className="flex transition-transform duration-500 ease-in-out"
+                        style={{
+                            transform: `translateX(${activeTab === 'about' ? '0%' : activeTab === 'gallery' ? '-100%' : '-200%'})`
+                        }}
+                    >
+                        {/* About Section */}
+                        <About />
+
+                        {/* Gallery Section */}
+                        <div className="min-w-full">
+                            <div className="px-6">
+                                <h2>Gallery Content</h2>
+                                <p>This is the Gallery tab content.</p>
+                            </div>
+                        </div>
+
+                        {/* Reviews Section */}
+                        <div className="min-w-full">
+                            <div className="px-6">
+                                <h2>Reviews Content</h2>
+                                <p>This is the Reviews tab content.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
         </DefaultLayout>
     )
 }
