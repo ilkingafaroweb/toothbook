@@ -89,7 +89,7 @@ export const ScrolledHeader: React.FC<ScrolledHeaderProps> = ({ replacementCompo
                         </div>
 
                         {/* Desktop view: input and button */}
-                        <div className='lg:centered lg:space-x-6 lg:space-y-0 lg:w-[600px] w-full lg:flex-row flex-col space-y-3'>
+                        <div className='hidden lg:centered lg:space-x-6 lg:space-y-0 lg:w-[600px] w-full lg:flex-row flex-col space-y-3'>
                                 {/* Google Autocomplete Input */}
                                 <PlacesAutocomplete
                                     value={address}
@@ -153,10 +153,63 @@ export const ScrolledHeader: React.FC<ScrolledHeaderProps> = ({ replacementCompo
                         {/* Mobile view: text and input */}
                         <div className="w-full flex flex-col items-left sm:hidden text-left space-y-3">
                             <p>Find your perfect dentist</p>
-                            <Input
-                                icon={location_icon}
-                                placeholder="Enter your location"
-                                isValid={true} />
+                            <PlacesAutocomplete
+                                    value={address}
+                                    onChange={setAddress}
+                                    onSelect={handleSelect}
+                                    searchOptions={{
+                                        componentRestrictions: { country: 'CA' } 
+                                    }}
+                                >
+                                    {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+                                        <div className='relative w-full'>
+                                            <div className='flex items-center border border-gray-300 rounded-xl'>
+                                                <img className='ml-2' src={location_icon} alt="location-icon" />
+                                                <input
+                                                    {...getInputProps({
+                                                        placeholder: 'Enter your location',
+                                                        className: 'input-location rounded-xl p-2 w-full outline-none',
+                                                    })}
+                                                />
+                                            </div>
+                                            
+                                            {/* Autocomplete Suggestions Dropdown */}
+                                            <div className="absolute top-full left-0 w-full bg-white shadow-lg z-10">
+                                                {loading && <div className="p-2 text-gray-500">
+                                                        <Loading />
+                                                    </div>}
+                                                
+                                                {suggestions?.map(suggestion => {
+                                                    const className = suggestion.active
+                                                        ? 'bg-gray-200 cursor-pointer p-2'
+                                                        : 'bg-white cursor-pointer p-2 hover:bg-gray-100';
+                                                    
+                                                    const style = {
+                                                        backgroundColor: suggestion.active ? '#fafafa' : '#ffffff',
+                                                        cursor: 'pointer',
+                                                    };
+                                                    
+                                                    return (
+                                                        <div
+                                                            {...getSuggestionItemProps(suggestion, {
+                                                                className,
+                                                                style,
+                                                            })}
+                                                        >
+                                                            <span>{suggestion.description}</span>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
+                                </PlacesAutocomplete>
+                                <Button
+                                    text='Find a dentist'
+                                    color='bg-brandPrimary'
+                                    size='w-full lg:w-max'
+                                    onClick={() => navigate('/steps/giftcard')}
+                                />
                         </div>
                     </div>
                 </div>
