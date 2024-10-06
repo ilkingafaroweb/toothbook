@@ -108,3 +108,16 @@ export const clinicAboutIcons = {
   locationLink,
   googleLink
 }
+
+
+import asclepius from './clinic-reviews-aclepius.svg'
+import tooth from './clinic-reviews-tooth.svg'
+import starFour from './clinic-reviews-starfour.svg'
+import verified from './clinic-reviews-verified.svg'
+
+export const clinicReviewsIcons = {
+  asclepius,
+  tooth,
+  starFour,
+  verified
+}

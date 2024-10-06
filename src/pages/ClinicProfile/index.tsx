@@ -6,6 +6,7 @@ import { clinicCardIcons } from '../../assets'
 import { Button } from '../../components'
 import { About, Gallery } from './components'
 import { ErrorBoundary } from '../../components/error'
+import { Reviews } from './components/Reviews'
 
 export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
 
@@ -180,12 +181,7 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                         </ErrorBoundary>
 
                         {/* Reviews Section */}
-                        <div className="min-w-full">
-                            <div className="px-6">
-                                <h2>Reviews Content</h2>
-                                <p>This is the Reviews tab content.</p>
-                            </div>
-                        </div>
+                        <Reviews />
                     </div>
                 </div>
 

@@ -2,12 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { Button, Input } from '../../../../UI';
 import { useLogin } from '../../../../../contexts';
 import { ForgotPassword } from '../ForgotPassword';
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
 interface LoginFormProps {
   onSwitchToSignUp: () => void;
 }
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignUp }) => {
+
+  const handleSuccess = (credentialResponse: any) => {
+    console.log(credentialResponse);
+  };
+
+  const handleError = () => {
+    console.log('Login Failed');
+  };
 
   const { showAuth, login, isLoading } = useLogin()
   const [isForgotPassword, setIsForgotPassword] = useState(false);
@@ -25,8 +34,6 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignUp }) => {
     })
   }, [showAuth])
 
-  
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     login(formData)
@@ -39,7 +46,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignUp }) => {
       [name]: value,
     }));
   };
-  
+
   const handleBack = () => {
     setIsForgotPassword(false)
   }
@@ -93,6 +100,12 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignUp }) => {
           </button>
         </div>
       </form>
+      <GoogleOAuthProvider clientId="258658743445-5v4k5dpalev01lmdt6vhd05des46mvom.apps.googleusercontent.com">
+        <GoogleLogin
+          onSuccess={handleSuccess}
+          onError={handleError}
+        />
+      </GoogleOAuthProvider>
     </>)
   );
 };
