@@ -40,7 +40,7 @@ export const Footer: React.FC = () => {
               <p>&copy; {new Date().getFullYear()} Toohbook.ca</p>
             </div>
             <div>
-              <p>Email Us: <a href="mailto:Info@Stu-Dent.Ca" className="hover:underline">Info@Stu-Dent.Ca</a></p>
+              <p>Email Us: <a href="mailto:Info@Stu-Dent.Ca" className="hover:underline">Info@Toohbook.Ca</a></p>
             </div>
             <div>
               <p>Adress: Canada, Ontario</p>
