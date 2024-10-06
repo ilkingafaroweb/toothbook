@@ -7,6 +7,7 @@ import { Error, Loading } from '../../components';
 import { ClinicCard, CustomMarker } from './components';
 import { GoogleMap } from '@react-google-maps/api';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import { adv_banner } from '../../assets';
 
 
 export const Clinics: React.FC<RouteProps> = ({ name }) => {
@@ -147,6 +148,8 @@ export const Clinics: React.FC<RouteProps> = ({ name }) => {
                                 )}
                             </PlacesAutocomplete>
                         </div>
+
+                            <img className='w-full h-auto' src={adv_banner} alt="" />
 
 
                         {loading || loadingClinics ? (
