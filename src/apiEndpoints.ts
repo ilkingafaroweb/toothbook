@@ -55,8 +55,9 @@ const apiEndpoints = {
   },
 
   clinics : {
-    list:`${API_BASE_URL}/Clinic/getclinics`,
-    search:`${API_BASE_URL}/Clinic/searchclinics`,
+    list: `${API_BASE_URL}/Clinic/getclinics`,
+    search: `${API_BASE_URL}/Clinic/searchclinics`,
+    profile: `${API_BASE_URL}/Clinic/getclinic`
   }
 };
 

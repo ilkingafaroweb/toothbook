@@ -4,6 +4,7 @@ import { RegisterOTP } from './components';
 import { useApi } from '../../../../../hooks';
 import apiEndpoints from '../../../../../apiEndpoints';
 import Swal from 'sweetalert2';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 
 interface RegisterFormProps {
   onSwitchToLogin: () => void;
@@ -19,6 +20,14 @@ interface FormData {
 }
 
 export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
+
+  const handleSuccess = (credentialResponse: any) => {
+    console.log(credentialResponse);
+  };
+
+  const handleError = () => {
+    console.log('Login Failed');
+  };
 
   const { callApi, response, error, loading } = useApi()
   const [otpStep, setOtpStep] = useState(false)
@@ -201,6 +210,12 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
           </button>
         </div>
       </form>
+      <GoogleOAuthProvider clientId="258658743445-5v4k5dpalev01lmdt6vhd05des46mvom.apps.googleusercontent.com">
+        <GoogleLogin
+          onSuccess={handleSuccess}
+          onError={handleError}
+        />
+      </GoogleOAuthProvider>
     </>)
   );
 };

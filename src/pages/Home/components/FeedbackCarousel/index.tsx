@@ -15,7 +15,7 @@ const clientFeedback: Feedback[] = [
         position: "Golden Mile",
         feedback:
             "I'm not used to writing reviews, but this time I decided that I need to. I want to thank the Toothbook team for creating such a platform, for their responsiveness, as well as their promptness in solving problems. I hope our cooperation with you will continue to be successful!",
-        image: "/path/to/image.jpg",
+        image: "https://images.toothbook.ca/src/assets/testimonials/reza.svg",
         rating: 5,
     },
     {

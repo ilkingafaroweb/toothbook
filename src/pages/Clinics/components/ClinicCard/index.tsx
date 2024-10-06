@@ -123,7 +123,10 @@ export const ClinicCard: React.FC<ClinicCardProps> = ({
                     text='Book now'
                     color='bg-brandPrimary'
                     size='w-full'
-                    onClick={openBooking}
+                    onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                        event.stopPropagation(); 
+                        openBooking();
+                    }}
                 />
             </div>
         </div>

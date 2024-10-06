@@ -32,7 +32,7 @@ export const OTPStep: React.FC<OTPStepProps> = ({ onContinue, onBack }) => {
         })
     }, [error])
 
-    const [otp, setOtp] = useState<string[]>(['', '', '', '', '']);
+    const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
         const value = e.target.value;

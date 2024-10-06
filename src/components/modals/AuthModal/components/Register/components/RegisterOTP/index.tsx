@@ -11,7 +11,7 @@ interface RegisterOTPProps {
 
 export const RegisterOTP: React.FC<RegisterOTPProps> = ({ onBack }) => {
     const { callApi, loading, error, response } = useApi();
-    const [otp, setOtp] = useState<string[]>(['', '', '', '', '']);
+    const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
     const { setShowAuth } = useLogin()
     const email = localStorage.getItem('email')
 

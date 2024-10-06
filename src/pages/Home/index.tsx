@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng }  from 'react-places-autocomplete';
 import { RouteProps } from '../../types';
-import { welcome_img, welcome_img_desktop, InsurancePartnersIcons, benefitIcons, stepsIcons, location_icon } from '../../assets';
+import { welcome_img, welcome_img_desktop, benefitIcons, stepsIcons, location_icon } from '../../assets';
 import { Button, ResponsiveImage, Metrics, Loading } from '../../components';
 import { Benefits, InsurancePartners } from './components';
 import { FeedbackCarousel } from './components/FeedbackCarousel';
@@ -11,6 +11,16 @@ import { DefaultLayout } from '../../layouts';
 import { useStepsContext } from '../../contexts';
 
 export const Home: React.FC<RouteProps> = () => {
+
+    const insurances = [
+        'https://images.toothbook.ca/src/assets/insurances/bluecross.png',
+        'https://images.toothbook.ca/src/assets/insurances/canadalife.png',
+        'https://images.toothbook.ca/src/assets/insurances/desjardins.png',
+        'https://images.toothbook.ca/src/assets/insurances/greenshield.png',
+        'https://images.toothbook.ca/src/assets/insurances/manulife.png',
+        'https://images.toothbook.ca/src/assets/insurances/sunlife.png',
+    ]
+
     const navigate = useNavigate();
     const { setStepsData } = useStepsContext()
 
@@ -135,7 +145,7 @@ export const Home: React.FC<RouteProps> = () => {
                 {/* Insurance Partners */}
                 <InsurancePartners
                     topText='We accept all your dental plans '
-                    icons={InsurancePartnersIcons}
+                    icons={insurances}
                     bottomText='+30 more insurance plans'
                 />
                 {/* Metrics */}

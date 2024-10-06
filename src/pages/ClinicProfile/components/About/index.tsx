@@ -2,57 +2,147 @@ import React from 'react'
 import { clinicAboutIcons, clinicCardIcons } from '../../../../assets'
 import { GoogleMap, Marker } from '@react-google-maps/api'
 
-export const About: React.FC = () => {
+interface Interview {
+    introduction: string;
+    firstAnswer: string;
+    secondAnswer: string;
+}
+
+interface Schedule {
+    day: string;
+    detail: string;
+    isClosed: boolean;
+}
+
+interface Links {
+    website: string | null;
+    mapURL: string;
+    googleProfile: string | null;
+}
+
+interface Doctor {
+    name: string;
+    rating: number;
+    imageURL: string;
+}
+
+interface Services {
+    services: string[];
+    matchMessage: string;
+}
+
+interface AboutProps {
+    about?: {
+        interview: Interview;
+        schedule: Schedule[];
+        links: Links;
+        standoutFeatures: string[];
+        doctors: Doctor[];
+        services: Services | undefined;
+        longitude: number | undefined;
+        latitude: number | undefined;
+    };
+}
+
+
+export const About: React.FC<AboutProps> = ({ about }) => {
+
+    type FeatureDetails = {
+        title: string;
+        description: string;
+        img: string;
+        bgColor: string;
+        imgSize: string;
+    };
+
+    const featuresMapping: Record<string, FeatureDetails> = {
+        state: {
+            title: 'State-of-the-Art Technology',
+            description: 'Experience the latest advancements in dental care with cutting-edge technology.',
+            img: clinicAboutIcons.state,
+            bgColor: 'red-400',
+            imgSize: '12',
+        },
+        access: {
+            title: 'Accessibility',
+            description: 'Our facility is fully accessible, ensuring a comfortable visit for individuals with disabilities.',
+            img: clinicAboutIcons.accessibility,
+            bgColor: 'orange-400',
+            imgSize: '14',
+        },
+        language: {
+            title: 'Language Support',
+            description: 'Multi-lingual staff or translators available',
+            img: clinicAboutIcons.lang,
+            bgColor: 'blue-400',
+            imgSize: '6',
+        },
+        anxiety: {
+            title: 'Dental anxiety friendly',
+            description: 'Our clinic is designed to provide a calming environment, easing dental anxiety for all patients.',
+            img: clinicAboutIcons.anxiety,
+            bgColor: 'pink-400',
+            imgSize: '12',
+        },
+        family: {
+            title: 'Family-Friendly',
+            description: 'We offer a welcoming atmosphere with specialized care for children and services tailored to the needs of your entire family.',
+            img: clinicAboutIcons.family,
+            bgColor: 'purple-400',
+            imgSize: '20',
+        },
+    };
+
+    const { interview, schedule, links, standoutFeatures, doctors, services } = about || {};
 
     const long = 49.8402033
     const lat = 40.4047907
 
-    const services = [
-        "Bonding",
-        "Bridges / Dentures",
-        "Checkup & Cleaning",
-        "Crown / Cap",
-        "Filling",
-        "Gum Surgery",
-        "Implants",
-        "Nitrous Sedation",
-        "Root Canal",
-        "Sleep Apnea",
-        "TMJ",
-        "Tooth Extraction",
-        "Urgent Issue",
-        "Veneers",
-        "Whitening",
-        "Wisdom Teeth Removal"
-    ];
+    // const services = [
+    //     "Bonding",
+    //     "Bridges / Dentures",
+    //     "Checkup & Cleaning",
+    //     "Crown / Cap",
+    //     "Filling",
+    //     "Gum Surgery",
+    //     "Implants",
+    //     "Nitrous Sedation",
+    //     "Root Canal",
+    //     "Sleep Apnea",
+    //     "TMJ",
+    //     "Tooth Extraction",
+    //     "Urgent Issue",
+    //     "Veneers",
+    //     "Whitening",
+    //     "Wisdom Teeth Removal"
+    // ];
 
-    const doctors = [
-        {
-          name: "Dr. Leyla Aliyeva",
-          rate: "4.8",
-          imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
-        },
-        {
-          name: "Dr. Murad Həsənov",
-          rate: "4.7",
-          imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
-        },
-        {
-          name: "Dr. Nigar Məhəmmədova",
-          rate: "4.9",
-          imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
-        },
-        {
-          name: "Dr. Elvin İsmayılov",
-          rate: "4.6",
-          imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
-        }
-      ];
-      
+    // const doctors = [
+    //     {
+    //         name: "Dr. Leyla Aliyeva",
+    //         rate: "4.8",
+    //         imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
+    //     },
+    //     {
+    //         name: "Dr. Murad Həsənov",
+    //         rate: "4.7",
+    //         imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
+    //     },
+    //     {
+    //         name: "Dr. Nigar Məhəmmədova",
+    //         rate: "4.9",
+    //         imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
+    //     },
+    //     {
+    //         name: "Dr. Elvin İsmayılov",
+    //         rate: "4.6",
+    //         imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
+    //     }
+    // ];
 
-    const midIndex = Math.ceil(services.length / 2);
-    const firstHalf = services.slice(0, midIndex);
-    const secondHalf = services.slice(midIndex);
+    const midIndex = Math.ceil((services?.services?.length ?? 0) / 2);
+    const firstHalf = services?.services.slice(0, midIndex);
+    const secondHalf = services?.services.slice(midIndex);
 
     return (
         <div className="min-w-full">
@@ -67,65 +157,37 @@ export const About: React.FC = () => {
                 <div>
                     <h1 className='text-2xl opacity-80 font-semibold'>Standout features</h1>
                     <div className='w-full flex lg:flex-row flex-col flex-wrap py-6 gap-5'>
-                        <div className='lg:w-[calc(30%)] w-full flex flex-row items-start gap-3'>
-                            <div className='bg-red-400 w-max p-3 rounded-full'>
-                                <img className='w-12' src={clinicAboutIcons.state} alt="state" />
-                            </div>
-                            <div className='flex flex-col gap-1'>
-                                <h1 className='text-lg font-semibold'>State-of-the-Art Technology</h1>
-                                <p className='opacity-65'>Experience the latest advancements in dental care with cutting-edge technology.</p>
-                            </div>
-                        </div>
-                        <div className='lg:w-[calc(30%)] w-full flex flex-row items-start gap-3'>
-                            <div className='bg-blue-400 w-max p-3 rounded-full'>
-                                <img className='w-6' src={clinicAboutIcons.lang} alt="lang" />
-                            </div>
-                            <div className='flex flex-col gap-1'>
-                                <h1 className='text-lg font-semibold'>Language Support</h1>
-                                <p className='opacity-65'>Multi-lingual staff or translators available</p>
-                            </div>
-                        </div>
-                        <div className='lg:w-[calc(30%)] w-full flex flex-row items-start gap-3'>
-                            <div className='bg-purple-400 w-max p-3 rounded-full'>
-                                <img className='w-20' src={clinicAboutIcons.family} alt="family" />
-                            </div>
-                            <div className='flex flex-col gap-1'>
-                                <h1 className='text-lg font-semibold'>Family-Friendly</h1>
-                                <p className='opacity-65'>We offer a welcoming atmosphere with specialized care for children and services tailored to the needs of your entire family.</p>
-                            </div>
-                        </div>
-                        <div className='lg:w-[calc(30%)] w-full flex flex-row items-start gap-3'>
-                            <div className='bg-orange-400 w-max p-3 rounded-full'>
-                                <img className='w-14' src={clinicAboutIcons.accessibility} alt="accessibility" />
-                            </div>
-                            <div className='flex flex-col gap-1'>
-                                <h1 className='text-lg font-semibold'>Accessibility</h1>
-                                <p className='opacity-65'>Our facility is fully accessible, ensuring a comfortable visit for individuals with disabilities.</p>
-                            </div>
-                        </div>
-                        <div className='lg:w-[calc(30%)] w-full flex flex-row items-start gap-3'>
-                            <div className='bg-pink-400 w-max p-3 rounded-full'>
-                                <img className='w-12' src={clinicAboutIcons.anxiety} alt="anxiety" />
-                            </div>
-                            <div className='flex flex-col gap-1'>
-                                <h1 className='text-lg font-semibold'>Dental anxiety friendly</h1>
-                                <p className='opacity-65'>Our clinic is designed to provide a calming environment, easing dental anxiety for all patients.</p>
-                            </div>
-                        </div>
+                        {standoutFeatures?.map((feature, index) => {
+                            const featureDetails = featuresMapping[feature]; 
+                            if (featureDetails) { 
+                                return (
+                                    <div key={index} className='lg:w-[calc(30%)] w-full flex flex-row items-start gap-3'>
+                                        <div className={`bg-${featureDetails.bgColor} w-max p-3 rounded-full`}>
+                                            <img className={`w-${featureDetails.imgSize}`} src={featureDetails.img} alt={feature} />
+                                        </div>
+                                        <div className='flex flex-col gap-1'>
+                                            <h1 className='text-lg font-semibold'>{featureDetails.title}</h1>
+                                            <p className='opacity-65'>{featureDetails.description}</p>
+                                        </div>
+                                    </div>
+                                );
+                            }
+                            return null;
+                        })}
                     </div>
                 </div>
             </div>
             <div className='flex flex-col gap-6 py-6'>
                 <div className='flex lg:flex-row flex-col-reverse justify-between gap-6'>
                     <div className='lg:w-1/2 flex flex-col justify-between lg:gap-0 gap-8'>
-                        <p className='opacity-85'>We offer family and cosmetic dentistry, braces, wisdom teeth extractions and in office whitening. Our Services are Offered In English, Punjabi, Hindi & Farsi. Walk-Ins & Emergencies Are Always Welcome. Weekend & Late Night Appointments are Available</p>
+                        <p className='opacity-85'>{interview?.introduction}</p>
                         <div className='flex flex-col'>
                             <h1 className='text-2xl font-semibold'>What makes you different from other clinics?</h1>
-                            <p className='opacity-85'>We offer special discounts for students and clients with no dental coverage. Payment Plans Available</p>
+                            <p className='opacity-85'>{interview?.firstAnswer}</p>
                         </div>
                         <div className='flex flex-col'>
                             <h1 className='text-2xl font-semibold'>List the top 3 criteria of your success</h1>
-                            <p className='opacity-85'>Patient care Friendly staff Special discounts</p>
+                            <p className='opacity-85'>{interview?.secondAnswer}</p>
                         </div>
                     </div>
                     <GoogleMap
@@ -134,7 +196,7 @@ export const About: React.FC = () => {
                         mapContainerClassName='rounded-xl lg:h-[320px] lg:w-[45%] w-full h-96'
                     >
                         <Marker
-                            position={{ lat: lat, lng: long }}
+                            position={{ lat: about?.latitude || 0, lng: about?.longitude || 0 }}
                             icon={{
                                 url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
@@ -152,22 +214,16 @@ export const About: React.FC = () => {
                         <span className='border-b w-full'></span>
                         <div className='flex gap-8 py-4'>
                             <div className='flex flex-col gap-4'>
-                                <p>Monday</p>
-                                <p>Tuesday</p>
-                                <p>Wednesday</p>
-                                <p>Thursday</p>
-                                <p>Friday</p>
-                                <p>Saturday</p>
-                                <p>Sunday</p>
+                                {schedule?.map((sch, index) => (
+                                    <p className='opacity-70' key={index}>{sch.day}</p>
+                                ))}
                             </div>
                             <div className='flex flex-col gap-4'>
-                                <p className='text-brandPrimary'>10:00 am  /  06:00 pm</p>
-                                <p className='text-brandPrimary'>10:00 am  /  06:00 pm</p>
-                                <p className='text-brandPrimary'>10:00 am  /  06:00 pm</p>
-                                <p className='text-accentColor'>CLOSED</p>
-                                <p className='text-brandPrimary'>10:00 am  /  06:00 pm</p>
-                                <p className='text-brandPrimary'>10:00 am  /  06:00 pm</p>
-                                <p className='text-brandPrimary'>10:00 am  /  06:00 pm</p>
+                                {schedule?.map((sch, index) => (
+                                    <p key={index} className={sch.isClosed ? 'text-accentColor' : 'text-brandPrimary'}>
+                                        {sch.isClosed ? 'CLOSED' : sch.detail}
+                                    </p>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -175,15 +231,15 @@ export const About: React.FC = () => {
                         <h1 className='opacity-65 text-2xl font-semibold'>Link</h1>
                         <span className='border-b w-full'></span>
                         <div className='flex flex-col py-4 gap-4'>
-                            <a href='' className='flex gap-3 opacity-75'>
+                            <a target='_blank' href={links?.website || undefined} className='flex gap-3 opacity-75'>
                                 <img src={clinicAboutIcons.websiteLink} alt="website" />
                                 <p>Website</p>
                             </a>
-                            <a href='' className='flex gap-3 opacity-75'>
+                            <a target='_blank' href={links?.mapURL || undefined} className='flex gap-3 opacity-75'>
                                 <img src={clinicAboutIcons.locationLink} alt="location" />
                                 <p>Show on map</p>
                             </a>
-                            <a href='' className='flex gap-3 opacity-75'>
+                            <a target='_blank' href={links?.googleProfile || undefined} className='flex gap-3 opacity-75'>
                                 <img src={clinicAboutIcons.googleLink} alt="google" />
                                 <p>Google Profile</p>
                             </a>
@@ -202,14 +258,14 @@ export const About: React.FC = () => {
                     </div>
                     <div className="flex flex-wrap lg:flex-row flex-col">
                         <div className="w-1/2">
-                            {firstHalf.map((service, index) => (
+                            {firstHalf?.map((service, index) => (
                                 <p key={index} className="opacity-90 font-medium">
                                     {service}
                                 </p>
                             ))}
                         </div>
                         <div className="w-1/2">
-                            {secondHalf.map((service, index) => (
+                            {secondHalf?.map((service, index) => (
                                 <p key={index} className="opacity-90 font-medium">
                                     {service}
                                 </p>
@@ -223,7 +279,7 @@ export const About: React.FC = () => {
                         <span className='border-b-2 w-full'></span>
                     </div>
                     <div className="flex flex-wrap lg:-mx-2">
-                        {doctors.map((doctor, index) => (
+                        {doctors?.map((doctor, index) => (
                             <div
                                 key={index}
                                 className="flex items-center border rounded-lg lg:w-[calc(33.33333%-1rem)] w-full lg:mx-2 mb-4 p-2 gap-2"
@@ -233,7 +289,7 @@ export const About: React.FC = () => {
                                     <h1 className="text-lg font-semibold">{doctor.name}</h1>
                                     <div className='flex items-center gap-2'>
                                         <img src={clinicCardIcons.clinicStar} alt="" />
-                                        <p className="text-sm text-gray-600">{doctor.rate}</p>
+                                        <p className="text-sm text-gray-600">{doctor.rating}</p>
                                     </div>
                                 </div>
                             </div>
