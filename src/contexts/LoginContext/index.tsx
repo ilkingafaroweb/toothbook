@@ -10,26 +10,26 @@ interface User {
 interface LoginContextType {
   showAuth: boolean;
   setShowAuth: Dispatch<SetStateAction<boolean>>;
-  user: User | null;
   isLoading: boolean;
   successMessage: string | null;
   errorMessage: string | null;
   response: object | null;
   isAuthenticated: boolean;
-  login: (user: User) => Promise<void>; 
+  loginGoogle: (token: string, referralCode: number) => Promise<void>
+  login: (user: User) => Promise<void>;
   logout: () => void;
 }
 
 const defaultContext: LoginContextType = {
   showAuth: false,
   setShowAuth: () => { },
-  user: null,
   isLoading: false,
   successMessage: null,
   errorMessage: null,
   response: null,
   isAuthenticated: false,
-  login: async () => { }, 
+  loginGoogle: async () => { },
+  login: async () => { },
   logout: () => { },
 };
 
@@ -41,9 +41,15 @@ export const LoginProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [showAuth, setShowAuth] = useState<boolean>(false);
-  const [user, setUser] = useState<any>(localStorage.getItem('userId'));
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   const { callApi, response, loading, error } = useApi();
+  const { callApi: callGoogle, response: responseGoogle } = useApi();
+  const token = localStorage.getItem('token')
+
+  useEffect(() => {
+    setIsAuthenticated(!!token)
+  }, [token])
 
   useEffect(() => {
     setIsLoading(loading)
@@ -56,56 +62,95 @@ export const LoginProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   }, [showAuth])
 
   useEffect(() => {
-    {response &&  setSuccessMessage(response.message)}
-  },[response])
-  
+    {response && setSuccessMessage(response.message) }
+  }, [response])
+
   useEffect(() => {
     setErrorMessage(error)
-  },[error])
+  }, [error])
 
   useEffect(() => {
     if (!!successMessage) {
       const timer = setTimeout(() => {
         setShowAuth(false);
-      }, 2000);
-  
+      }, 1000);
+
       return () => clearTimeout(timer);
     }
   }, [successMessage])
+
+  useEffect(() => {
+    if (!!responseGoogle) {
+      const timer = setTimeout(() => {
+        setShowAuth(false);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [responseGoogle])
 
   const login = async (user: User) => {
     try {
       await callApi({
         method: "POST",
         endpoint: apiEndpoints.login.post,
-        data: user, 
+        data: user,
       });
     } catch (error) {
       console.error("Giriş başarısız:", error);
     }
   };
 
+  const loginGoogle = async (token: string, referralCode: number) => {
+    await callGoogle({
+      method: "POST",
+      endpoint: apiEndpoints.login.google,
+      data: {
+        token: token,
+        referralCode: referralCode
+      },
+    });
+  }
+
+  useEffect(() => {
+    if (responseGoogle) {
+      const { token, email, userName } = responseGoogle;
+
+      localStorage.setItem('token', token.toString());
+      localStorage.setItem('email', email.toString());
+      localStorage.setItem('userName', userName.toString());
+    }
+  }, [responseGoogle])
+
+
   useEffect(() => {
     if (response) {
       const { userId, token, message } = response;
-      setUser(userId)
 
       localStorage.setItem('userId', userId.toString());
       localStorage.setItem('token', token.toString());
       localStorage.setItem('message', message.toString());
     }
-  },[response])
+  }, [response])
 
   const logout = () => {
-    setUser(null);
     localStorage.removeItem('user');
     localStorage.removeItem('userId');
     localStorage.removeItem('token');
     localStorage.removeItem('message');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('email');
+    setIsAuthenticated(false)
   };
 
   return (
-    <LoginContext.Provider value={{ showAuth, setShowAuth, user, isAuthenticated: !!user, isLoading, response, successMessage, errorMessage, login, logout }}>
+    <LoginContext.Provider value={
+      {
+        showAuth, setShowAuth, isAuthenticated,
+        isLoading, loginGoogle, response,
+        successMessage, errorMessage,
+        login, logout
+      }}>
       {children}
     </LoginContext.Provider>
   );

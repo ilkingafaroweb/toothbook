@@ -15,6 +15,7 @@ export const DropdownMenu: React.FC<{ onLogout: () => void }> = ({ onLogout }) =
   useEffect(() => {
     if (isAuthenticated) {
       const message = localStorage.getItem('message');
+      const userName = localStorage.getItem('userName');
 
       if (message && message.trim()) {
         const words = message.split(' ');
@@ -22,6 +23,10 @@ export const DropdownMenu: React.FC<{ onLogout: () => void }> = ({ onLogout }) =
         const remainingWords = words.slice(1).join(' ');
   
         setUserName(remainingWords);
+      }
+
+      if(userName){
+        setUserName(userName);
       }
     }
   }, [isAuthenticated]);

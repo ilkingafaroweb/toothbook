@@ -5,6 +5,7 @@ import { useApi } from '../../../../../hooks';
 import apiEndpoints from '../../../../../apiEndpoints';
 import Swal from 'sweetalert2';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import { useLogin } from '../../../../../contexts';
 
 interface RegisterFormProps {
   onSwitchToLogin: () => void;
@@ -21,16 +22,18 @@ interface FormData {
 
 export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) => {
 
-  const handleSuccess = (credentialResponse: any) => {
-    console.log(credentialResponse);
-  };
-
   const handleError = () => {
     console.log('Login Failed');
   };
 
   const { callApi, response, error, loading } = useApi()
   const [otpStep, setOtpStep] = useState(false)
+
+  const { loginGoogle } = useLogin()
+
+  const handleSuccess = (googleResponse: any) => {
+    loginGoogle(googleResponse.credential, 0)
+  };
 
   const [formData, setFormData] = React.useState({
     name: '',

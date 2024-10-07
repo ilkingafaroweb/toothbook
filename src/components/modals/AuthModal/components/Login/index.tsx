@@ -10,21 +10,21 @@ interface LoginFormProps {
 
 export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignUp }) => {
 
-  const handleSuccess = (credentialResponse: any) => {
-    console.log(credentialResponse);
-  };
-
   const handleError = () => {
     console.log('Login Failed');
   };
 
-  const { showAuth, login, isLoading } = useLogin()
+  const { showAuth, login, isLoading, loginGoogle } = useLogin()
   const [isForgotPassword, setIsForgotPassword] = useState(false);
 
   const [formData, setFormData] = React.useState({
     loginPass: '',
     password: ''
   });
+
+  const handleSuccess = (googleResponse: any) => {
+    loginGoogle(googleResponse.credential, 0)
+  };
 
   useEffect(() => {
     setIsForgotPassword(false)

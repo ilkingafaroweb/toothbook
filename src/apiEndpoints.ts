@@ -12,7 +12,8 @@ const apiEndpoints = {
   },
 
   login: {
-    post: `${API_BASE_URL}/Identity/Account/Login`
+    post: `${API_BASE_URL}/Identity/Account/Login`,
+    google: `${API_BASE_URL}/Identity/Account/google-login`
   },
 
   forgotPassword: {

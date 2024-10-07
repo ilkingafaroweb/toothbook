@@ -13,12 +13,12 @@ import { useStepsContext } from '../../contexts';
 export const Home: React.FC<RouteProps> = () => {
 
     const insurances = [
-        'https://images.toothbook.ca/src/assets/insurances/bluecross.png',
         'https://images.toothbook.ca/src/assets/insurances/canadalife.png',
-        'https://images.toothbook.ca/src/assets/insurances/desjardins.png',
-        'https://images.toothbook.ca/src/assets/insurances/greenshield.png',
         'https://images.toothbook.ca/src/assets/insurances/manulife.png',
         'https://images.toothbook.ca/src/assets/insurances/sunlife.png',
+        'https://images.toothbook.ca/src/assets/insurances/desjardins.png',
+        'https://images.toothbook.ca/src/assets/insurances/bluecross.png',
+        'https://images.toothbook.ca/src/assets/insurances/greenshield.png',
     ]
 
     const navigate = useNavigate();
