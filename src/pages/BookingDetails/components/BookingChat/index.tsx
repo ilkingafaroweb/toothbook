@@ -14,7 +14,7 @@ interface MessageType {
 export const BookingChat: React.FC = () => {
   const { bookingId } = useParams();
   const { callApi, response } = useApi();
-  const { callApi: sendMessage, response: responseSendMessage } = useApi();
+  const { callApi: sendMessage } = useApi();
 
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
   const [input, setInput] = useState('');
@@ -77,7 +77,7 @@ export const BookingChat: React.FC = () => {
       {/* Sohbet Mesajları */}
       <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages && messages.length > 0 ? (
-          messages.map((msg, index) => (
+          messages.map((msg) => (
             <div
               key={msg.messageId}
               className={`flex ${msg.sender === 'clinic' ? 'justify-start'
