@@ -21,6 +21,9 @@ export const Clinics: React.FC<RouteProps> = ({ name }) => {
     const [address, setAddress] = useState<string>('');
     const [coordinates, setCoordinates] = useState<{ lat: number | null, lng: number | null }>({ lat: null, lng: null });
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
 
     useEffect(() => {
         if (response) {

@@ -129,7 +129,7 @@ export const InsuranceSelector: React.FC = () => {
                         {insuranceCompanies.map((insuranceCard: InsuranceCard) => (
                             <div
                                 key={insuranceCard.id}
-                                className={`h-20 lg:w-[calc(25%-1rem)] w-full border rounded-lg flex justify-center items-center cursor-pointer ${selectedCard === insuranceCard.id ? 'border-brandPrimary bg-brandPrimary bg-opacity-20' : 'border-gray-300'
+                                className={`h-20 lg:w-[calc(25%-1rem)] w-1/2 border rounded-lg flex justify-center items-center cursor-pointer ${selectedCard === insuranceCard.id ? 'border-brandPrimary bg-brandPrimary bg-opacity-20' : 'border-gray-300'
                                     }`}
                                 onClick={() => handleSelectCard(insuranceCard.id)}
                             >

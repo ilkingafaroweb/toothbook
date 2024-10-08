@@ -87,6 +87,10 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
     const { callApi, response } = useApi()
 
     useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
+    useEffect(() => {
         callApi({
             endpoint: apiEndpoints.clinics.profile,
             params: {

@@ -29,16 +29,22 @@ const defaultStepsData: StepsData = {
 const StepsContext = createContext<{
   stepsData: StepsData;
   setStepsData: React.Dispatch<React.SetStateAction<StepsData>>;
+  resetData: () => void;
 }>({
   stepsData: defaultStepsData,
   setStepsData: () => {},
+  resetData: () => {},
 });
 
 export const StepsProvider = ({ children }: { children: ReactNode }) => {
   const [stepsData, setStepsData] = useState<StepsData>(defaultStepsData);
 
+  const resetData = () => {
+    setStepsData(defaultStepsData)
+  }
+
   return (
-    <StepsContext.Provider value={{ stepsData, setStepsData }}>
+    <StepsContext.Provider value={{ stepsData, setStepsData, resetData  }}>
       {children}
     </StepsContext.Provider>
   );

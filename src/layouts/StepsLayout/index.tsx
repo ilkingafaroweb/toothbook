@@ -17,7 +17,8 @@ export const StepsLayout = ({ children }: LayoutProps) => {
     const navigate = useNavigate();
     const [step, setStep] = useState<number>(0);
 
-    const { stepsData } = useStepsContext() 
+    const { stepsData, resetData } = useStepsContext() 
+
 
     const { callApi, response, loading } = useApi()
 
@@ -30,6 +31,7 @@ export const StepsLayout = ({ children }: LayoutProps) => {
 
     useEffect(() => {
         setStep(1)
+        resetData()
     }, [])
 
     useEffect(() => {
@@ -82,16 +84,38 @@ export const StepsLayout = ({ children }: LayoutProps) => {
     };
 
     const handleContinue = async () => {
-        if (step === 5) {
-            callApi({
+        // Validate based on current step
+        if (step === 1) {
+            // Step 1: Check if giftCardId is provided
+            if (stepsData.giftCardId === 0) {
+                
+                return null;
+            }
+        } else if (step === 2) {
+            // Step 2: Check if services are selected
+            if (stepsData.services.length === 0) {
+                
+                return null;
+            }
+        } else if (step === 4) {
+            // Step 4: Check if insurance is provided
+            if (!stepsData.insurance) {
+                
+                return null;
+            }
+        } else if (step === 5) {
+            // Step 5: Handle form submission
+            await callApi({
                 method: 'POST',
                 endpoint: apiEndpoints.steps.postStepsData,
                 data: stepsData
-            })
-        } else {
-            setStep((prevStep) => Math.min(prevStep + 1, 5));
+            });
         }
+    
+        // Move to the next step
+        setStep((prevStep) => Math.min(prevStep + 1, 5));
     };
+    
 
     return (
         <div className="flex flex-col min-h-screen">

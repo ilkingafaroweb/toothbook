@@ -60,6 +60,12 @@ export const Home: React.FC<RouteProps> = () => {
         }
     };
 
+    const handleNavigateServices = () => {
+        if(!!coordinates.lat && !!coordinates.lng){
+            navigate('/steps/giftcard')
+        }
+    }
+
     return (
         <DefaultLayout>
             <React.Fragment>
@@ -103,7 +109,7 @@ export const Home: React.FC<RouteProps> = () => {
                                                     <Loading />
                                                 </div>}
 
-                                                {suggestions?.map(suggestion => {
+                                                {suggestions?.map((suggestion) => {
                                                     const className = suggestion.active
                                                         ? 'bg-gray-200 cursor-pointer p-2'
                                                         : 'bg-white cursor-pointer p-2 hover:bg-gray-100';
@@ -132,7 +138,7 @@ export const Home: React.FC<RouteProps> = () => {
                                     text='Find a dentist'
                                     color='bg-brandPrimary'
                                     size='w-full lg:w-max'
-                                    onClick={() => navigate('/steps/giftcard')}
+                                    onClick={handleNavigateServices}
                                 />
                             </div>
                         </div>

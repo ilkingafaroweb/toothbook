@@ -37,8 +37,11 @@ export const BookingsTable: React.FC = () => {
             text: responseBookingAccept,
             icon: 'success',
             confirmButtonText: 'OK'
+        }).then(() => {
+            callApi({ endpoint: apiEndpoints.bookings.get });
         });
     }
+    
 
     if (errorBookingAccept) {
         Swal.fire({
@@ -53,10 +56,13 @@ export const BookingsTable: React.FC = () => {
         Swal.fire({
             title: 'Declined!',
             text: responseBookingDecline,
-            icon: 'success',
+            icon: 'success', 
             confirmButtonText: 'OK'
+        }).then(() => {
+            callApi({ endpoint: apiEndpoints.bookings.get }); 
         });
     }
+    
 
     if (errorBookingDecline) {
         Swal.fire({
