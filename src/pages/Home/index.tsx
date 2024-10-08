@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PlacesAutocomplete, { geocodeByAddress, getLatLng }  from 'react-places-autocomplete';
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { RouteProps } from '../../types';
 import { welcome_img, welcome_img_desktop, benefitIcons, stepsIcons, location_icon } from '../../assets';
 import { Button, ResponsiveImage, Metrics, Loading } from '../../components';
@@ -28,10 +28,13 @@ export const Home: React.FC<RouteProps> = () => {
     const [coordinates, setCoordinates] = useState<{ lat: number | null, lng: number | null }>({ lat: null, lng: null });
 
     useEffect(() => {
-        {address && setStepsData((prev) => ({
-            ...prev,
-            address: address
-        }))}
+        {
+            address && setStepsData((prev) => ({
+                ...prev,
+                address: address
+            }))
+            localStorage.setItem('your_address', address)
+        }
     }, [address])
 
     useEffect(() => {
@@ -43,7 +46,7 @@ export const Home: React.FC<RouteProps> = () => {
             }));
         }
     }, [coordinates]);
-    
+
 
     const handleSelect = async (selectedAddress: string) => {
         try {
@@ -51,7 +54,7 @@ export const Home: React.FC<RouteProps> = () => {
             const latLng = await getLatLng(results[0]);
             setAddress(selectedAddress);
             setCoordinates(latLng);
-           
+
         } catch (error) {
             console.error('Error fetching geocode data: ', error);
         }
@@ -79,7 +82,7 @@ export const Home: React.FC<RouteProps> = () => {
                                     onChange={setAddress}
                                     onSelect={handleSelect}
                                     searchOptions={{
-                                        componentRestrictions: { country: 'CA' } 
+                                        componentRestrictions: { country: 'CA' }
                                     }}
                                 >
                                     {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
@@ -93,23 +96,23 @@ export const Home: React.FC<RouteProps> = () => {
                                                     })}
                                                 />
                                             </div>
-                                            
+
                                             {/* Autocomplete Suggestions Dropdown */}
                                             <div className="absolute top-full left-0 w-full bg-white shadow-lg z-10">
                                                 {loading && <div className="p-2 text-gray-500">
-                                                        <Loading />
-                                                    </div>}
-                                                
+                                                    <Loading />
+                                                </div>}
+
                                                 {suggestions?.map(suggestion => {
                                                     const className = suggestion.active
                                                         ? 'bg-gray-200 cursor-pointer p-2'
                                                         : 'bg-white cursor-pointer p-2 hover:bg-gray-100';
-                                                    
+
                                                     const style = {
                                                         backgroundColor: suggestion.active ? '#fafafa' : '#ffffff',
                                                         cursor: 'pointer',
                                                     };
-                                                    
+
                                                     return (
                                                         <div
                                                             {...getSuggestionItemProps(suggestion, {

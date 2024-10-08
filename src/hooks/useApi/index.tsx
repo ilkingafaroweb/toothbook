@@ -6,6 +6,7 @@ type ApiOptions = {
   endpoint: string;
   data?: any;
   params?: Record<string, any>;
+  headers?: { [key: string]: string }; 
 };
 
 export const useApi = () => {
@@ -24,6 +25,7 @@ export const useApi = () => {
       method: method,
       headers: {
         Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
       ...(params && { params }),
       ...(data && { data }),

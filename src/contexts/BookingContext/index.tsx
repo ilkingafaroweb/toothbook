@@ -1,7 +1,5 @@
-// BookingContext.tsx
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
-// Define types for booking data
 interface BookingData {
     date: string;
     time: string;
@@ -9,31 +7,43 @@ interface BookingData {
 }
 
 interface BookingContextType {
+    modalBooking: boolean;
     isBookingOpen: boolean;
     bookingData: BookingData | null;
-    openBooking: () => void;
+    openBooking: (clinicId: number) => void;
+    modalToggle: () => void;
     closeBooking: () => void;
+    clinicId: number | null;
 }
 
 const BookingContext = createContext<BookingContextType | undefined>(undefined);
 
 export const BookingProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const [modalBooking, setModalBooking] = useState(true)
     const [isBookingOpen, setIsBookingOpen] = useState<boolean>(false);
     const [bookingData, setBookingData] = useState<BookingData | null>(null);
+    const [clinicId, setClinicId] = useState<number | null>(null)
 
-    const openBooking = () => {
-        // setBookingData(data);
+    const openBooking = (clinicId: number) => {
+        setClinicId(clinicId)
         setIsBookingOpen(true);
+        // setBookingData(data);
     };
 
     const closeBooking = () => {
+        setClinicId(null)
         setIsBookingOpen(false);
         setBookingData(null);
+        setModalBooking(true)
     };
+
+    const modalToggle = () => {
+        setModalBooking(!modalBooking)
+    }
 
     return (
         <BookingContext.Provider
-            value={{ isBookingOpen, bookingData, openBooking, closeBooking }}
+            value={{ modalBooking, isBookingOpen, bookingData, openBooking, closeBooking, clinicId, modalToggle }}
         >
             {children}
         </BookingContext.Provider>

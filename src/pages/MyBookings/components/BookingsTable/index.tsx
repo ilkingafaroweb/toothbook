@@ -34,7 +34,7 @@ export const BookingsTable: React.FC = () => {
     if (responseBookingAccept) {
         Swal.fire({
             title: 'Accepted!',
-            text: responseBookingAccept, // You can include the response message here
+            text: responseBookingAccept,
             icon: 'success',
             confirmButtonText: 'OK'
         });
@@ -43,7 +43,7 @@ export const BookingsTable: React.FC = () => {
     if (errorBookingAccept) {
         Swal.fire({
             title: 'Error!',
-            text: errorBookingAccept, // Include the error message here
+            text: errorBookingAccept,
             icon: 'error',
             confirmButtonText: 'OK'
         });
@@ -52,7 +52,7 @@ export const BookingsTable: React.FC = () => {
     if (responseBookingDecline) {
         Swal.fire({
             title: 'Declined!',
-            text: responseBookingDecline, // You can include the response message here
+            text: responseBookingDecline,
             icon: 'success',
             confirmButtonText: 'OK'
         });
@@ -61,7 +61,7 @@ export const BookingsTable: React.FC = () => {
     if (errorBookingDecline) {
         Swal.fire({
             title: 'Error!',
-            text: errorBookingDecline, // Include the error message here
+            text: errorBookingDecline,
             icon: 'error',
             confirmButtonText: 'OK'
         });

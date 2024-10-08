@@ -43,7 +43,13 @@ const apiEndpoints = {
   bookings: {
     get: `${API_BASE_URL}/BookingsHistory/getbookings`,
     accept: `${API_BASE_URL}/BookingOverview/approveoffer`,
-    decline: `${API_BASE_URL}/BookingOverview/cancelbooking`
+    decline: `${API_BASE_URL}/BookingOverview/cancelbooking`,
+
+    getBookingView: `${API_BASE_URL}/BookingOverview/getbooking`,
+    sendMaptoUser: `${API_BASE_URL}/BookingOverview/sendmaptouser`,
+
+    getBookingChat:`${API_BASE_URL}/BookingOverview/getchat`,
+    postBookingChat: `${API_BASE_URL}/BookingOverview/sendmessage`,
   },
 
   steps: {
@@ -59,6 +65,13 @@ const apiEndpoints = {
     list: `${API_BASE_URL}/Clinic/getclinics`,
     search: `${API_BASE_URL}/Clinic/searchclinics`,
     profile: `${API_BASE_URL}/Clinic/getclinic`
+  },
+
+  bookingModal: {
+    getBooking: `${API_BASE_URL}/Interactive/Booking/getbookingmodaldata`,
+    getDates: `${API_BASE_URL}/Interactive/Booking/getdates`,
+    getHours: `${API_BASE_URL}/Interactive/Booking/gethours`,
+    postBooking: `${API_BASE_URL}/Interactive/Booking/createbooking`,
   }
 };
 

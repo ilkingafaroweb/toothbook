@@ -89,7 +89,7 @@ export const AccountForm = () => {
     }
 
     patchProfile({
-      method: "PATCH",
+      method: "POST",
       endpoint: apiEndpoints.profile.patch,
       data: formData,
     });

@@ -2,6 +2,7 @@ import React from 'react'
 import { clinicAboutIcons, clinicCardIcons } from '../../../../assets'
 import { GoogleMap, Marker } from '@react-google-maps/api'
 
+
 interface Interview {
     introduction: string;
     firstAnswer: string;
@@ -50,7 +51,6 @@ export const About: React.FC<AboutProps> = ({ about }) => {
     type FeatureDetails = {
         title: string;
         description: string;
-        img: string;
         bgColor: string;
         imgSize: string;
     };
@@ -59,35 +59,30 @@ export const About: React.FC<AboutProps> = ({ about }) => {
         state: {
             title: 'State-of-the-Art Technology',
             description: 'Experience the latest advancements in dental care with cutting-edge technology.',
-            img: clinicAboutIcons.state,
             bgColor: 'red-400',
             imgSize: '12',
         },
         access: {
             title: 'Accessibility',
             description: 'Our facility is fully accessible, ensuring a comfortable visit for individuals with disabilities.',
-            img: clinicAboutIcons.accessibility,
             bgColor: 'orange-400',
             imgSize: '14',
         },
         language: {
             title: 'Language Support',
             description: 'Multi-lingual staff or translators available',
-            img: clinicAboutIcons.lang,
             bgColor: 'blue-400',
             imgSize: '6',
         },
         anxiety: {
             title: 'Dental anxiety friendly',
             description: 'Our clinic is designed to provide a calming environment, easing dental anxiety for all patients.',
-            img: clinicAboutIcons.anxiety,
             bgColor: 'pink-400',
             imgSize: '12',
         },
         family: {
             title: 'Family-Friendly',
             description: 'We offer a welcoming atmosphere with specialized care for children and services tailored to the needs of your entire family.',
-            img: clinicAboutIcons.family,
             bgColor: 'purple-400',
             imgSize: '20',
         },
@@ -95,50 +90,6 @@ export const About: React.FC<AboutProps> = ({ about }) => {
 
     const { interview, schedule, links, standoutFeatures, doctors, services } = about || {};
 
-    const long = 49.8402033
-    const lat = 40.4047907
-
-    // const services = [
-    //     "Bonding",
-    //     "Bridges / Dentures",
-    //     "Checkup & Cleaning",
-    //     "Crown / Cap",
-    //     "Filling",
-    //     "Gum Surgery",
-    //     "Implants",
-    //     "Nitrous Sedation",
-    //     "Root Canal",
-    //     "Sleep Apnea",
-    //     "TMJ",
-    //     "Tooth Extraction",
-    //     "Urgent Issue",
-    //     "Veneers",
-    //     "Whitening",
-    //     "Wisdom Teeth Removal"
-    // ];
-
-    // const doctors = [
-    //     {
-    //         name: "Dr. Leyla Aliyeva",
-    //         rate: "4.8",
-    //         imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
-    //     },
-    //     {
-    //         name: "Dr. Murad Həsənov",
-    //         rate: "4.7",
-    //         imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
-    //     },
-    //     {
-    //         name: "Dr. Nigar Məhəmmədova",
-    //         rate: "4.9",
-    //         imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
-    //     },
-    //     {
-    //         name: "Dr. Elvin İsmayılov",
-    //         rate: "4.6",
-    //         imageURL: "https://www.asirox.com/wp-content/uploads/2022/07/depositphotos_90647730-stock-illustration-female-doctor-avatar-icon.webp"
-    //     }
-    // ];
 
     const midIndex = Math.ceil((services?.services?.length ?? 0) / 2);
     const firstHalf = services?.services.slice(0, midIndex);
@@ -163,7 +114,7 @@ export const About: React.FC<AboutProps> = ({ about }) => {
                                 return (
                                     <div key={index} className='lg:w-[calc(30%)] w-full flex flex-row items-start gap-3'>
                                         <div className={`bg-${featureDetails.bgColor} w-max p-3 rounded-full`}>
-                                            <img className={`w-${featureDetails.imgSize}`} src={featureDetails.img} alt={feature} />
+                                            <img className={`w-${featureDetails.imgSize}`} src={clinicAboutIcons.state} alt={feature} />
                                         </div>
                                         <div className='flex flex-col gap-1'>
                                             <h1 className='text-lg font-semibold'>{featureDetails.title}</h1>
@@ -191,7 +142,7 @@ export const About: React.FC<AboutProps> = ({ about }) => {
                         </div>
                     </div>
                     <GoogleMap
-                        center={{ lat: lat, lng: long }}
+                        center={{ lat: about?.latitude || 0, lng: about?.longitude || 0 }}
                         zoom={12}
                         mapContainerClassName='rounded-xl lg:h-[320px] lg:w-[45%] w-full h-96'
                     >

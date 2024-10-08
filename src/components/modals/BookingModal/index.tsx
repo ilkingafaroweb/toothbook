@@ -1,38 +1,189 @@
-import React, { useState } from "react";
-import Select from 'react-select';
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
-import { useBooking } from "../../../contexts";
+import React, { useEffect, useState } from "react";
+import Flatpickr from "react-flatpickr";
+import "flatpickr/dist/flatpickr.css";
+import { useBooking, useLogin } from "../../../contexts";
 import { auth_x } from "../../../assets";
 import { Button } from "../../UI";
+import apiEndpoints from "../../../apiEndpoints";
+import { useApi } from "../../../hooks";
+import { ErrorMessage, SuccessMessage } from "../AuthModal/components/Status";
+import { LoginForm, RegisterForm } from "../AuthModal/components";
 
 interface FormData {
-    selectedDoctor: any;
-    selectedDate: Date | null;
+    selectedDoctor: number;
+    selectedDate: string | null;
     selectedTime: string;
     phone: string;
     note: string;
-    visitedClinic: boolean;
+    iHaveBeenInClinic: boolean;
+}
+
+interface Doctor {
+    id: number;
+    doctorName: string;
+}
+
+interface BookingPost {
+    clinicId: number | null,
+    doctorId: number,
+    year: number,
+    month: number,
+    day: number,
+    hour: number,
+    minute: number,
+    note: string,
+    iHaveBeenInClinic: boolean,
+    logId: number
 }
 
 export const BookingModal: React.FC = () => {
 
+    const { isBookingOpen, closeBooking, modalBooking, modalToggle } = useBooking();
+    const { callApi: postBooking, response: responsePostBooking } = useApi()
+    const { callApi: getBooking, response: responseGetBooking } = useApi()
+    const { callApi: getDates, response: responseGetDates } = useApi()
+    const { callApi: getHours, response: responseGetHours } = useApi()
+    const { clinicId } = useBooking()
+    const [isSignUp, setIsSignUp] = useState(false);
+    
+    const { successMessage, errorMessage, isAuthenticated } = useLogin()
+
+    useEffect(() => {
+        if(!modalBooking){
+            modalToggle()
+        }
+    }, [isAuthenticated])
+
+    useEffect(() => {
+        if(responsePostBooking){
+            
+        }
+    }, [responsePostBooking])
+
+
+    const handleSignUpClick = () => {
+        setIsSignUp(true)
+    };
+
+    const handleBackToLoginClick = () => {
+        setIsSignUp(false)
+    };
+
+    const [bookingPost, setBookingPost] = useState<BookingPost | null>(null);
+
+    useEffect(() => {
+        console.log("Booking posted data text --->", bookingPost);
+    }, [bookingPost])
+
     const [formData, setFormData] = useState<FormData>({
-        selectedDoctor: null,
+        selectedDoctor: -1,
         selectedDate: null,
         selectedTime: "",
         phone: "",
         note: "",
-        visitedClinic: false,
+        iHaveBeenInClinic: false,
     });
 
-    const doctors = [
-        { value: 'doctor1', label: 'Doctor 1' },
-        { value: 'doctor2', label: 'Doctor 2' },
-        { value: 'doctor3', label: 'Doctor 3' },
-    ];
+    const createBookingPostData = (formData: any): BookingPost | null => {
+        if (!formData.selectedDate || !formData.selectedTime) {
+            return null;
+        }
 
-    const { isBookingOpen, closeBooking } = useBooking();
+        const [day, month, year] = formData.selectedDate.split("/").map(Number);
+
+        const [hour, minute] = formData.selectedTime.split(":").map(Number);
+
+
+        const bookingPostData: BookingPost = {
+            clinicId: clinicId,
+            doctorId: formData.selectedDoctor,
+            year: year,
+            month: month,
+            day: day,
+            hour: hour,
+            minute: minute,
+            note: formData.note,
+            iHaveBeenInClinic: formData.iHaveBeenInClinic,
+            logId: Number(sessionStorage.getItem('clinicsLog'))
+        };
+
+        return bookingPostData;
+    };
+
+    useEffect(() => {
+        if (formData) {
+            const bookingPostData = createBookingPostData(formData);
+            setBookingPost(bookingPostData)
+        }
+
+    }, [formData])
+
+    const doctorId = formData.selectedDoctor;
+    const [dayOfWeek, setDayOfWeek] = useState<number | null>(null)
+
+    useEffect(() => {
+        console.log(formData);
+    }, [formData])
+
+    const [doctors, setDoctors] = useState<Doctor[]>([])
+    const [disableDays, setDisableDays] = useState<number[]>([])
+    const [hours, setHours] = useState<number[]>([])
+
+    const minTime = hours[0]?.toString().padStart(2, '0') + ":00";
+    const maxTime = hours[hours.length - 1]?.toString().padStart(2, '0') + ":00";
+
+    useEffect(() => {
+        if (clinicId) {
+            getBooking({
+                endpoint: apiEndpoints.bookingModal.getBooking,
+                params: {
+                    clinicId: clinicId
+                }
+            })
+        }
+    }, [clinicId])
+
+    useEffect(() => {
+        if (clinicId) {
+            getDates({
+                endpoint: apiEndpoints.bookingModal.getDates,
+                params: {
+                    doctorId: doctorId,
+                    clinicId: clinicId
+                }
+            });
+        }
+    }, [doctorId, clinicId]);
+
+
+    useEffect(() => {
+        if (clinicId) {
+            getHours({
+                endpoint: apiEndpoints.bookingModal.getHours,
+                params: {
+                    doctorId: doctorId,
+                    clinicId: clinicId,
+                    dayOfWeek: dayOfWeek
+                }
+            });
+        }
+    }, [dayOfWeek, doctorId, clinicId])
+
+
+    useEffect(() => {
+        { responseGetBooking && setDoctors(responseGetBooking.doctors) }
+    }, [responseGetBooking])
+
+    useEffect(() => {
+        { responseGetDates && setDisableDays(responseGetDates) }
+    }, [responseGetDates])
+
+    useEffect(() => {
+        { responseGetHours && setHours(responseGetHours) }
+    }, [responseGetHours])
+
+    const maxDate = new Date();
+    maxDate.setDate(maxDate.getDate() + 30);
 
     const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -40,48 +191,81 @@ export const BookingModal: React.FC = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value, type } = e.target;
-    
-        // Assert that e.target is an HTMLInputElement
         const isCheckbox = type === 'checkbox';
         const newValue = isCheckbox ? (e.target as HTMLInputElement).checked : value;
-    
+
         setFormData((prevData) => ({
             ...prevData,
             [name]: newValue,
         }));
     };
-    
 
-    const handleDoctorChange = (selectedOption: any) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            selectedDoctor: selectedOption,
-        }));
+    const handleDoctorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setFormData({ ...formData, selectedDoctor: Number(event.target.value) });
     };
 
-    const handleDateChange = (date: Date | null) => {
-        setFormData((prevData) => ({
-            ...prevData,
-            selectedDate: date,
-        }));
+    const handleDateChange = (selectedDate: Date[]) => {
+        if (selectedDate.length > 0) {
+            const date = selectedDate[0];
+
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+
+            const formattedDate = `${day}/${month}/${year}`;
+            const dayOfWeek = date ? date.getDay() : null;
+
+            setFormData((prevData) => ({
+                ...prevData,
+                selectedDate: formattedDate,
+            }));
+
+            setDayOfWeek(dayOfWeek);
+        }
     };
+
+
+    const handleTimeChange = (selectedTime: any) => {
+        if (selectedTime.length > 0) {
+            const date = selectedTime[0];
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            const formattedTime = `${hours}:${minutes}`;
+
+            setFormData((prevData) => ({
+                ...prevData,
+                selectedTime: formattedTime,
+            }));
+        }
+    };
+
 
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Handle form submission
-        console.log(formData);
+        if (isAuthenticated) {
+            e.preventDefault();
+            postBooking({
+                method: "POST",
+                endpoint: apiEndpoints.bookingModal.postBooking,
+                data: bookingPost
+            });
+        } else {
+            e.preventDefault()
+            modalToggle()
+        }
     };
+    
+
 
     return (
         <div onClick={closeBooking} className={`${isBookingOpen ? 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50' : 'hidden'}`}>
             <div className="bg-white w-full lg:max-w-[662px] max-w-[353px] lg:mx-auto mx-4 rounded-lg shadow-lg overflow-hidden">
-                <div onClick={(e) => handleModalClick(e)} className={`relative md:flex transition-transform duration-500 ease-in-out`}>
+                <div onClick={handleModalClick} className="relative md:flex transition-transform duration-500 ease-in-out">
                     {/* X button */}
                     <button className="absolute lg:top-5 lg:right-5 top-3 right-3 z-50" onClick={closeBooking}>
                         <img src={auth_x} alt="auth-x" />
                     </button>
 
-                    <div className="w-full flex flex-col lg:px-[38px] px-[15px] lg:py-[57px] py-[34px]">
+                    <div className={`w-full ${modalBooking ? 'flex' : 'hidden'} flex-col lg:px-[38px] px-[15px] lg:py-[57px] py-[34px]`}>
                         <h1 className="text-2xl font-semibold">Smiles on Kipling Family</h1>
                         <form className="space-y-4 pt-2" onSubmit={handleSubmit}>
                             {/* 1st Row: Doctor Option */}
@@ -89,14 +273,21 @@ export const BookingModal: React.FC = () => {
                                 <label htmlFor="doctor" className="block text-sm font-medium text-gray-700">
                                     Doctor
                                 </label>
-                                <Select
+                                <select
                                     id="doctor"
                                     value={formData.selectedDoctor}
                                     onChange={handleDoctorChange}
-                                    options={doctors}
-                                    placeholder="Select a doctor"
-                                    className="mt-1"
-                                />
+                                    className="rounded-lg border border-gray-300 focus:border-brandPrimary focus:ring-brandPrimary outline-none focus:ring-opacity-50 w-full p-2"
+                                >
+                                    <option className="hidden" value={-1}>
+                                        Select Doctor
+                                    </option>
+                                    {doctors.map((doctor) => (
+                                        <option key={doctor.id} value={doctor.id}>
+                                            {doctor.doctorName}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
 
                             {/* 2nd Row: Date and Time Inputs */}
@@ -105,24 +296,41 @@ export const BookingModal: React.FC = () => {
                                     <label htmlFor="date" className="block text-sm font-medium text-gray-700">
                                         Date
                                     </label>
-                                    <DatePicker
-                                        selected={formData.selectedDate}
+                                    <Flatpickr
+                                        value={formData.selectedDate || undefined}
                                         onChange={handleDateChange}
-                                        className="mt-1 block w-full border border-gray-300 rounded-lg p-2"
-                                        placeholderText="Select a date"
+                                        options={{
+                                            dateFormat: "d-m-Y",
+                                            minDate: new Date(),
+                                            maxDate: maxDate,
+                                            disable: [
+                                                function (date) {
+                                                    return disableDays.includes(date.getDay());
+                                                }
+                                            ],
+                                        }}
+                                        className={`w-full outline-none border rounded-lg p-2 disabled`}
+                                        placeholder={formData.selectedDate ? '' : 'Select Date'}
                                     />
+
                                 </div>
                                 <div>
                                     <label htmlFor="time" className="block text-sm font-medium text-gray-700">
                                         Time
                                     </label>
-                                    <input
-                                        type="time"
-                                        id="time"
-                                        name="selectedTime"
-                                        value={formData.selectedTime}
-                                        onChange={handleChange}
-                                        className="mt-1 block w-full border border-gray-300 rounded-lg p-2"
+                                    <Flatpickr
+                                        value={[formData.selectedTime]}
+                                        onChange={handleTimeChange}
+                                        options={{
+                                            enableTime: true,
+                                            noCalendar: true,
+                                            dateFormat: "H:i",
+                                            time_24hr: true,
+                                            minTime: minTime,
+                                            maxTime: maxTime,
+                                        }}
+                                        className={`w-full outline-none border rounded-lg p-2`}
+                                        placeholder="Select a time"
                                     />
                                 </div>
                             </div>
@@ -164,8 +372,8 @@ export const BookingModal: React.FC = () => {
                                 <input
                                     type="checkbox"
                                     id="visited-clinic"
-                                    name="visitedClinic"
-                                    checked={formData.visitedClinic}
+                                    name="iHaveBeenInClinic"
+                                    checked={formData.iHaveBeenInClinic}
                                     onChange={handleChange}
                                     className="h-4 w-4 text-brandPrimary border-gray-300 rounded focus:ring-brandPrimary"
                                 />
@@ -173,16 +381,29 @@ export const BookingModal: React.FC = () => {
                                     I have been to this clinic before
                                 </label>
                             </div>
+
                             <Button
                                 text="Book now"
                                 color="bg-brandPrimary"
                                 size="w-full"
                             />
                         </form>
-
+                    </div>
+                    <div className={`w-full ${modalBooking ? 'hidden' : 'flex'} h-max flex-col space-y-5 bg-white md:w-full lg:p-12 px-4 py-8 transition-all transform duration-300 ease-in-out`
+                    }>
+                        <div className="flex flex-col justify-between items-start">
+                            <SuccessMessage successMessage={successMessage} />
+                            <ErrorMessage errorMessage={errorMessage} />
+                        </div>
+                        {!isSignUp ? (
+                            <LoginForm onSwitchToSignUp={handleSignUpClick} />
+                        ) : (
+                            <RegisterForm onSwitchToLogin={handleBackToLoginClick} />
+                        )}
                     </div>
                 </div>
             </div>
+
         </div>
-    )
-}
+    );
+};

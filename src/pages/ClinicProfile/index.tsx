@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { RouteProps } from '../../types'
 import { DefaultLayout } from '../../layouts'
-import { useClinicContext } from '../../contexts'
+import { useBooking, useClinicContext } from '../../contexts'
 import { clinicCardIcons } from '../../assets'
 import { Button } from '../../components'
 import { About, Gallery } from './components'
@@ -75,10 +75,10 @@ interface Services {
     matchMessage: string;
 }
 
-
 export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
 
     const { clinicId } = useParams()
+    const { openBooking } = useBooking();
     const logId = sessionStorage.getItem('clinicsLog')
     const { inlineTag, onTopTag } = useClinicContext()
 
@@ -218,6 +218,9 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                             text='Book now'
                             color='bg-brandPrimary'
                             size='w-full'
+                            onClick={() => {
+                                openBooking(Number(clinicId));
+                            }}
                         />
                     </div>
                 </div>

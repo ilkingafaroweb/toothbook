@@ -109,7 +109,6 @@ export const clinicAboutIcons = {
   googleLink
 }
 
-
 import asclepius from './clinic-reviews-aclepius.svg'
 import tooth from './clinic-reviews-tooth.svg'
 import starFour from './clinic-reviews-starfour.svg'

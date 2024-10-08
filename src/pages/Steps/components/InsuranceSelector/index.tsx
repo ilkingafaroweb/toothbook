@@ -50,6 +50,8 @@ export const InsuranceSelector: React.FC = () => {
             ...prev,
             insurance: insuranceName,
         }));
+
+        sessionStorage.setItem('your_insurance', insuranceName)
     }, [selectedCard, selectedOtherInsurances]);
     
 
