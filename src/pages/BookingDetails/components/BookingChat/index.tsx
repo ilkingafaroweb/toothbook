@@ -86,7 +86,7 @@ export const BookingChat: React.FC = () => {
                 }`}
             >
               <div
-                className={`py-2 px-4 rounded-full ${msg.sender === 'clinic' ? 'bg-brandSecondary text-white'
+                className={`py-2 px-4 rounded-full ${msg.sender === 'clinic' ? 'bg-brandPrimary text-white'
                     : msg.sender === 'system' ? 'shadow-systemMessage text-sm text-accordionTitle'
                     : 'bg-brandSecondary text-white'
                   }`}
