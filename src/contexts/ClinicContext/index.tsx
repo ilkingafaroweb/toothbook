@@ -23,11 +23,11 @@ interface ClinicProviderProps {
 
 export const ClinicProvider: React.FC<ClinicProviderProps> = ({ children }) => {
     const [inlineTag, setInlineTag] = useState<string>(() => {
-        return localStorage.getItem('inlineTag') || 'Default Inline Tag';
+        return localStorage.getItem('inlineTag') || '';
     });
 
     const [onTopTag, setOnTopTag] = useState<string>(() => {
-        return localStorage.getItem('onTopTag') || 'Default On Top Tag';
+        return localStorage.getItem('onTopTag') || '';
     });
 
     useEffect(() => {

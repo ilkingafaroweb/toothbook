@@ -69,7 +69,7 @@ export const BookingChat: React.FC = () => {
   }, [messages]);
 
   return (
-    <div className="flex flex-col h-[550px] w-1/2 border shadow-lg rounded-lg">
+    <div className="flex flex-col h-[550px] lg:w-1/2 border shadow-lg rounded-lg">
       <div className="p-4 text-accordionTitle border-b uppercase text-center font-medium">
         {clinicName}
       </div>

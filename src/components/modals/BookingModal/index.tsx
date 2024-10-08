@@ -8,6 +8,8 @@ import apiEndpoints from "../../../apiEndpoints";
 import { useApi } from "../../../hooks";
 import { ErrorMessage, SuccessMessage } from "../AuthModal/components/Status";
 import { LoginForm, RegisterForm } from "../AuthModal/components";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 interface FormData {
     selectedDoctor: number;
@@ -45,20 +47,36 @@ export const BookingModal: React.FC = () => {
     const { callApi: getHours, response: responseGetHours } = useApi()
     const { clinicId } = useBooking()
     const [isSignUp, setIsSignUp] = useState(false);
-    
+
     const { successMessage, errorMessage, isAuthenticated } = useLogin()
+    const navigate = useNavigate()
 
     useEffect(() => {
-        if(!modalBooking){
+        if (!modalBooking) {
             modalToggle()
         }
     }, [isAuthenticated])
 
     useEffect(() => {
-        if(responsePostBooking){
-            
+        if (responsePostBooking) {
+            closeBooking()
+            const bookingId = responsePostBooking;
+
+            Swal.fire({
+                title: 'Booking Created!',
+                text: `Your booking ID is ${bookingId}.`,
+                icon: 'success',
+                showCancelButton: false,
+                confirmButtonText: 'Go to booking',
+                timer: 5000,
+                timerProgressBar: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    navigate(`/bookings/${bookingId}`);
+                }
+            });
         }
-    }, [responsePostBooking])
+    }, [responsePostBooking]);
 
 
     const handleSignUpClick = () => {
@@ -253,7 +271,7 @@ export const BookingModal: React.FC = () => {
             modalToggle()
         }
     };
-    
+
 
 
     return (

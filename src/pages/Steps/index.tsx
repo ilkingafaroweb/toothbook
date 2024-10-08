@@ -60,7 +60,6 @@ export const Steps: React.FC<RouteProps> = () => {
 
     useEffect(() => {
         getGiftcards({ endpoint: apiEndpoints.steps.giftcard })
-        
     }, [])
 
     useEffect(() => {

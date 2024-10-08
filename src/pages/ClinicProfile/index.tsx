@@ -172,7 +172,7 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                             }
 
                         </div>
-                        <div className='w-full lg:max-w-[800px] flex lg:flex-row flex-col items-center lg:gap-10 gap-4 p-3 border rounded-xl'>
+                        {inlineTag &&  <div className='w-full lg:max-w-[800px] flex lg:flex-row flex-col items-center lg:gap-10 gap-4 p-3 border rounded-xl'>
                             <img
                                 src={
                                     clinicProfile?.inlineTag === 'excellence'
@@ -207,7 +207,7 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                                 </div>
                             </div>
 
-                        </div>
+                        </div>}
                     </div>
                     <div className='hidden lg:flex flex-col w-max gap-2'>
                         <div className='w-max flex px-3 py-2 rounded-xl bg-accentColor text-accentColor bg-opacity-20 gap-3'>
