@@ -21,6 +21,9 @@ export const Clinics: React.FC<RouteProps> = ({ name }) => {
     const [address, setAddress] = useState<string>('');
     const [coordinates, setCoordinates] = useState<{ lat: number | null, lng: number | null }>({ lat: null, lng: null });
 
+
+    const [selectedClinic, setSelectedClinic] = useState('')
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -97,11 +100,14 @@ export const Clinics: React.FC<RouteProps> = ({ name }) => {
                             center={mapCenter}
                             zoom={12}
                         >
-                            {
-                                clinics?.map((clinic) => (
-                                    <CustomMarker clinic={clinic} />
-                                ))
-                            }
+                            {clinics?.map(clinic => (
+                                <CustomMarker
+                                    key={clinic.name}
+                                    clinic={clinic}
+                                    selectedClinic={selectedClinic}
+                                    onSelect={setSelectedClinic}
+                                />
+                            ))}
                         </GoogleMap>}
 
                         <PlacesAutocomplete

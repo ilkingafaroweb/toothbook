@@ -1,4 +1,5 @@
-import { Marker } from '@react-google-maps/api';
+import React from 'react';
+import { Marker, InfoWindow } from '@react-google-maps/api';
 
 interface Clinic {
     name: string;
@@ -15,9 +16,20 @@ interface Clinic {
 
 interface CustomMarkerProps {
     clinic: Clinic;
+    selectedClinic: string | null;
+    onSelect: (arg: any) => void;
 }
 
-export const CustomMarker: React.FC<CustomMarkerProps> = ({ clinic }) => {
+export const CustomMarker: React.FC<CustomMarkerProps> = ({ clinic, selectedClinic, onSelect }) => {
+
+    const handleMarkerClick = () => {
+        if (selectedClinic && selectedClinic === clinic.name) {
+            // Deselect if the same marker is clicked
+            onSelect(null);
+        } else {
+            onSelect(clinic.name);
+        }
+    };
 
     return (
         <div>
@@ -32,7 +44,22 @@ export const CustomMarker: React.FC<CustomMarkerProps> = ({ clinic }) => {
                     scaledSize: new window.google.maps.Size(40, 40),
                 }}
                 title={clinic.name}
+                onClick={handleMarkerClick}
             />
+            {selectedClinic && selectedClinic === clinic.name && (
+                <InfoWindow
+                    position={{ lat: clinic.latitude, lng: clinic.longitude }}
+                    onCloseClick={() => onSelect(null)}
+                >
+                    <div className='lg:w-60 w-24'>
+                        <div className='flex items-center gap-5 mb-4'>
+                            {clinic.imageURL && <img src={clinic.imageURL} alt={clinic.name} style={{ width: 'auto', height: '50px' }} />}
+                            <h2 className='lg:text-lg font-medium'>{clinic.name}</h2>
+                        </div>
+                        <p className='font-medium'>Address: {clinic.address}</p>
+                    </div>
+                </InfoWindow>
+            )}
         </div>
     );
 };

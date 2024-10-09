@@ -1,6 +1,6 @@
 import { faArrowUpRightFromSquare, faCheck, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Tooltip } from 'antd';
 import Swal from "sweetalert2";
 import { useApi } from "../../../../hooks";
@@ -37,11 +37,8 @@ export const BookingsTable: React.FC = () => {
             text: responseBookingAccept,
             icon: 'success',
             confirmButtonText: 'OK'
-        }).then(() => {
-            callApi({ endpoint: apiEndpoints.bookings.get });
-        });
+        })
     }
-    
 
     if (errorBookingAccept) {
         Swal.fire({
@@ -58,9 +55,7 @@ export const BookingsTable: React.FC = () => {
             text: responseBookingDecline,
             icon: 'success', 
             confirmButtonText: 'OK'
-        }).then(() => {
-            callApi({ endpoint: apiEndpoints.bookings.get }); 
-        });
+        })
     }
     
 
@@ -90,7 +85,6 @@ export const BookingsTable: React.FC = () => {
         navigate(`/bookings/${id}`);
     };
     
-
     useEffect(() => {
         callApi({ endpoint: apiEndpoints.bookings.get });
     }, [])
@@ -99,8 +93,7 @@ export const BookingsTable: React.FC = () => {
         { response && setBookings(response?.myBookings) }
     }, [response])
 
-    const handleAccept = (id: number) => {
-        document.body.classList.add('overflow-hidden')
+    const handleAccept = useCallback((id: number) => {
         Swal.fire({
             title: 'Are you sure?',
             text: "You want to accept this booking!",
@@ -109,7 +102,6 @@ export const BookingsTable: React.FC = () => {
             confirmButtonText: 'Yes, accept it!',
             cancelButtonText: 'No, cancel!',
         }).then((result) => {
-            document.body.classList.remove('overflow-hidden')
             if (result.isConfirmed) {
                 callBookingAccept({
                     method: "POST",
@@ -120,10 +112,11 @@ export const BookingsTable: React.FC = () => {
                 });
             }
         });
-    };
+    }, [callBookingAccept]);
+    
 
     const handleDecline = (id: number) => {
-        document.body.classList.add('overflow-hidden')
+        
         Swal.fire({
             title: 'Are you sure?',
             text: "You want to decline this booking!",
@@ -132,7 +125,6 @@ export const BookingsTable: React.FC = () => {
             confirmButtonText: 'Yes, decline it!',
             cancelButtonText: 'No, cancel!',
         }).then((result) => {
-            document.body.classList.remove('overflow-hidden')
             if (result.isConfirmed) {
                 callBookingDecline({
                     method: "POST",
@@ -264,7 +256,7 @@ export const BookingsTable: React.FC = () => {
                                     <h3 className="text-sm font-semibold">{booking.clinic}</h3>
                                     <div className="flex justify-end space-x-3">
                                         <button className="bg-bookingButton text-white px-3 py-2 rounded">
-                                            <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="lg" className="text-bookingView" />
+                                            <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="lg" className="text-bookingView" onClick={() => getBookingDetails(booking.id)}/>
                                         </button>
                                         <button className="bg-bookingButton text-white px-3 py-2 rounded" onClick={() => handleAccept(booking.id)}>
                                             <FontAwesomeIcon icon={faCheck} size="lg" className="text-bookingAccept" />
