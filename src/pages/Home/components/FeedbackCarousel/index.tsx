@@ -84,7 +84,7 @@ export const FeedbackCarousel: React.FC = () => {
                         }`}
                     onClick={() => setIsDentists(false)}
                 >
-                    Clinics
+                    Patients
                 </button>
                 <button
                     className={`relative z-10 w-full h-full focus:outline-none font-semibold ${isDentists ? 'text-brandPrimary' : 'text-carouselTextColor'
