@@ -16,12 +16,14 @@ export const GiftCardSelector: React.FC<GiftCardSelectorProps> = ({ giftCards })
 
   const [selectedCard, setSelectedCard] = useState<number | null>(stepsData.giftCardId);
   const [email, setEmail] = useState<string>(stepsData.email || "");
-  const [isEmailValid, setIsEmailValid] = useState<boolean>(true); // Validasyon durumu için state
-  const [isTyping, setIsTyping] = useState<boolean>(false); // Kullanıcının yazıyor olup olmadığını izlemek için
+  const [isEmailValid, setIsEmailValid] = useState<boolean>(true); 
+  const [isTyping, setIsTyping] = useState<boolean>(false);
 
   const handleSelectCard = (id: number) => {
     setSelectedCard((prevSelectedCard) => (prevSelectedCard === id ? null : id));
   };
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.(?![.])[a-zA-Z]{2,3}$/;
 
   useEffect(() => {
     if (selectedCard) {
@@ -33,10 +35,17 @@ export const GiftCardSelector: React.FC<GiftCardSelectorProps> = ({ giftCards })
   }, [selectedCard]);
 
   useEffect(() => {
-    setStepsData((prev) => ({
-      ...prev,
-      email: email,
-    }));
+    if(emailRegex.test(email)){
+      setStepsData((prev) => ({
+        ...prev,
+        email: email,
+      }));
+    }else {
+      setStepsData((prev) => ({
+        ...prev,
+        email: '',
+      }));
+    }
 
     if(email === ''){
       setIsEmailValid(true)
@@ -44,19 +53,17 @@ export const GiftCardSelector: React.FC<GiftCardSelectorProps> = ({ giftCards })
 
     if (isTyping) {
       const timer = setTimeout(() => {
-        setIsTyping(false); // Yazma işlemi bitmiş olarak ayarlanır
-        const emailRegex = /^[^\s@]+@[^\s@]+\.(?![.])[a-zA-Z]{2,3}$/;
-        setIsEmailValid(emailRegex.test(email)); // Validasyon yapılır
-      }, 1000); // 1 saniye bekleme süresi
+        setIsTyping(false); 
+        setIsEmailValid(emailRegex.test(email)); 
+      }, 1000); 
 
-      return () => clearTimeout(timer); // Timer'ı temizle
+      return () => clearTimeout(timer); 
     }
   }, [email, isTyping]);
 
-  // onChange'de yazmaya başlandığını işaretle
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    setIsTyping(true); // Kullanıcı yazmaya başladı
+    setIsTyping(true);
   };
 
   return (
@@ -97,10 +104,10 @@ export const GiftCardSelector: React.FC<GiftCardSelectorProps> = ({ giftCards })
             name="email"
             value={email}
             placeholder="Your email address"
-            className={`w-full border outline-none focus:border-brandPrimary p-2 rounded-lg ${isEmailValid ? 'border-gray-300' : 'border-red-500'}`} // Geçersizse kırmızı sınır
+            className={`w-full border outline-none focus:border-brandPrimary p-2 rounded-lg ${isEmailValid ? 'border-gray-300' : 'border-red-500'}`}
             onChange={handleEmailChange}
           />
-          {!isEmailValid && <p className="text-red-500 text-sm">Please enter a valid email address.</p>} {/* Hata mesajı */}
+          {!isEmailValid && <p className="text-red-500 text-sm">Please enter a valid email address.</p>}
         </div>
       )}
     </>

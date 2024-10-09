@@ -31,12 +31,12 @@ export const StepsLayout = ({ children }: LayoutProps) => {
         if(response){
             sessionStorage.setItem('clinicsLog', response)
             navigate('/clinics')
+            
         }
     }, [response])
 
     useEffect(() => {
         setStep(1)
-        resetData()
     }, [])
 
     useEffect(() => {
