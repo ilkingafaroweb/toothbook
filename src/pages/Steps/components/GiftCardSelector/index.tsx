@@ -47,10 +47,6 @@ export const GiftCardSelector: React.FC<GiftCardSelectorProps> = ({ giftCards })
       }));
     }
 
-    if(email === ''){
-      setIsEmailValid(true)
-    }
-
     if (isTyping) {
       const timer = setTimeout(() => {
         setIsTyping(false); 
