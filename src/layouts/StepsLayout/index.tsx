@@ -25,7 +25,6 @@ export const StepsLayout = ({ children }: LayoutProps) => {
     }, [])
 
     const { stepsData, resetData } = useStepsContext() 
-
     const { callApi, response, loading } = useApi()
 
     useEffect(() => {

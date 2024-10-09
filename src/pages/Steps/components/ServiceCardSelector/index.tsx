@@ -62,24 +62,20 @@ export const ServiceCardSelector: React.FC = () => {
     
 
     useEffect(() => {
-        if (selectedCards || otherSelected) {
-            setStepsData((prev) => {
-                const existingServices = prev.services || [];
-    
-                const newServices = [
-                    ...existingServices,
-                    ...(selectedCards || []),
-                    ...(otherSelected || [])
-                ];
-    
-                const uniqueServices = Array.from(new Set(newServices));
-    
-                return {
-                    ...prev,
-                    services: uniqueServices
-                };
-            });
-        }
+        setStepsData((prev) => {
+
+            const newServices = [
+                ...(selectedCards || []),
+                ...(otherSelected || [])
+            ];
+
+            const uniqueServices = Array.from(new Set(newServices));
+
+            return {
+                ...prev,
+                services: uniqueServices
+            };
+        });
     }, [selectedCards, otherSelected]);
 
     const handleSelectCard = (id: number) => {

@@ -32,7 +32,6 @@ export const Steps: React.FC<RouteProps> = () => {
     useEffect(() => {
         console.log("Step --->", step);
     }, [step])
-    
 
     useEffect(() => {
         const stepMap: Record<string, number> = {

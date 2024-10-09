@@ -27,7 +27,7 @@ export const EndQuestion: React.FC = () => {
             const matchedAnswer = answers.find(answer => answer.name === stepsData.responseOfQuestion);
             setSelectedCard(matchedAnswer ? matchedAnswer.id : 5);
         } else {
-            setSelectedCard(5); 
+            setSelectedCard(null); 
             setOtherText(stepsData.responseOfQuestion)
         }
     }, [stepsData, answers]);
