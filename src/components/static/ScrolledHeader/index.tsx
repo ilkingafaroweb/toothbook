@@ -70,6 +70,12 @@ export const ScrolledHeader: React.FC<ScrolledHeaderProps> = ({ replacementCompo
         };
     }, []);
 
+    const handleNavigateServices = () => {
+        if(!!coordinates.lat && !!coordinates.lng){
+            navigate('/steps/giftcard')
+        }
+    }
+
     return (
         <React.Fragment>
             <div ref={targetRef} style={{ visibility: isVisible ? 'visible' : 'hidden' }}>
@@ -146,7 +152,7 @@ export const ScrolledHeader: React.FC<ScrolledHeaderProps> = ({ replacementCompo
                                     text='Find a dentist'
                                     color='bg-brandPrimary'
                                     size='w-full lg:w-max'
-                                    onClick={() => navigate('/steps/giftcard')}
+                                    onClick={handleNavigateServices}
                                 />
                             </div>
 

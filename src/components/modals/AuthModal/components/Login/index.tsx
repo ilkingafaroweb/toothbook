@@ -54,7 +54,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onSwitchToSignUp }) => {
   return (
     isForgotPassword ? (<ForgotPassword onBack={handleBack} />) : (<>
       <div>
-        <h2 className="lg:text-3xl text-2xl font-bold text-brandSecondary">Welcome back!</h2>
+        <h2 className="lg:text-3xl text-2xl font-bold text-brandSecondary">Welcome !</h2>
         <p className='lg:text-lg text-sm font-medium text-accordionTitle'>
           Please enter your details
         </p>

@@ -31,7 +31,7 @@ export const StepsLayout = ({ children }: LayoutProps) => {
         if(response){
             sessionStorage.setItem('clinicsLog', response)
             navigate('/clinics')
-            
+            resetData()
         }
     }, [response])
 

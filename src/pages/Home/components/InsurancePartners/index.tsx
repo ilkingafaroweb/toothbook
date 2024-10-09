@@ -14,7 +14,7 @@ export const InsurancePartners: React.FC<InsurancePartnersProps> = ({ topText, b
                         key={index}
                         src={icon}
                         alt={`insurance company ${index + 1} logo`}
-                        className='h-12'
+                        className='h-10'
                     />
                 ))}
             </div>
