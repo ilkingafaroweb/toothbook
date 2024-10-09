@@ -40,7 +40,7 @@ interface BookingPost {
 
 export const BookingModal: React.FC = () => {
 
-    const { isBookingOpen, closeBooking, modalBooking, modalToggle } = useBooking();
+    const { isBookingOpen, closeBooking, modalBooking, modalToggle, clinicName } = useBooking();
     const { callApi: postBooking, response: responsePostBooking } = useApi()
     const { callApi: getBooking, response: responseGetBooking } = useApi()
     const { callApi: getDates, response: responseGetDates } = useApi()
@@ -284,7 +284,7 @@ export const BookingModal: React.FC = () => {
                     </button>
 
                     <div className={`w-full ${modalBooking ? 'flex' : 'hidden'} flex-col lg:px-[38px] px-[15px] lg:py-[57px] py-[34px]`}>
-                        <h1 className="text-2xl font-semibold">Smiles on Kipling Family</h1>
+                        <h1 className="text-2xl font-semibold">{clinicName}</h1>
                         <form className="space-y-4 pt-2" onSubmit={handleSubmit}>
                             {/* 1st Row: Doctor Option */}
                             <div>

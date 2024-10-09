@@ -10,10 +10,11 @@ interface BookingContextType {
     modalBooking: boolean;
     isBookingOpen: boolean;
     bookingData: BookingData | null;
-    openBooking: (clinicId: number) => void;
+    openBooking: (clinicId: number, clinicName: string) => void;
     modalToggle: () => void;
     closeBooking: () => void;
     clinicId: number | null;
+    clinicName: string | null;
 }
 
 const BookingContext = createContext<BookingContextType | undefined>(undefined);
@@ -23,9 +24,11 @@ export const BookingProvider: React.FC<{ children: ReactNode }> = ({ children })
     const [isBookingOpen, setIsBookingOpen] = useState<boolean>(false);
     const [bookingData, setBookingData] = useState<BookingData | null>(null);
     const [clinicId, setClinicId] = useState<number | null>(null)
+    const [clinicName, setClinicName] = useState<string | null>(null)
 
-    const openBooking = (clinicId: number) => {
+    const openBooking = (clinicId: number, name: string) => {
         setClinicId(clinicId)
+        setClinicName(name)
         setIsBookingOpen(true);
         // setBookingData(data);
     };
@@ -43,7 +46,7 @@ export const BookingProvider: React.FC<{ children: ReactNode }> = ({ children })
 
     return (
         <BookingContext.Provider
-            value={{ modalBooking, isBookingOpen, bookingData, openBooking, closeBooking, clinicId, modalToggle }}
+            value={{ modalBooking, isBookingOpen, bookingData, openBooking, clinicName, closeBooking, clinicId, modalToggle }}
         >
             {children}
         </BookingContext.Provider>

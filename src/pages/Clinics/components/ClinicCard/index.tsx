@@ -127,7 +127,7 @@ export const ClinicCard: React.FC<ClinicCardProps> = ({
                     size='w-full'
                     onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
                         event.stopPropagation(); 
-                        openBooking(clinicId);
+                        openBooking(clinicId, name);
                     }}
                 />
             </div>
