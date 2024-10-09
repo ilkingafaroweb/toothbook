@@ -9,7 +9,7 @@ interface Feedback {
     rating: number;
 }
 
-const clientFeedback: Feedback[] = [
+const dentistFeedback: Feedback[] = [
     {
         name: "Dr. Reza Barimani",
         position: "Golden Mile",
@@ -19,30 +19,37 @@ const clientFeedback: Feedback[] = [
         rating: 5,
     },
     {
-        name: "Dr. John Doe",
-        position: "Dental Clinic",
+        name: "Dr. Mohammad Al-Hamami",
+        position: "Oak Tree Dental Centre",
         feedback:
-            "Toothbook has been a wonderful tool for growing our business. The support is excellent, and I highly recommend it to others in the dental industry!",
-        image: "/path/to/image2.jpg",
-        rating: 4,
+            "Very cool! An interesting project that is beneficial for both us and the patients. Simple and easy to use, there is nothing superfluous.",
+        image: "https://images.toothbook.ca/src/assets/testimonials/hamami.svg",
+        rating: 5,
     },
 ];
 
-const dentistFeedback: Feedback[] = [
+const clientFeedback: Feedback[] = [
     {
-        name: "Dr. Sarah Lee",
-        position: "Sunset Smile Clinic",
-        feedback:
-            "Toothbook provides top-notch services that help me manage my clinic effectively. The platform is easy to use and the team is always ready to help.",
-        image: "/path/to/image3.jpg",
+        name: "Jayant Puri",
+        position: "Student at University of Toronto",
+        feedback:"I recently used Toothbook to book my dental appointment, and I couldn't be happier with the experience. The platform was user-friendly and efficient, making the booking process a breeze. Plus, I received a $50 gift card after my appointment, which was a pleasant surprise! The clinic I visited was modern and clean, and the staff were incredibly professional.",
+        image: "https://images.toothbook.ca/src/assets/testimonials/jayant.png",
         rating: 5,
     },
     {
-        name: "Dr. Emily Clark",
-        position: "Bright Dental Care",
+        name: "Monica Clark",
+        position: "Student at University of Alberta",
         feedback:
             "With Toothbook, patient communication has never been easier. I recommend this platform to any dental professional looking to streamline their operations.",
-        image: "/path/to/image4.jpg",
+        image: "https://images.toothbook.ca/src/assets/testimonials/monica.png",
+        rating: 5,
+    },
+    {
+        name: "Jackson Hale",
+        position: "Fashion Model at Canada",
+        feedback:
+            "With Toothbook, patient communication has never been easier. I recommend this platform to any dental professional looking to streamline their operations.",
+        image: "https://images.toothbook.ca/src/assets/testimonials/jackson.png",
         rating: 5,
     },
 ];

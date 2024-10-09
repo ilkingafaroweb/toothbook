@@ -29,23 +29,23 @@ export const InsuranceSelector: React.FC = () => {
     useEffect(() => {
         if (stepsData.insurance) {
             const selectedInsurance = insuranceCompanies.find(company => company.name === stepsData.insurance);
-            setSelectedCard(selectedInsurance ? selectedInsurance.id : null); 
+            setSelectedCard(selectedInsurance ? selectedInsurance.id : null);
         }
     }, [stepsData, insuranceCompanies]);
 
     useEffect(() => {
         let insuranceName = '';
-    
+
         if (selectedCard) {
             const selectedInsurance = insuranceCompanies?.find(company => company.id === selectedCard);
             insuranceName = selectedInsurance ? selectedInsurance.name : '';
         }
-    
+
         if (selectedOtherInsurances) {
             const otherInsurance = otherInsurances?.find(company => company.id === selectedOtherInsurances[0]);
             insuranceName = otherInsurance ? otherInsurance.name : insuranceName;
         }
-    
+
         setStepsData((prev) => ({
             ...prev,
             insurance: insuranceName,
@@ -53,7 +53,7 @@ export const InsuranceSelector: React.FC = () => {
 
         sessionStorage.setItem('your_insurance', insuranceName)
     }, [selectedCard, selectedOtherInsurances]);
-    
+
 
     useEffect(() => {
         callApi({ endpoint: apiEndpoints.steps.getMainInsurances });
@@ -126,41 +126,44 @@ export const InsuranceSelector: React.FC = () => {
                     <Error />
                 ) : (
                     <>
-                        {insuranceCompanies.map((insuranceCard: InsuranceCard) => (
+                        <div className='flex justify-between flex-wrap gap-4'>
+                            {insuranceCompanies.map((insuranceCard: InsuranceCard) => (
+                                <div
+                                    key={insuranceCard.id}
+                                    className={`h-20 lg:w-[calc(25%-1rem)] w-[calc(50%-1rem)] border rounded-lg flex justify-center items-center cursor-pointer ${selectedCard === insuranceCard.id ? 'border-brandPrimary bg-brandPrimary bg-opacity-20' : 'border-gray-300'
+                                        }`}
+                                    onClick={() => handleSelectCard(insuranceCard.id)}
+                                >
+                                    <img
+                                        src={insuranceCard.imageURL}
+                                        alt={insuranceCard.name}
+                                        className="mx-auto"
+                                    />
+                                    <input
+                                        type="radio"
+                                        name="insuranceCard"
+                                        value={insuranceCard.id}
+                                        checked={selectedCard === insuranceCard.id}
+                                        onChange={() => handleSelectCard(insuranceCard.id)}
+                                        className="absolute opacity-0 cursor-pointer"
+                                    />
+                                </div>
+                            ))}
+                            {/* Other card to trigger input */}
                             <div
-                                key={insuranceCard.id}
-                                className={`h-20 lg:w-[calc(25%-1rem)] w-1/2 border rounded-lg flex justify-center items-center cursor-pointer ${selectedCard === insuranceCard.id ? 'border-brandPrimary bg-brandPrimary bg-opacity-20' : 'border-gray-300'
+                                className={`h-20 lg:w-[calc(25%-1rem)] w-[calc(50%-1rem)] border rounded-lg flex justify-center items-center cursor-pointer ${selectedCard === -1 ? 'border-brandPrimary' : 'border-gray-300'
                                     }`}
-                                onClick={() => handleSelectCard(insuranceCard.id)}
+                                onClick={() => handleSelectCard(-1)}
                             >
-                                <img
-                                    src={insuranceCard.imageURL}
-                                    alt={insuranceCard.name}
-                                    className="mx-auto"
-                                />
-                                <input
-                                    type="radio"
-                                    name="insuranceCard"
-                                    value={insuranceCard.id}
-                                    checked={selectedCard === insuranceCard.id}
-                                    onChange={() => handleSelectCard(insuranceCard.id)}
-                                    className="absolute opacity-0 cursor-pointer"
-                                />
+                                <span className="text-lg">Other</span>
                             </div>
-                        ))}
-
-                        {/* Other card to trigger input */}
-                        <div
-                            className={`h-20 lg:w-[calc(25%-1rem)] w-full border rounded-lg flex justify-center items-center cursor-pointer ${selectedCard === -1 ? 'border-brandPrimary' : 'border-gray-300'
-                                }`}
-                            onClick={() => handleSelectCard(-1)}
-                        >
-                            <span className="text-lg">Other</span>
                         </div>
+
+
+
                     </>
                 )}
             </>
-
 
 
             {/* Search input and dropdown */}

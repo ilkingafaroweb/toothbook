@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { brandLogo, burger_icon, x_icon_dark, referrals_icon } from '../../../assets';
 import { Button } from '../../UI';
-import { NAVBAR_ROUTES } from '../../../config';
+import { MENU_ROUTES, NAVBAR_ROUTES } from '../../../config';
 import { LoginMenu } from '../LoginMenu';
 import { useLogin } from '../../../contexts';
 
 export const Navbar = () => {
-  const { setShowAuth } = useLogin();
+  const { setShowAuth, isAuthenticated, logout } = useLogin();
   const token = localStorage.getItem('token')
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [initialPath, setInitialPath] = useState('/')
@@ -29,7 +29,7 @@ export const Navbar = () => {
   };
 
   useEffect(() => {
-    if(location.pathname === '/findyourdentist' || !!sessionStorage.getItem('offer')){
+    if (location.pathname === '/findyourdentist' || !!sessionStorage.getItem('offer')) {
       setInitialPath('findyourdentist')
     }
   }, [])
@@ -113,6 +113,17 @@ export const Navbar = () => {
                   {route.name}
                 </Link>
               ))}
+              {
+                isAuthenticated && <h1 className='w-full text-start text-xl opacity-80 py-2 border-b border-t'>Username</h1>
+              }
+              
+              {
+                isAuthenticated && MENU_ROUTES.filter(route => !route.isHidden).map(route => (
+                  <Link key={route.path} to={route.path} onClick={toggleMobileMenu} className="w-full text-start rounded opacity-65 font-semi-bold">
+                    {route.name}
+                  </Link>
+                ))
+              }
             </div>
 
             {/* Buttons at the Bottom */}
@@ -135,11 +146,20 @@ export const Navbar = () => {
                   onClick={() => setShowAuth(true)}
                 />
               )}
-              <Button
-                color="bg-brandSecondary"
-                text="Login"
-                size="w-full"
-              />
+              {
+                !isAuthenticated ? <Button
+                  color="bg-brandSecondary"
+                  text="Login"
+                  size="w-full"
+                  onClick={() => setShowAuth(true)}
+                /> : <Button
+                  color="bg-brandSecondary"
+                  text="Logout"
+                  size="w-full"
+                  onClick={logout}
+                />
+              }
+
             </div>
           </div>
         </div>

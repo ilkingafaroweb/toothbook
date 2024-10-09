@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { Button, OfferBanner } from '../../components';
 import { ProgressBar } from '../../pages/Steps/components';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { brandLogo } from '../../assets';
 import { useApi } from '../../hooks';
 import apiEndpoints from '../../apiEndpoints';
@@ -16,9 +16,15 @@ export const StepsLayout = ({ children }: LayoutProps) => {
     const location = useLocation();
     const navigate = useNavigate();
     const [step, setStep] = useState<number>(0);
+    const [initialPath, setInitialPath] = useState('/')
+
+    useEffect(() => {
+        if(sessionStorage.getItem('offer')){
+            setInitialPath('/findyourdentist')
+        }
+    }, [])
 
     const { stepsData, resetData } = useStepsContext() 
-
 
     const { callApi, response, loading } = useApi()
 
@@ -87,7 +93,7 @@ export const StepsLayout = ({ children }: LayoutProps) => {
         // Validate based on current step
         if (step === 1) {
             // Step 1: Check if giftCardId is provided
-            if (stepsData.giftCardId === 0) {
+            if (stepsData.giftCardId === 0 || stepsData.email === '') {
                 
                 return null;
             }
@@ -121,7 +127,9 @@ export const StepsLayout = ({ children }: LayoutProps) => {
         <div className="flex flex-col min-h-screen">
             <OfferBanner />
             <div className='w-full lg:px-24 px-6 lg:pt-6 pt-3'>
-                <img src={brandLogo} alt='brand-logo' />
+                <Link to={initialPath}>
+                    <img src={brandLogo} alt="brandLogo" className="h-16" />
+                </Link>
             </div>
             <ProgressBar step={step} />
 

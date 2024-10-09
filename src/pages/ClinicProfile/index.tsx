@@ -227,6 +227,16 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                             }}
                         />
                     </div>
+                    <div className='lg:hidden fixed bottom-0 w-full h-max border-t bg-white py-4'>
+                        <Button
+                            text="Book now"
+                            color='bg-brandPrimary'
+                            onClick={() => {
+                                openBooking(Number(clinicId));
+                            }}
+                            size='w-[88%]'
+                        />
+                    </div>
                 </div>
 
 

@@ -98,10 +98,12 @@ export const ClinicCard: React.FC<ClinicCardProps> = ({
                         href={mapLink}
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={(event) => event.stopPropagation()}
                         className="text-blue-500 underline ml-2 hover:text-blue-700 transition duration-200"
                     >
                         Show on map
                     </a>
+
                 </div>
                 <div className="flex gap-2 bg-opacity-20 w-full rounded-xl">
                     <img src={clinicCardIcons.phone} alt="phone" />

@@ -78,7 +78,7 @@ const Steps: React.FC<StepsProps> = ({ steps }) => {
       <div className='lg:hidden block relative'>
         {/* Dashed Line */}
         <div className="absolute inset-0 flex justify-center items-start">
-          <div className="h-[55%] w-1 border-l border-dashed border-brandPrimary absolute top-28 left-6 transform -translate-x-1/2" />
+          <div className="h-[80%] w-1 border-l border-dashed border-brandPrimary absolute top-28 left-6 transform -translate-x-1/2" />
         </div>
 
         <h1 className='text-textBlack text-2xl font-semibold mb-12'>
@@ -103,7 +103,7 @@ const Steps: React.FC<StepsProps> = ({ steps }) => {
                 <p className='text-black opacity-65'>
                   {step.paragraph}
                 </p>
-                <img src={step.icon} alt={`Step ${index + 1} icon`} className='w-12 h-12' />
+                <img src={step.icon} alt={`Step ${index + 1} icon`} className='w-full' />
               </div>
             </div>
           ))}
