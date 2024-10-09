@@ -51,11 +51,32 @@ export const BookingModal: React.FC = () => {
     const { successMessage, errorMessage, isAuthenticated } = useLogin()
     const navigate = useNavigate()
 
+    const initialFormData = {
+        selectedDoctor: -1,
+        selectedDate: null,
+        selectedTime: "",
+        phone: "",
+        note: "",
+        iHaveBeenInClinic: false,
+    }
+
+    const [validationErrors, setValidationErrors] = useState({
+        selectedDoctor: false,
+        selectedDate: false,
+        selectedTime: false,
+        phone: false,
+    });
+
     useEffect(() => {
         if (!modalBooking) {
             modalToggle()
         }
     }, [isAuthenticated])
+
+    const handleClose = () => {
+        closeBooking()
+        setFormData(initialFormData)
+    }
 
     useEffect(() => {
         if (responsePostBooking) {
@@ -93,14 +114,9 @@ export const BookingModal: React.FC = () => {
         console.log("Booking posted data text --->", bookingPost);
     }, [bookingPost])
 
-    const [formData, setFormData] = useState<FormData>({
-        selectedDoctor: -1,
-        selectedDate: null,
-        selectedTime: "",
-        phone: "",
-        note: "",
-        iHaveBeenInClinic: false,
-    });
+    
+
+    const [formData, setFormData] = useState<FormData>(initialFormData);
 
     const createBookingPostData = (formData: any): BookingPost | null => {
         if (!formData.selectedDate || !formData.selectedTime) {
@@ -207,20 +223,35 @@ export const BookingModal: React.FC = () => {
         e.stopPropagation();
     };
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
-        const isCheckbox = type === 'checkbox';
-        const newValue = isCheckbox ? (e.target as HTMLInputElement).checked : value;
 
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: newValue,
+        if (name === 'phone') {
+            if (!/^\d*$/.test(value) || value.length > 10) {
+                return; 
+            }
+        }
+    
+        // Değişen inputun değerini ayarla
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
         }));
-    };
 
-    const handleDoctorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        setFormData({ ...formData, selectedDoctor: Number(event.target.value) });
+    
+        // Hata mesajını gizle
+        if (name === 'phone') {
+            setValidationErrors(prevErrors => ({ ...prevErrors, phone: false }));
+        }  else if (name === 'selectedDoctor') {
+            setValidationErrors(prevErrors => ({ ...prevErrors, selectedDoctor: false }));
+        }
     };
+    
+
+    // const handleDoctorChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    //     setFormData({ ...formData, selectedDoctor: Number(event.target.value) });
+    // };
 
     const handleDateChange = (selectedDate: Date[]) => {
         if (selectedDate.length > 0) {
@@ -238,6 +269,7 @@ export const BookingModal: React.FC = () => {
                 selectedDate: formattedDate,
             }));
 
+            setValidationErrors(prevErrors => ({ ...prevErrors, selectedDate: false }));
             setDayOfWeek(dayOfWeek);
         }
     };
@@ -254,38 +286,61 @@ export const BookingModal: React.FC = () => {
                 ...prevData,
                 selectedTime: formattedTime,
             }));
+                
+            setValidationErrors(prevErrors => ({ ...prevErrors, selectedTime: false }));
         }
     };
 
 
     const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault(); 
+
+        const { selectedDoctor, selectedDate, selectedTime, phone } = formData;
+
+        const isValid =
+            selectedDoctor >= 0 &&
+            selectedDate !== null &&
+            selectedTime !== "" &&
+            phone.length === 10; 
+
+        setValidationErrors({
+            selectedDoctor: selectedDoctor < 0,
+            selectedDate: selectedDate === null,
+            selectedTime: selectedTime === "",
+            phone: phone === "" || phone.length !== 10, 
+        });
+
+
         if (isAuthenticated) {
-            e.preventDefault();
-            postBooking({
-                method: "POST",
-                endpoint: apiEndpoints.bookingModal.postBooking,
-                data: bookingPost
-            });
+            if (isValid) {
+                postBooking({
+                    method: "POST",
+                    endpoint: apiEndpoints.bookingModal.postBooking,
+                    data: bookingPost,
+                });
+            } else {
+                console.error("Form doğrulama hatası.");
+            }
         } else {
-            e.preventDefault()
-            modalToggle()
+            modalToggle(); 
         }
     };
 
 
 
+
     return (
-        <div onClick={closeBooking} className={`${isBookingOpen ? 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50' : 'hidden'}`}>
+        <div onClick={handleClose} className={`${isBookingOpen ? 'fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50' : 'hidden'}`}>
             <div className="bg-white w-full lg:max-w-[662px] max-w-[353px] lg:mx-auto mx-4 rounded-lg shadow-lg overflow-hidden">
                 <div onClick={handleModalClick} className="relative md:flex transition-transform duration-500 ease-in-out">
                     {/* X button */}
-                    <button className="absolute lg:top-5 lg:right-5 top-3 right-3 z-50" onClick={closeBooking}>
+                    <button className="absolute lg:top-5 lg:right-5 top-3 right-3 z-50" onClick={handleClose}>
                         <img src={auth_x} alt="auth-x" />
                     </button>
 
                     <div className={`w-full ${modalBooking ? 'flex' : 'hidden'} flex-col lg:px-[38px] px-[15px] lg:py-[57px] py-[34px]`}>
                         <h1 className="text-2xl font-semibold">{clinicName}</h1>
-                        <form className="space-y-4 pt-2" onSubmit={handleSubmit}>
+                        <form className="space-y-4 pt-6" onSubmit={handleSubmit}>
                             {/* 1st Row: Doctor Option */}
                             <div>
                                 <label htmlFor="doctor" className="block text-sm font-medium text-gray-700">
@@ -293,9 +348,11 @@ export const BookingModal: React.FC = () => {
                                 </label>
                                 <select
                                     id="doctor"
+                                    name="selectedDoctor" // add name attribute here
                                     value={formData.selectedDoctor}
-                                    onChange={handleDoctorChange}
-                                    className="rounded-lg border border-gray-300 focus:border-brandPrimary focus:ring-brandPrimary outline-none focus:ring-opacity-50 w-full p-2"
+                                    onChange={handleChange}
+                                    className={`rounded-lg border ${validationErrors.selectedDoctor ? 'border-red-500' : 'border-gray-300'
+                                        } focus:border-brandPrimary focus:ring-brandPrimary outline-none focus:ring-opacity-50 w-full p-2`}
                                 >
                                     <option className="hidden" value={-1}>
                                         Select Doctor
@@ -306,6 +363,9 @@ export const BookingModal: React.FC = () => {
                                         </option>
                                     ))}
                                 </select>
+                                {validationErrors.selectedDoctor && (
+                                    <p className="text-red-500 text-sm">Please select a doctor.</p>
+                                )}
                             </div>
 
                             {/* 2nd Row: Date and Time Inputs */}
@@ -327,10 +387,13 @@ export const BookingModal: React.FC = () => {
                                                 }
                                             ],
                                         }}
-                                        className={`w-full outline-none border rounded-lg p-2 disabled`}
+                                        className={`w-full outline-none focus:border-brandPrimary focus:ring-brandPrimary border rounded-lg p-2 ${validationErrors.selectedDate ? 'border-red-500' : 'border-gray-300'
+                                            }`}
                                         placeholder={formData.selectedDate ? '' : 'Select Date'}
                                     />
-
+                                    {validationErrors.selectedDate && (
+                                        <p className="text-red-500 text-sm">Please select a date.</p>
+                                    )}
                                 </div>
                                 <div>
                                     <label htmlFor="time" className="block text-sm font-medium text-gray-700">
@@ -347,9 +410,13 @@ export const BookingModal: React.FC = () => {
                                             minTime: minTime,
                                             maxTime: maxTime,
                                         }}
-                                        className={`w-full outline-none border rounded-lg p-2`}
+                                        className={`w-full outline-none border focus:border-brandPrimary focus:ring-brandPrimary rounded-lg p-2 ${validationErrors.selectedTime ? 'border-red-500' : 'border-gray-300'
+                                            }`}
                                         placeholder="Select a time"
                                     />
+                                    {validationErrors.selectedTime && (
+                                        <p className="text-red-500 text-sm">Please select a time.</p>
+                                    )}
                                 </div>
                             </div>
 
@@ -361,12 +428,18 @@ export const BookingModal: React.FC = () => {
                                 <input
                                     type="tel"
                                     id="phone"
-                                    name="phone"
+                                    name="phone" 
                                     value={formData.phone}
                                     onChange={handleChange}
                                     placeholder="(123) 456-7890"
-                                    className="mt-1 block w-full border border-gray-300 rounded-lg p-2"
+                                    pattern="[0-9]*" 
+                                    inputMode="numeric"
+                                    className={`mt-1 block w-full outline-none focus:border-brandPrimary focus:ring-brandPrimary border rounded-lg p-2 ${validationErrors.phone ? 'border-red-500' : 'border-gray-300'
+                                        }`}
                                 />
+                                {validationErrors.phone && (
+                                    <p className="text-red-500 text-sm">Please enter your correct phone number.</p>
+                                )}
                             </div>
 
                             {/* 4th Row: Note Input */}
@@ -379,26 +452,37 @@ export const BookingModal: React.FC = () => {
                                     name="note"
                                     value={formData.note}
                                     onChange={handleChange}
-                                    className="mt-1 block w-full border border-gray-300 rounded-lg p-2"
+                                    className="mt-1 block outline-none focus:border-brandPrimary focus:ring-brandPrimary w-full border border-gray-300 rounded-lg p-2"
                                     placeholder="Any additional notes..."
                                     rows={4}
                                 />
                             </div>
 
                             {/* Checkbox: I have been to this clinic before */}
-                            <div className="flex items-center">
+                            <label className="flex items-center cursor-pointer mr-4">
                                 <input
                                     type="checkbox"
                                     id="visited-clinic"
                                     name="iHaveBeenInClinic"
                                     checked={formData.iHaveBeenInClinic}
                                     onChange={handleChange}
-                                    className="h-4 w-4 text-brandPrimary border-gray-300 rounded focus:ring-brandPrimary"
+                                    className="hidden" // Gerçek checkbox'ı gizle
                                 />
-                                <label htmlFor="visited-clinic" className="ml-2 block text-sm text-gray-700">
+                                <span
+                                    className={`w-6 h-6 flex items-center justify-center border-2 rounded ${formData.iHaveBeenInClinic
+                                            ? 'bg-brandPrimary border-brandPrimary'
+                                            : 'border-gray-300'
+                                        }`}
+                                >
+                                    {formData.iHaveBeenInClinic && (
+                                        <span className="text-white">&#10003;</span> // İşaret
+                                    )}
+                                </span>
+                                <span className="ml-2 text-sm text-gray-700">
                                     I have been to this clinic before
-                                </label>
-                            </div>
+                                </span>
+                            </label>
+
 
                             <Button
                                 text="Book now"
@@ -406,6 +490,8 @@ export const BookingModal: React.FC = () => {
                                 size="w-full"
                             />
                         </form>
+
+
                     </div>
                     <div className={`w-full ${modalBooking ? 'hidden' : 'flex'} h-max flex-col space-y-5 bg-white md:w-full lg:p-12 px-4 py-8 transition-all transform duration-300 ease-in-out`
                     }>
