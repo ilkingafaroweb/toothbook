@@ -63,6 +63,11 @@ export const BookingModal: React.FC = () => {
                 ...prevData,
                 selectedTime: formattedTime,
             }));
+        }else{
+            setFormData((prevData) => ({
+                ...prevData,
+                selectedTime: '',
+            }));
         }
     }, [selectedHour, selectedMinute]);
 
@@ -237,15 +242,19 @@ export const BookingModal: React.FC = () => {
     }, [responseGetBooking])
 
     useEffect(() => {
-        { responseGetDates && setDisableDays(responseGetDates) }
+        {responseGetDates && setDisableDays(responseGetDates) }
     }, [responseGetDates])
 
     useEffect(() => {
         { responseGetHours && setHours(responseGetHours) }
     }, [responseGetHours])
 
+
+    const minDate = new Date()
     const maxDate = new Date();
+    minDate.setDate(minDate.getDate())
     maxDate.setDate(maxDate.getDate() + 30);
+
 
     const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -385,7 +394,7 @@ export const BookingModal: React.FC = () => {
                                             onChange={handleDateChange}
                                             options={{
                                                 dateFormat: "d/m/Y",
-                                                minDate: new Date(),
+                                                minDate: minDate,
                                                 maxDate: maxDate,
                                                 disable: [
                                                     function (date) {
@@ -458,6 +467,13 @@ export const BookingModal: React.FC = () => {
                                                 ))}
                                             </select>
                                         </div>
+                                        {hours && (
+                                            <div className="text-sm text-brandSecondary font-medium mt-1 ml-1">
+                                                Available visit time 
+                                                {` ${hours[0] % 12 === 0 ? 12 : hours[0] % 12}:00 ${hours[0] < 12 ? 'AM' : 'PM'}`} -
+                                                {` ${(hours[hours.length - 1] + 1) % 12 === 0 ? 12 : (hours[hours.length - 1]) % 12}:45 ${hours[hours.length - 1] < 12 ? 'AM' : 'PM'}`}
+                                            </div>
+                                        )}
                                         {validationErrors.selectedTime && (
                                             <p className="text-red-500 text-sm">Please select a time.</p>
                                         )}
