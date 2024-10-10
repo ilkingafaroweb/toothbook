@@ -91,7 +91,7 @@ export const BookingView: React.FC = () => {
                 <h2 className="text-lg font-medium text-accordionTitle mb-5">Booking Info</h2>
                 <p className="text-sm text-accordionTitle flex justify-between mb-2.5">
                     <span className="font-semibold text-sm text-accordionTitle">Booking ID:</span>
-                    <span className="text-brandPrimary"> #{bookingId}</span>
+                    <span className="text-brandPrimary"> #{booking?.uniqueCode}</span>
                 </p>
                 <p className="text-sm text-accordionTitle flex justify-between gap-4">
                     <span className="font-semibold text-accordionTitle">Selected Clinic:</span>

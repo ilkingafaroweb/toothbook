@@ -109,12 +109,13 @@ export const StepsLayout = ({ children }: LayoutProps) => {
                 return null;
             }
         } else if (step === 5) {
-            await callApi({
-                method: 'POST',
-                endpoint: apiEndpoints.steps.postStepsData,
-                data: stepsData
-            });
-            
+            if(!!stepsData.responseOfQuestion){
+                await callApi({
+                    method: 'POST',
+                    endpoint: apiEndpoints.steps.postStepsData,
+                    data: stepsData
+                });
+            }         
         }
     
         // Move to the next step

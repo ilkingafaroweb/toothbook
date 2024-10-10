@@ -39,11 +39,11 @@ export const StepsLoading: React.FC= () => {
                 }
             });
             
-        }, (6000 / steps.length) );
+        }, (10000 / steps.length - 1));
 
         setTimeout(() => {
             sessionStorage.setItem('loading', 'no')
-        }, 6000)
+        }, 10000)
 
         return () => clearInterval(timer);
     }, [steps.length]);

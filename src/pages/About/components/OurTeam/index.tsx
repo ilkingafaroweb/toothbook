@@ -7,7 +7,7 @@ interface TeamMember {
 }
 
 const teamMembers: TeamMember[] = [
-    { name: 'Ulvi Mehdiyev', role: 'Founder & CEO', imageUrl: 'https://images.toothbook.ca/src/assets/team/ulvi.jpg' },
+    { name: 'Ulvi Mehdiyev', role: 'Founder & CEO', imageUrl: 'https://images.toothbook.ca/src/assets/team/ulvi.png' },
     { name: 'Arifali Baghirli', role: 'Backend Developer', imageUrl: 'https://images.toothbook.ca/src/assets/team/arif.png' },
     { name: 'Ilkin Gafarov', role: 'Frontend Developer', imageUrl: 'https://images.toothbook.ca/src/assets/team/ilkin.png' },
     { name: 'Aykhan Mastaliev', role: 'SEO Manager', imageUrl: 'https://images.toothbook.ca/src/assets/team/aykhan.png' },

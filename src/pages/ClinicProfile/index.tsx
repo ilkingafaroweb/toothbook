@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { RouteProps } from '../../types'
 import { DefaultLayout } from '../../layouts'
-import { useBooking, useClinicContext } from '../../contexts'
+import { useBooking, useClinicContext, useLogin } from '../../contexts'
 import { clinicCardIcons } from '../../assets'
 import { Button, Error, Loading } from '../../components'
 import { About, Gallery } from './components'
@@ -83,6 +83,7 @@ interface BookNowParams {
 
 export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
 
+    const { isAuthenticated } = useLogin()
     const bookingAvailable = sessionStorage.getItem('checkBooking') || 'no'
     const { clinicId } = useParams()
     const { openBooking, isBookingOpen } = useBooking();
@@ -116,14 +117,18 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
 
 
     const handleBookNow = async ({ clinicId, name }: BookNowParams): Promise<void> => {
-        if (checkBookingResponse) {
+        if(isAuthenticated){
+            if (checkBookingResponse) {
+                openBooking(clinicId, name);
+            } else if (errorCheckBooking || bookingAvailable === 'no') {
+                Swal.fire({
+                    title: 'Warning',
+                    text: 'You have an active booking. You can create a new one after you attend or cancel your existing appointment.',
+                    icon: 'warning',
+                });
+            }
+        }else {
             openBooking(clinicId, name);
-        } else if (errorCheckBooking || bookingAvailable === 'no') {
-            Swal.fire({
-                title: 'Warning',
-                text: 'You have an active booking. You can create a new one after you attend or cancel your existing appointment.',
-                icon: 'warning',
-            });
         }
     };
 

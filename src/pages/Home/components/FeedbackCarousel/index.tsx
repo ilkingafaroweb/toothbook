@@ -26,6 +26,14 @@ const dentistFeedback: Feedback[] = [
         image: "https://images.toothbook.ca/src/assets/testimonials/hamami.svg",
         rating: 5,
     },
+    {
+        name: "Dr. M. Ghaly",
+        position: "Esthe-Dent Dental Services",
+        feedback:
+            "This platform has helped me increase the number of my appointments per day. At the beginning. I had doubts about the effectiveness, that it might not work. However, i can say that the they have done a very good job. It’s not just about efficiency. It’s also about operativeness. When i had a problem, they responded very quickly and helped me solve the issue",
+        image: "https://images.toothbook.ca/src/assets/testimonials/ghaly.svg",
+        rating: 5,
+    },
 ];
 
 const clientFeedback: Feedback[] = [

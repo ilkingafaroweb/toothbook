@@ -9,7 +9,7 @@ import { GoogleMap } from '@react-google-maps/api';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { adv_banner, adv_mobile } from '../../assets';
 import Swal from 'sweetalert2';
-import { useBooking } from '../../contexts';
+import { useBooking, useLogin } from '../../contexts';
 
 interface BookNowParams {
     clinicId: number; 
@@ -18,9 +18,8 @@ interface BookNowParams {
 
 export const Clinics: React.FC<RouteProps> = ({ name }) => {
 
+    const { isAuthenticated } = useLogin()
     const loadingVisible = sessionStorage.getItem('loading')
-    const localBookingActive = sessionStorage.getItem('checkBooking')
-    // const [bookingIsActive, setBookingIsActive] = useState(localBookingActive || 'yes')
 
     const { openBooking, isBookingOpen } = useBooking()
 
@@ -65,15 +64,35 @@ export const Clinics: React.FC<RouteProps> = ({ name }) => {
     }, [isBookingOpen])
 
 
+    useEffect(() => {
+        
+        const firstClinic = clinics[0];
+
+        if (firstClinic?.distance > 10) {
+            setTimeout(() => {
+                Swal.fire({
+                    title: 'Warning',
+                    text: 'We are too far from you. We are expanding soon!',
+                    icon: 'warning',
+                });
+            }, 6500)
+        }
+    }, [])
+
+
     const handleBookNow = async ({ clinicId, name }: BookNowParams): Promise<void> => {
-        if (checkBookingResponse) {
+        if(isAuthenticated){
+            if (checkBookingResponse) {
+                openBooking(clinicId, name);
+            } else if (errorCheckBooking) {
+                Swal.fire({
+                    title: 'Warning',
+                    text: 'You have an active booking. You can create a new one after you attend or cancel your existing appointment.',
+                    icon: 'warning',
+                });
+            }
+        }else {
             openBooking(clinicId, name);
-        } else if (errorCheckBooking || localBookingActive === 'no') {
-            Swal.fire({
-                title: 'Warning',
-                text: 'You have an active booking. You can create a new one after you attend or cancel your existing appointment.',
-                icon: 'warning',
-            });
         }
     };
 
@@ -135,7 +154,6 @@ export const Clinics: React.FC<RouteProps> = ({ name }) => {
             },
         });
     }, [log]);
-
 
     return (
         <DefaultLayout>

@@ -81,6 +81,13 @@ export const LoginProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   useEffect(() => {
     if (!!responseGoogle) {
+
+      const { token, email, userName } = responseGoogle;
+
+      localStorage.setItem('token', token.toString());
+      localStorage.setItem('email', email.toString());
+      localStorage.setItem('userName', userName.toString());
+
       const timer = setTimeout(() => {
         setShowAuth(false);
       }, 1000);
@@ -112,16 +119,6 @@ export const LoginProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     });
   }
 
-  useEffect(() => {
-    if (responseGoogle) {
-      const { token, email, userName } = responseGoogle;
-
-      localStorage.setItem('token', token.toString());
-      localStorage.setItem('email', email.toString());
-      localStorage.setItem('userName', userName.toString());
-    }
-  }, [responseGoogle])
-
 
   useEffect(() => {
     if (response) {
@@ -135,6 +132,7 @@ export const LoginProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   const logout = () => {
     localStorage.clear(); 
+    sessionStorage.clear()
     setIsAuthenticated(false); 
 };
 
