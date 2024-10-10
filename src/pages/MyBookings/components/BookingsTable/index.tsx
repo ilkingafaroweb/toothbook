@@ -100,7 +100,7 @@ export const BookingsTable: React.FC = () => {
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, accept it!',
-            cancelButtonText: 'No, cancel!',
+            cancelButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
                 callBookingAccept({
@@ -118,12 +118,12 @@ export const BookingsTable: React.FC = () => {
     const handleDecline = (id: number) => {
 
         Swal.fire({
-            title: 'Are you sure?',
-            text: "You want to decline this booking!",
+            title: 'Are you sure ?',
+            text: "The clinic has proposed a new booking date. Does this date work for you ?",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Yes, decline it!',
-            cancelButtonText: 'No, cancel!',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
         }).then((result) => {
             if (result.isConfirmed) {
                 callBookingDecline({
