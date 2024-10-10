@@ -369,6 +369,7 @@ export const BookingModal: React.FC = () => {
                                     onChange={handleChange}
                                     className={`rounded-lg border ${validationErrors.selectedDoctor ? 'border-red-500' : 'border-gray-300'
                                         } focus:border-brandPrimary focus:ring-brandPrimary outline-none focus:ring-opacity-50 w-full p-2`}
+                                    style={{ WebkitAppearance: 'none', MozAppearance: 'none' }}
                                 >
                                     {doctors.map((doctor) => (
                                         <option key={doctor.id} value={doctor.id}>
@@ -498,6 +499,7 @@ export const BookingModal: React.FC = () => {
                                     inputMode="numeric"
                                     className={`mt-1 block w-full outline-none focus:border-brandPrimary focus:ring-brandPrimary border rounded-lg p-2 ${validationErrors.phone ? 'border-red-500' : 'border-gray-300'
                                         }`}
+                                    style={{ WebkitAppearance: 'none', MozAppearance: 'none' }}
                                 />
                                 {validationErrors.phone && (
                                     <p className="text-red-500 text-sm">Please enter your correct phone number.</p>

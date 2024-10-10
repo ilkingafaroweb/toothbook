@@ -82,7 +82,7 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
     const { openBooking } = useBooking();
     const logId = sessionStorage.getItem('clinicsLog')
     const { inlineTag, onTopTag } = useClinicContext()
-    const [bookingIsActive, setBookingIsActive] = useState(true)
+    // const [bookingIsActive, setBookingIsActive] = useState(true)
 
     const [clinicProfile, setClinicProfile] = useState<ClinicProfile | null>(null);
 
