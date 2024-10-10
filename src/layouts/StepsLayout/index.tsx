@@ -18,20 +18,20 @@ export const StepsLayout = ({ children }: LayoutProps) => {
     const [step, setStep] = useState<number>(0);
     const [initialPath, setInitialPath] = useState('/')
 
+    const { stepsData, resetData } = useStepsContext() 
+    
     useEffect(() => {
         if(sessionStorage.getItem('offer')){
             setInitialPath('/findyourdentist')
         }
     }, [])
 
-    const { stepsData, resetData } = useStepsContext() 
     const { callApi, response, loading } = useApi()
 
     useEffect(() => {
         if(response){
             sessionStorage.setItem('clinicsLog', response)
             navigate('/clinics')
-            resetData()
         }
     }, [response])
 
@@ -114,6 +114,7 @@ export const StepsLayout = ({ children }: LayoutProps) => {
                 endpoint: apiEndpoints.steps.postStepsData,
                 data: stepsData
             });
+            
         }
     
         // Move to the next step

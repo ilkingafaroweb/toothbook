@@ -31,7 +31,7 @@ export const StepsLoading: React.FC= () => {
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentStep((prevStep) => {
-                if (prevStep < steps.length - 1) {
+                if (prevStep < steps.length) {
                     return prevStep + 1;
                 } else {
                     clearInterval(timer);

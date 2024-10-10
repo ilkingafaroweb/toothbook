@@ -12,6 +12,12 @@ import { useStepsContext } from '../../contexts';
 
 export const Home: React.FC<RouteProps> = () => {
 
+    const { resetData } = useStepsContext() 
+
+    useEffect(() => {
+        resetData()
+    }, [])
+
     const insurances = [
         'https://images.toothbook.ca/src/assets/insurances/canadalife.png',
         'https://images.toothbook.ca/src/assets/insurances/manulife.png',
@@ -64,6 +70,7 @@ export const Home: React.FC<RouteProps> = () => {
         if(!!coordinates.lat && !!coordinates.lng){
             navigate('/steps/giftcard')
             sessionStorage.setItem('loading', 'yes')
+            sessionStorage.setItem('scrollClinics', 'yes')
         }
     }
 
@@ -139,6 +146,7 @@ export const Home: React.FC<RouteProps> = () => {
                                     text='Find a dentist'
                                     color='bg-brandPrimary'
                                     size='w-full lg:w-max'
+                                    disabled={!coordinates.lat && !coordinates.lng}
                                     onClick={handleNavigateServices}
                                 />
                             </div>

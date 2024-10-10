@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RouteProps } from '../../types';
 import { DefaultLayout } from '../../layouts';
 import { useApi } from '../../hooks';
@@ -9,13 +9,20 @@ import { GoogleMap } from '@react-google-maps/api';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { adv_banner, adv_mobile } from '../../assets';
 import Swal from 'sweetalert2';
+import { useBooking } from '../../contexts';
 
+interface BookNowParams {
+    clinicId: number; 
+    name: string;    
+}
 
 export const Clinics: React.FC<RouteProps> = ({ name }) => {
 
     const loadingVisible = sessionStorage.getItem('loading')
     const localBookingActive = sessionStorage.getItem('checkBooking')
-    const [bookingIsActive, setBookingIsActive] = useState(localBookingActive || 'yes')
+    // const [bookingIsActive, setBookingIsActive] = useState(localBookingActive || 'yes')
+
+    const { openBooking, isBookingOpen } = useBooking()
 
     const { callApi, response, loading, error } = useApi();
     const { callApi: searchClinics, response: responseClinics, loading: loadingClinics, error: errorClinics } = useApi();
@@ -31,44 +38,45 @@ export const Clinics: React.FC<RouteProps> = ({ name }) => {
     const [selectedClinic, setSelectedClinic] = useState('')
 
     useEffect(() => {
+        if (sessionStorage.getItem('scrollClinics') === 'yes') {
+            const scrollTimeout = setTimeout(() => {
+                window.scrollTo({
+                    top: 900, 
+                    behavior: 'smooth' 
+                });
+                sessionStorage.setItem('scrollClinics', 'no'); 
+            }, 6000); 
+
+            return () => clearTimeout(scrollTimeout);
+        }
         window.scrollTo(0, 0);
         checkBooking({
-            endpoint: apiEndpoints.clinics.check
-        })
+            endpoint: apiEndpoints.clinics.check,
+        });
     }, []);
 
-    useEffect(() => {
-        if (localBookingActive) {
-            setBookingIsActive(localBookingActive)
-        }
-    }, [localBookingActive])
-
-    const prevBookingStatus = useRef(bookingIsActive);
 
     useEffect(() => {
-        if (prevBookingStatus.current === 'yes' && bookingIsActive === 'no') {
-            setTimeout(() => {
-                if (!Swal.isVisible()) {
-                    Swal.fire({
-                        title: 'Warning',
-                        text: 'You have an active booking. You can create a new one after you attend or cancel your existing appointment.',
-                        icon: 'warning',
-                    });
-                }
-            }, 5000); 
+        if(!isBookingOpen){
+            checkBooking({
+                endpoint: apiEndpoints.clinics.check,
+            });
         }
-
-        prevBookingStatus.current = bookingIsActive;
-    }, [bookingIsActive]);
+    }, [isBookingOpen])
 
 
-    useEffect(() => {
-        if (errorCheckBooking && localBookingActive !== 'no') {
-            sessionStorage.setItem('checkBooking', 'no');
-        } else if (checkBookingResponse) {
-            sessionStorage.setItem('checkBooking', 'yes')
+    const handleBookNow = async ({ clinicId, name }: BookNowParams): Promise<void> => {
+        if (checkBookingResponse) {
+            openBooking(clinicId, name);
+        } else if (errorCheckBooking || localBookingActive === 'no') {
+            Swal.fire({
+                title: 'Warning',
+                text: 'You have an active booking. You can create a new one after you attend or cancel your existing appointment.',
+                icon: 'warning',
+            });
         }
-    }, [errorCheckBooking, checkBookingResponse])
+    };
+
 
     useEffect(() => {
         if (response) {
@@ -133,7 +141,7 @@ export const Clinics: React.FC<RouteProps> = ({ name }) => {
         <DefaultLayout>
             <React.Fragment>
                 {
-                    loadingVisible !== 'no' &&<StepsLoading />
+                    loadingVisible !== 'no' && <StepsLoading />
                 }
                 <div className='flex flex-col items-start lg:space-y-8 space-y-12 lg:my-8 lg:px-16'>
                     <h1 className='lg:text-5xl text-3xl text-textBlack font-semi-bold leading-129'>{name}</h1>
@@ -227,6 +235,7 @@ export const Clinics: React.FC<RouteProps> = ({ name }) => {
                                 imageURL={clinic.imageURL}
                                 inlineTag={clinic.inlineTag}
                                 onTopTag={clinic.onTopTag}
+                                handleBookNow={handleBookNow}
                             />
                         ))}
                     </div>)}

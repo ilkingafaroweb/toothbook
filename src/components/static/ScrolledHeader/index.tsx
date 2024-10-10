@@ -73,6 +73,8 @@ export const ScrolledHeader: React.FC<ScrolledHeaderProps> = ({ replacementCompo
     const handleNavigateServices = () => {
         if(!!coordinates.lat && !!coordinates.lng){
             navigate('/steps/giftcard')
+            sessionStorage.setItem('loading', 'yes')
+            sessionStorage.setItem('scrollClinics', 'yes')
         }
     }
 
@@ -152,6 +154,7 @@ export const ScrolledHeader: React.FC<ScrolledHeaderProps> = ({ replacementCompo
                                     text='Find a dentist'
                                     color='bg-brandPrimary'
                                     size='w-full lg:w-max'
+                                    disabled={!coordinates.lat && !coordinates.lng}
                                     onClick={handleNavigateServices}
                                 />
                             </div>

@@ -14,12 +14,10 @@ export const FirstQuestion: React.FC<FirstQuestionProps> = ({ step, setStep }) =
   };
 
   useEffect(() => {
-    {selectedAnswer === 'yes' ? setStep(4) : setStep(5) }
+    {selectedAnswer === 'yes' ? setStep(4) : setStep(5)}
+    {selectedAnswer === 'no' && sessionStorage.removeItem('your_insurance')}
   }, [selectedAnswer])
 
-  useEffect(() => {
-    sessionStorage.removeItem('your_insurance')
-  }, [])
 
   return (
     <>

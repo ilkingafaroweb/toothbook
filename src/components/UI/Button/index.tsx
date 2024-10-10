@@ -12,7 +12,7 @@ interface ButtonProps {
     button?: boolean;
     hover?: boolean;
     isLoading?: boolean;
-    disabled?: boolean; // Add disabled prop
+    disabled?: boolean;
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 

@@ -76,11 +76,16 @@ interface Services {
     matchMessage: string;
 }
 
+interface BookNowParams {
+    clinicId: number; 
+    name: string;    
+}
+
 export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
 
     const bookingAvailable = sessionStorage.getItem('checkBooking') || 'no'
     const { clinicId } = useParams()
-    const { openBooking } = useBooking();
+    const { openBooking, isBookingOpen } = useBooking();
     const logId = sessionStorage.getItem('clinicsLog')
     const { inlineTag, onTopTag } = useClinicContext()
 
@@ -92,11 +97,35 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        checkBooking({
+            endpoint: apiEndpoints.clinics.check,
+        });
     }, []);
 
     useEffect(() => {
         setSessionCheckBooking(bookingAvailable)
     }, [bookingAvailable])
+
+    useEffect(() => {
+        if(!isBookingOpen){
+            checkBooking({
+                endpoint: apiEndpoints.clinics.check,
+            });
+        }
+    }, [isBookingOpen])
+
+
+    const handleBookNow = async ({ clinicId, name }: BookNowParams): Promise<void> => {
+        if (checkBookingResponse) {
+            openBooking(clinicId, name);
+        } else if (errorCheckBooking || bookingAvailable === 'no') {
+            Swal.fire({
+                title: 'Warning',
+                text: 'You have an active booking. You can create a new one after you attend or cancel your existing appointment.',
+                icon: 'warning',
+            });
+        }
+    };
 
     useEffect(() => {
         callApi({
@@ -252,9 +281,8 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                                 text='Book now'
                                 color='bg-brandPrimary'
                                 size='w-full'
-                                disabled={sessionCheckBooking === 'no'}
                                 onClick={() => {
-                                    openBooking(Number(clinicId), clinicProfile?.name);
+                                    handleBookNow({ clinicId: Number(clinicId), name: clinicProfile?.name })
                                 }}
                             />
                         </div>
@@ -262,9 +290,8 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                             <Button
                                 text="Book now"
                                 color='bg-brandPrimary'
-                                disabled={sessionCheckBooking === 'no'}
                                 onClick={() => {
-                                    openBooking(Number(clinicId), clinicProfile?.name);
+                                    handleBookNow({ clinicId: Number(clinicId), name: clinicProfile?.name })
                                 }}
                                 size='w-[88%]'
                             />

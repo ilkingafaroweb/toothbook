@@ -9,7 +9,7 @@ interface LayoutProps {
 export const DefaultLayout = ({ children }: LayoutProps) => {
   const location = useLocation();
 
-  const activeRoutes = ['/home', '/about', '/contact']; 
+  const activeRoutes = ['/', '/findyourdentist', '/about-us', 'faq', '/contact']; 
 
   const shouldShowScrolledHeader = activeRoutes.includes(location.pathname);
 

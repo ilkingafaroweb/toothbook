@@ -1,7 +1,7 @@
 import React from 'react';
 import { clinicCardIcons } from '../../../../assets';
 import { Button } from '../../../../components';
-import { useBooking, useClinicContext } from '../../../../contexts';
+import {  useClinicContext } from '../../../../contexts';
 import { useNavigate } from 'react-router-dom';
 
 interface ClinicCardProps {
@@ -18,6 +18,7 @@ interface ClinicCardProps {
     imageURL: string;
     inlineTag: string;
     onTopTag: string;
+    handleBookNow: (params: { clinicId: number; name: string }) => void;
 }
 
 export const ClinicCard: React.FC<ClinicCardProps> = ({
@@ -34,20 +35,17 @@ export const ClinicCard: React.FC<ClinicCardProps> = ({
     imageURL,
     inlineTag,
     onTopTag,
+    handleBookNow
 }) => {
 
     const navigate = useNavigate()
-    const { openBooking } = useBooking();
     const { setInlineTag, setOnTopTag } = useClinicContext();
-    const isActiveBooking = sessionStorage.getItem('checkBooking')
-
 
     const handleClick = () => {
         setInlineTag(inlineTag);
         setOnTopTag(onTopTag)
         navigate(`/clinics/${clinicId}`);
     };
-
 
     return (
         <div onClick={handleClick} className="lg:w-[calc(33.33333%-1rem)] flex flex-col justify-between clinic-card border border-opacity-20 p-3 space-y-3 rounded-xl cursor-pointer lg:hover:shadow-lg transition-transform transform hover:scale-[102%] active:scale-[98%]">
@@ -126,10 +124,9 @@ export const ClinicCard: React.FC<ClinicCardProps> = ({
                     text='Book now'
                     color='bg-brandPrimary'
                     size='w-full'
-                    disabled={isActiveBooking === 'no'}
                     onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
                         event.stopPropagation(); 
-                        openBooking(clinicId, name);
+                        handleBookNow({clinicId, name});
                     }}
                 />
             </div>
