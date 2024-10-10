@@ -266,12 +266,20 @@ export const BookingsTable: React.FC = () => {
                                         <button className="bg-bookingButton text-white px-3 py-2 rounded">
                                             <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="lg" className="text-bookingView" onClick={() => getBookingDetails(booking.id)} />
                                         </button>
-                                        <button className="bg-bookingButton text-white px-3 py-2 rounded" onClick={() => handleAccept(booking.id)}>
-                                            <FontAwesomeIcon icon={faCheck} size="lg" className="text-bookingAccept" />
-                                        </button>
-                                        <button className="bg-bookingButton text-white px-3 py-2 rounded" onClick={() => handleDecline(booking.id)}>
-                                            <FontAwesomeIcon icon={faX} size="lg" className="text-bookingDecline" />
-                                        </button>
+                                        {
+                                            booking.bookingStatus.toLowerCase() === 'awaiting your confirmation' && <button className="bg-bookingButton text-white px-3 py-2 rounded" onClick={() => handleAccept(booking.id)}>
+                                                <FontAwesomeIcon icon={faCheck} size="lg" className="text-bookingAccept" />
+                                            </button>
+                                        }
+                                        {
+                                            (booking.bookingStatus.toLowerCase() === 'scheduled' ||
+                                                booking.bookingStatus.toLowerCase() === 'awaiting your confirmation' ||
+                                                booking.bookingStatus.toLowerCase() === 'waiting for clinic') && (
+                                                <button className="bg-bookingButton text-white px-3 py-2 rounded" onClick={() => handleDecline(booking.id)}>
+                                                    <FontAwesomeIcon icon={faX} size="lg" className="text-bookingDecline" />
+                                                </button>
+                                            )
+                                        }
                                     </div>
                                 </div>
 
