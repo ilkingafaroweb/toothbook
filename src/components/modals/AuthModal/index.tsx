@@ -8,22 +8,26 @@ const AuthModal: React.FC = () => {
 
   const [isSignUp, setIsSignUp] = useState(false);
 
-  const { showAuth, setShowAuth, successMessage, errorMessage } = useLogin()
+  const { showAuth, setShowAuth, successMessage, errorMessage, resetStatus } = useLogin()
 
   useEffect(() => {
     setIsSignUp(false)
+    resetStatus()
   }, [showAuth])
 
   const handleModalClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    resetStatus()
   };
 
   const handleSignUpClick = () => {
     setIsSignUp(true)
+    resetStatus()
   };
 
   const handleBackToLoginClick = () => {
     setIsSignUp(false)
+    resetStatus()
   };
 
   return (
@@ -36,9 +40,9 @@ const AuthModal: React.FC = () => {
           </button>
           {/* Left Side (Image) */}
           <div
-            className={`hidden lg:block z-10 lg:w-1/2 bg-center transition-transform duration-300 ease-in-out ${isSignUp ? 'translate-x-full' : 'translate-x-0'}`}
+            className={`hidden lg:block bg-neutral-200 z-10 lg:w-1/2 bg-center transition-transform duration-300 ease-in-out ${isSignUp ? 'translate-x-full' : 'translate-x-0'}`}
           >
-            <img src={!isSignUp ? login_image : register_image} alt="login-img" />
+            <img className='' src={!isSignUp ? login_image : register_image} alt="login-img" />
           </div>
 
           {/* Right Side (Form) */}

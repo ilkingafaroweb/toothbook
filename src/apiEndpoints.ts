@@ -37,7 +37,8 @@ const apiEndpoints = {
   },
 
   partners: {
-    post: `${API_BASE_URL}/Information/Partners/submit`
+    post: `${API_BASE_URL}/Information/Partners/submit`,
+    best: `${API_BASE_URL}/Information/Partners/getbestclinics`,
   },
 
   bookings: {

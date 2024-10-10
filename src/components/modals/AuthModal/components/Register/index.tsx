@@ -70,27 +70,27 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
   const validateForm = () => {
     const newErrors: Partial<FormData> = {};
 
-    if (!formData.name) {
-      newErrors.name = 'Please enter your name';
+    if (!formData.name || formData.name.length > 13) {
+      newErrors.name = 'Name must contain only letters and be up to 13 characters long';
     }
-    if (!formData.surname) {
-      newErrors.surname = 'Please enter contact person name';
+    if (!formData.surname || formData.surname.length > 13) {
+      newErrors.surname = 'Surname must contain only letters and be up to 13 characters long';
     }
-    if (!formData.phoneNumber || !/^\d{10}$/.test(formData.phoneNumber)) {
-      newErrors.phoneNumber = 'Phone number must be 10 digits';
+    if (!formData.phoneNumber || !/^\d{7-10}$/.test(formData.phoneNumber)) {
+      newErrors.phoneNumber = 'Provide a valid phone number (7 to 10 digits)';
     }
     if (!formData.email || !/^\S+@\S+\.\S+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = 'Provide a valid email address';
     }
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     if (!formData.password) {
       newErrors.password = 'Please enter a password';
     } else if (!passwordRegex.test(formData.password)) {
-      newErrors.password = 'Password must be at least 8 characters, include at least one uppercase letter, one lowercase letter, and one number';
+      newErrors.password = 'Use at least 8 characters, one uppercase letter, one lowercase letter, and one number in your password';
     }
 
-    if (formData.password !== formData.confirmPassword) {
+    if (!errors.password && formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
 
@@ -131,7 +131,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
         <h2 className="lg:text-3xl text-2xl font-bold text-brandSecondary">{'Create an account'}</h2>
         <p className='lg:text-lg text-sm font-medium text-accordionTitle'>{"Let’s get started"}</p>
       </div>
-      <form className="space-y-3" onSubmit={handleSubmit}>
+      <form className="space-y-2" onSubmit={handleSubmit}>
         <div>
           <Input
             name='name'
@@ -140,7 +140,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             value={formData.name}
             onChange={handleChange}
           />
-          {errors.name && <p className="mt-2 text-sm text-accentColor">{errors.name}</p>}
+          {errors.name && <p className="max-w-96 mt-1 ml-1 text-sm text-accentColor">{errors.name}</p>}
         </div>
         <div>
           <Input
@@ -150,7 +150,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             value={formData.surname}
             onChange={handleChange}
           />
-          {errors.surname && <p className="mt-2 text-sm text-accentColor">{errors.surname}</p>}
+          {errors.surname && <p className="max-w-96 mt-1 ml-1 text-sm text-accentColor">{errors.surname}</p>}
         </div>
         <div>
           <Input
@@ -160,7 +160,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             value={formData.email}
             onChange={handleChange}
           />
-          {errors.email && <p className="mt-2 text-sm text-accentColor">{errors.email}</p>}
+          {errors.email && <p className="max-w-96 mt-1 ml-1 text-sm text-accentColor">{errors.email}</p>}
         </div>
         <div>
           <Input
@@ -171,7 +171,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             value={formData.phoneNumber}
             onChange={handleChange}
           />
-          {errors.phoneNumber && <p className="mt-2 text-sm text-accentColor">{errors.phoneNumber}</p>}
+          {errors.phoneNumber && <p className="max-w-96 mt-1 ml-1 text-sm text-accentColor">{errors.phoneNumber}</p>}
         </div>
         <div>
           <Input
@@ -182,7 +182,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             value={formData.password}
             onChange={handleChange}
           />
-          {errors.password && <p className="mt-2 text-sm text-accentColor">{errors.password}</p>}
+          {errors.password && <p className="max-w-96 mt-1 ml-1 text-sm text-accentColor">{errors.password}</p>}
         </div>
         <div>
           <Input
@@ -193,7 +193,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSwitchToLogin }) =
             value={formData.confirmPassword}
             onChange={handleChange}
           />
-          {errors.confirmPassword && <p className="mt-2 text-sm text-accentColor">{errors.confirmPassword}</p>}
+          {errors.confirmPassword && <p className="max-w-96 mt-1 ml-1 text-sm text-accentColor">{errors.confirmPassword}</p>}
         </div>
 
         <Button

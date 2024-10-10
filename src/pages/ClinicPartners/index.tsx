@@ -86,6 +86,7 @@ export const ClinicPartners: React.FC<RouteProps> = () => {
             }
           ]}
         />
+        {/* <BestClinics /> */}
         <FeedbackCarousel />
       </React.Fragment>
     </DefaultLayout>

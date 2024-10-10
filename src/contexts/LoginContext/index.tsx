@@ -18,6 +18,7 @@ interface LoginContextType {
   loginGoogle: (token: string, referralCode: number) => Promise<void>
   login: (user: User) => Promise<void>;
   logout: () => void;
+  resetStatus: () => void;
 }
 
 const defaultContext: LoginContextType = {
@@ -31,6 +32,7 @@ const defaultContext: LoginContextType = {
   loginGoogle: async () => { },
   login: async () => { },
   logout: () => { },
+  resetStatus: () => { },
 };
 
 const LoginContext = createContext<LoginContextType>(defaultContext);
@@ -119,6 +121,11 @@ export const LoginProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     });
   }
 
+  const resetStatus = () => {
+    setErrorMessage(null)
+    setSuccessMessage(null)
+  }
+
 
   useEffect(() => {
     if (response) {
@@ -141,7 +148,8 @@ export const LoginProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       {
         showAuth, setShowAuth, isAuthenticated,
         isLoading, loginGoogle, response,
-        successMessage, errorMessage,
+        successMessage, errorMessage, 
+        resetStatus,
         login, logout
       }}>
       {children}
