@@ -9,6 +9,7 @@ import { Reviews } from './components/Reviews'
 import { useParams } from 'react-router-dom'
 import { useApi } from '../../hooks'
 import apiEndpoints from '../../apiEndpoints'
+import Swal from 'sweetalert2'
 
 interface ClinicProfile {
     id: number;
@@ -81,10 +82,12 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
     const { openBooking } = useBooking();
     const logId = sessionStorage.getItem('clinicsLog')
     const { inlineTag, onTopTag } = useClinicContext()
+    const [bookingIsActive, setBookingIsActive] = useState(true)
 
     const [clinicProfile, setClinicProfile] = useState<ClinicProfile | null>(null);
 
     const { callApi, response, loading, error } = useApi()
+    const { callApi: checkBooking, error: errorCheckBooking} = useApi()
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -100,6 +103,9 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                 inlineTag: inlineTag
             }
         })
+        checkBooking({
+            endpoint: apiEndpoints.clinics.check
+        })
     }, [])
 
     useEffect(() => {
@@ -108,6 +114,16 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
             console.log("Clinic data: ", clinicProfile);
         }
     }, [response])
+
+    useEffect(() => {
+        if(errorCheckBooking){
+            Swal.fire({
+                title: 'Warning',
+                text: 'You have an active booking. You can create a new one after you attend or cancel your existing appointment.',
+                icon: 'warning',
+            })
+        }
+    }, [errorCheckBooking])
 
     const [activeTab, setActiveTab] = useState<'about' | 'gallery' | 'reviews'>('about')
     const handleTabChange = (tab: 'about' | 'gallery' | 'reviews') => {

@@ -64,7 +64,9 @@ const apiEndpoints = {
   clinics : {
     list: `${API_BASE_URL}/Clinic/getclinics`,
     search: `${API_BASE_URL}/Clinic/searchclinics`,
-    profile: `${API_BASE_URL}/Clinic/getclinic`
+    profile: `${API_BASE_URL}/Clinic/getclinic`,
+
+    check: `${API_BASE_URL}/Clinic/checkuserhasongoingbooking`
   },
 
   bookingModal: {

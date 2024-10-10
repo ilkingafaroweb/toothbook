@@ -382,7 +382,7 @@ export const BookingModal: React.FC = () => {
                             </div>
 
                             {/* 2nd Row: Date and Time Inputs */}
-                            <div className="flex flex-row gap-4">
+                            <div className="flex lg:flex-row flex-col gap-4">
                                 <div className="w-full">
                                     <label htmlFor="date" className="block text-sm font-medium text-gray-700">
                                         Booking Date
