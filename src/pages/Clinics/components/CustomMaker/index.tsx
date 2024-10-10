@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Marker, InfoWindow } from '@react-google-maps/api';
 
 interface Clinic {
@@ -20,15 +20,18 @@ interface CustomMarkerProps {
     onSelect: (arg: any) => void;
 }
 
-export const CustomMarker: React.FC<CustomMarkerProps> = ({ clinic, selectedClinic, onSelect }) => {
+export const CustomMarker: React.FC<CustomMarkerProps> = ({ clinic, onSelect }) => {
 
-    const handleMarkerClick = () => {
-        if (selectedClinic && selectedClinic === clinic.name) {
-            // Deselect if the same marker is clicked
-            onSelect(null);
-        } else {
-            onSelect(clinic.name);
-        }
+    const [isHovered, setIsHovered] = useState(false); 
+
+    const handleMouseOver = () => {
+        setIsHovered(true); 
+        onSelect(clinic.name);
+    };
+
+    const handleMouseOut = () => {
+        setIsHovered(false); 
+        onSelect(null);
     };
 
     return (
@@ -41,15 +44,15 @@ export const CustomMarker: React.FC<CustomMarkerProps> = ({ clinic, selectedClin
               <path fill="#FF6F61" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/>
             </svg>
           `),
-                    scaledSize: new window.google.maps.Size(40, 40),
+                    scaledSize: new window.google.maps.Size(50, 50),
                 }}
-                title={clinic.name}
-                onClick={handleMarkerClick}
+                onMouseOver={handleMouseOver}
+                onMouseOut={handleMouseOut}
             />
-            {selectedClinic && selectedClinic === clinic.name && (
+            {isHovered && (
                 <InfoWindow
                     position={{ lat: clinic.latitude, lng: clinic.longitude }}
-                    onCloseClick={() => onSelect(null)}
+                    options={{ pixelOffset: new window.google.maps.Size(0, -50)}}
                 >
                     <div className='lg:w-60 w-24'>
                         <div className='flex items-center gap-5 mb-4'>

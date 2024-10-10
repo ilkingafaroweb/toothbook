@@ -33,12 +33,13 @@ export const ClinicCard: React.FC<ClinicCardProps> = ({
     mapLink,
     imageURL,
     inlineTag,
-    onTopTag
+    onTopTag,
 }) => {
 
     const navigate = useNavigate()
     const { openBooking } = useBooking();
     const { setInlineTag, setOnTopTag } = useClinicContext();
+    const isActiveBooking = sessionStorage.getItem('checkBooking')
 
 
     const handleClick = () => {
@@ -125,6 +126,7 @@ export const ClinicCard: React.FC<ClinicCardProps> = ({
                     text='Book now'
                     color='bg-brandPrimary'
                     size='w-full'
+                    disabled={isActiveBooking === 'no'}
                     onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
                         event.stopPropagation(); 
                         openBooking(clinicId, name);

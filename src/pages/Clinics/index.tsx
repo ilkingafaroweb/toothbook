@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { RouteProps } from '../../types';
 import { DefaultLayout } from '../../layouts';
 import { useApi } from '../../hooks';
@@ -8,11 +8,18 @@ import { ClinicCard, CustomMarker } from './components';
 import { GoogleMap } from '@react-google-maps/api';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
 import { adv_banner, adv_mobile } from '../../assets';
+import Swal from 'sweetalert2';
 
 
 export const Clinics: React.FC<RouteProps> = ({ name }) => {
+
+    const loadingVisible = sessionStorage.getItem('loading')
+    const localBookingActive = sessionStorage.getItem('checkBooking')
+    const [bookingIsActive, setBookingIsActive] = useState(localBookingActive || 'yes')
+
     const { callApi, response, loading, error } = useApi();
     const { callApi: searchClinics, response: responseClinics, loading: loadingClinics, error: errorClinics } = useApi();
+    const { callApi: checkBooking, response: checkBookingResponse, error: errorCheckBooking } = useApi()
 
     const [clinics, setClinics] = useState<any[]>([]);
     const [mapCenter, setMapCenter] = useState({ lat: 40.4047907, lng: 49.8402033 });
@@ -21,12 +28,47 @@ export const Clinics: React.FC<RouteProps> = ({ name }) => {
     const [address, setAddress] = useState<string>('');
     const [coordinates, setCoordinates] = useState<{ lat: number | null, lng: number | null }>({ lat: null, lng: null });
 
-
     const [selectedClinic, setSelectedClinic] = useState('')
 
     useEffect(() => {
         window.scrollTo(0, 0);
+        checkBooking({
+            endpoint: apiEndpoints.clinics.check
+        })
     }, []);
+
+    useEffect(() => {
+        if (localBookingActive) {
+            setBookingIsActive(localBookingActive)
+        }
+    }, [localBookingActive])
+
+    const prevBookingStatus = useRef(bookingIsActive);
+
+    useEffect(() => {
+        if (prevBookingStatus.current === 'yes' && bookingIsActive === 'no') {
+            setTimeout(() => {
+                if (!Swal.isVisible()) {
+                    Swal.fire({
+                        title: 'Warning',
+                        text: 'You have an active booking. You can create a new one after you attend or cancel your existing appointment.',
+                        icon: 'warning',
+                    });
+                }
+            }, 5000); 
+        }
+
+        prevBookingStatus.current = bookingIsActive;
+    }, [bookingIsActive]);
+
+
+    useEffect(() => {
+        if (errorCheckBooking && localBookingActive !== 'no') {
+            sessionStorage.setItem('checkBooking', 'no');
+        } else if (checkBookingResponse) {
+            sessionStorage.setItem('checkBooking', 'yes')
+        }
+    }, [errorCheckBooking, checkBookingResponse])
 
     useEffect(() => {
         if (response) {
@@ -90,7 +132,9 @@ export const Clinics: React.FC<RouteProps> = ({ name }) => {
     return (
         <DefaultLayout>
             <React.Fragment>
-                <StepsLoading />
+                {
+                    loadingVisible !== 'no' &&<StepsLoading />
+                }
                 <div className='flex flex-col items-start lg:space-y-8 space-y-12 lg:my-8 lg:px-16'>
                     <h1 className='lg:text-5xl text-3xl text-textBlack font-semi-bold leading-129'>{name}</h1>
 

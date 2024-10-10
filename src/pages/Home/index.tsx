@@ -63,6 +63,7 @@ export const Home: React.FC<RouteProps> = () => {
     const handleNavigateServices = () => {
         if(!!coordinates.lat && !!coordinates.lng){
             navigate('/steps/giftcard')
+            sessionStorage.setItem('loading', 'yes')
         }
     }
 

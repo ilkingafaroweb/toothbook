@@ -38,16 +38,22 @@ export const StepsLoading: React.FC= () => {
                     return prevStep;
                 }
             });
-        }, 1500);
+            
+        }, (6000 / steps.length) );
+
+        setTimeout(() => {
+            sessionStorage.setItem('loading', 'no')
+        }, 6000)
 
         return () => clearInterval(timer);
     }, [steps.length]);
+    
 
     useEffect(() => {
         if (currentStep === steps.length - 1) {
             const timeout = setTimeout(() => {
                 setIsVisible(false);
-            }, 750);
+            }, 1000);
 
             return () => clearTimeout(timeout);
         }

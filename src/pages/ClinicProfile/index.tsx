@@ -78,20 +78,25 @@ interface Services {
 
 export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
 
+    const bookingAvailable = sessionStorage.getItem('checkBooking') || 'no'
     const { clinicId } = useParams()
     const { openBooking } = useBooking();
     const logId = sessionStorage.getItem('clinicsLog')
     const { inlineTag, onTopTag } = useClinicContext()
-    // const [bookingIsActive, setBookingIsActive] = useState(true)
 
     const [clinicProfile, setClinicProfile] = useState<ClinicProfile | null>(null);
+    const [sessionCheckBooking, setSessionCheckBooking] = useState(bookingAvailable)
 
     const { callApi, response, loading, error } = useApi()
-    const { callApi: checkBooking, error: errorCheckBooking} = useApi()
+    const { callApi: checkBooking, response: checkBookingResponse, error: errorCheckBooking} = useApi()
 
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
+    useEffect(() => {
+        setSessionCheckBooking(bookingAvailable)
+    }, [bookingAvailable])
 
     useEffect(() => {
         callApi({
@@ -108,6 +113,7 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
         })
     }, [])
 
+
     useEffect(() => {
         {
             response && setClinicProfile(response)
@@ -116,14 +122,19 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
     }, [response])
 
     useEffect(() => {
-        if(errorCheckBooking){
+        if(errorCheckBooking && sessionCheckBooking !== 'no'){
             Swal.fire({
                 title: 'Warning',
                 text: 'You have an active booking. You can create a new one after you attend or cancel your existing appointment.',
                 icon: 'warning',
-            })
-        }
-    }, [errorCheckBooking])
+            }).then(() => {
+                sessionStorage.setItem('checkBooking', 'no'); 
+            });
+        }else if(checkBookingResponse){
+            sessionStorage.setItem('checkBooking', 'yes')
+        }        
+    }, [errorCheckBooking, checkBookingResponse])
+
 
     const [activeTab, setActiveTab] = useState<'about' | 'gallery' | 'reviews'>('about')
     const handleTabChange = (tab: 'about' | 'gallery' | 'reviews') => {
@@ -241,6 +252,7 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                                 text='Book now'
                                 color='bg-brandPrimary'
                                 size='w-full'
+                                disabled={sessionCheckBooking === 'no'}
                                 onClick={() => {
                                     openBooking(Number(clinicId), clinicProfile?.name);
                                 }}
@@ -250,6 +262,7 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                             <Button
                                 text="Book now"
                                 color='bg-brandPrimary'
+                                disabled={sessionCheckBooking === 'no'}
                                 onClick={() => {
                                     openBooking(Number(clinicId), clinicProfile?.name);
                                 }}

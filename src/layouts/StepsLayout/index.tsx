@@ -109,7 +109,6 @@ export const StepsLayout = ({ children }: LayoutProps) => {
                 return null;
             }
         } else if (step === 5) {
-            // Step 5: Handle form submission
             await callApi({
                 method: 'POST',
                 endpoint: apiEndpoints.steps.postStepsData,

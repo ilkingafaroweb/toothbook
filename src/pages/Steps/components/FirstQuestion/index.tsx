@@ -17,6 +17,10 @@ export const FirstQuestion: React.FC<FirstQuestionProps> = ({ step, setStep }) =
     {selectedAnswer === 'yes' ? setStep(4) : setStep(5) }
   }, [selectedAnswer])
 
+  useEffect(() => {
+    sessionStorage.removeItem('your_insurance')
+  }, [])
+
   return (
     <>
       {step === 3 ? (

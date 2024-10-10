@@ -107,6 +107,7 @@ export const BookingModal: React.FC = () => {
         if (responsePostBooking) {
             closeBooking()
             const bookingId = responsePostBooking;
+            sessionStorage.setItem('checkBooking', 'no')
 
             Swal.fire({
                 title: 'Booking Created!',

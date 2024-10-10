@@ -134,14 +134,9 @@ export const LoginProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   }, [response])
 
   const logout = () => {
-    localStorage.removeItem('user');
-    localStorage.removeItem('userId');
-    localStorage.removeItem('token');
-    localStorage.removeItem('message');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('email');
-    setIsAuthenticated(false)
-  };
+    localStorage.clear(); 
+    setIsAuthenticated(false); 
+};
 
   return (
     <LoginContext.Provider value={

@@ -12,26 +12,39 @@ interface ButtonProps {
     button?: boolean;
     hover?: boolean;
     isLoading?: boolean;
+    disabled?: boolean; // Add disabled prop
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-
-export const Button: React.FC<ButtonProps> = ({ color, text, icon, size, button, hover, isLoading, onClick }) => {
+export const Button: React.FC<ButtonProps> = ({ 
+    color, 
+    text, 
+    icon, 
+    size, 
+    button, 
+    hover, 
+    isLoading, 
+    disabled, 
+    onClick 
+}) => {
     return (
         <button
             type={button ? 'button' : 'submit'}
-            onClick={onClick}
+            onClick={disabled ? undefined : onClick}
+            disabled={disabled}
             className={`group border outline-none border-white ${size ? size : 'w-[150px]'} 
                     flex items-center justify-center space-x-2.5 px-4 py-2.5 rounded-xl 
                     ${color} 
-                    ${hover && 'hover:bg-white hover:border hover:border-opacity-20 hover:border-black'} 
+                    ${disabled ? 'opacity-50 cursor-not-allowed' : ''} // Add styles for disabled state
+                    ${hover && !disabled && 'hover:bg-white hover:border hover:border-opacity-20 hover:border-black'} 
                     transition-transform transform active:scale-95 active:shadow-md`}>
-
-            <span className={`flex justify-center items-center gap-3 text-white w-max ${hover && 'group-hover:text-opacity-80 group-hover:text-black'}`}>
+            <span className={`flex justify-center items-center gap-3 text-white w-max ${hover && !disabled && 'group-hover:text-opacity-80 group-hover:text-black'}`}>
                 {
-                    isLoading && <svg className={`animate-spin h-5 w-5 ${hover && 'group-hover:text-brandPrimary text-white'} text-white viewBox="0 0 24 24`}>
-                        <FontAwesomeIcon icon={faSpinner} />
-                    </svg>
+                    isLoading && (
+                        <svg className={`animate-spin h-5 w-5 ${hover && 'group-hover:text-brandPrimary text-white'} text-white`} viewBox="0 0 24 24">
+                            <FontAwesomeIcon icon={faSpinner} />
+                        </svg>
+                    )
                 }
                 {text}
             </span>

@@ -35,6 +35,15 @@ export const GiftCardSelector: React.FC<GiftCardSelectorProps> = ({ giftCards })
   }, [selectedCard]);
 
   useEffect(() => {
+    if (!isEmailValid) {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth' 
+        });
+    }
+}, [isEmailValid]);
+
+  useEffect(() => {
     if(emailRegex.test(email)){
       setStepsData((prev) => ({
         ...prev,
@@ -47,7 +56,7 @@ export const GiftCardSelector: React.FC<GiftCardSelectorProps> = ({ giftCards })
       }));
     }
 
-    if (isTyping) {
+    if (isTyping || selectedCard) {
       const timer = setTimeout(() => {
         setIsTyping(false); 
         setIsEmailValid(emailRegex.test(email)); 
@@ -55,7 +64,7 @@ export const GiftCardSelector: React.FC<GiftCardSelectorProps> = ({ giftCards })
 
       return () => clearTimeout(timer); 
     }
-  }, [email, isTyping]);
+  }, [email, isTyping, selectedCard]);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
