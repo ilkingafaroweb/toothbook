@@ -11,7 +11,7 @@ import { LoginForm, RegisterForm } from "../AuthModal/components";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendar, faClock} from "@fortawesome/free-solid-svg-icons";
+import { faCalendar, faClock } from "@fortawesome/free-solid-svg-icons";
 
 interface FormData {
     selectedDoctor: number;
@@ -49,7 +49,7 @@ export const BookingModal: React.FC = () => {
     const { callApi: getHours, response: responseGetHours } = useApi()
     const { clinicId } = useBooking()
     const [isSignUp, setIsSignUp] = useState(false);
-    const [isFocused, setIsFocused] = useState(false); 
+    const [isFocused, setIsFocused] = useState(false);
     const [selectedHour, setSelectedHour] = useState('');
     const [selectedMinute, setSelectedMinute] = useState('');
     const availableMinutes = [
@@ -94,6 +94,8 @@ export const BookingModal: React.FC = () => {
     const handleClose = () => {
         closeBooking()
         setFormData(initialFormData)
+        setSelectedHour('')
+        setSelectedMinute('')
     }
 
     useEffect(() => {
@@ -119,7 +121,7 @@ export const BookingModal: React.FC = () => {
 
 
     useEffect(() => {
-        if(errorPostBooking){
+        if (errorPostBooking) {
             Swal.fire({
                 title: 'Error',
                 text: errorPostBooking,
@@ -255,21 +257,21 @@ export const BookingModal: React.FC = () => {
 
         if (name === 'phone') {
             if (!/^\d*$/.test(value) || value.length > 10) {
-                return; 
+                return;
             }
         }
-    
-       
+
+
         setFormData(prevState => ({
             ...prevState,
             [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
         }));
 
-    
+
         // Hata mesajını gizle
         if (name === 'phone') {
             setValidationErrors(prevErrors => ({ ...prevErrors, phone: false }));
-        }  else if (name === 'selectedDoctor') {
+        } else if (name === 'selectedDoctor') {
             setValidationErrors(prevErrors => ({ ...prevErrors, selectedDoctor: false }));
         }
     };
@@ -296,25 +298,8 @@ export const BookingModal: React.FC = () => {
     };
 
 
-    // const handleTimeChange = (selectedTime: any) => {
-    //     if (selectedTime.length > 0) {
-    //         const date = selectedTime[0];
-    //         const hours = date.getHours().toString().padStart(2, '0');
-    //         const minutes = date.getMinutes().toString().padStart(2, '0');
-    //         const formattedTime = `${hours}:${minutes}`;
-
-    //         setFormData((prevData) => ({
-    //             ...prevData,
-    //             selectedTime: formattedTime,
-    //         }));
-                
-    //         setValidationErrors(prevErrors => ({ ...prevErrors, selectedTime: false }));
-    //     }
-    // };
-
-
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault(); 
+        e.preventDefault();
 
         const { selectedDoctor, selectedDate, selectedTime, phone } = formData;
 
@@ -322,13 +307,13 @@ export const BookingModal: React.FC = () => {
             selectedDoctor >= 0 &&
             selectedDate !== null &&
             selectedTime !== "" &&
-            phone.length === 10; 
+            phone.length === 10;
 
         setValidationErrors({
             selectedDoctor: selectedDoctor < 0,
             selectedDate: selectedDate === null,
             selectedTime: selectedTime === "",
-            phone: phone === "" || phone.length !== 10, 
+            phone: phone === "" || phone.length !== 10,
         });
 
 
@@ -343,15 +328,12 @@ export const BookingModal: React.FC = () => {
                 console.error("Form doğrulama hatası.");
             }
         } else {
-            if(isValid){
-                modalToggle(); 
+            if (isValid) {
+                modalToggle();
             }
         }
     };
 
-    
-
-    
 
 
     return (
@@ -391,10 +373,10 @@ export const BookingModal: React.FC = () => {
                             </div>
 
                             {/* 2nd Row: Date and Time Inputs */}
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
+                            <div className="flex flex-row gap-4">
+                                <div className="w-full">
                                     <label htmlFor="date" className="block text-sm font-medium text-gray-700">
-                                       Booking Date
+                                        Booking Date
                                     </label>
                                     <div className="flex items-center border rounded-lg border-gray-300">
                                         <FontAwesomeIcon icon={faCalendar} className="px-4 text-brandPrimary" size='xl' />
@@ -433,52 +415,55 @@ export const BookingModal: React.FC = () => {
                                         <p className="text-red-500 text-sm">Please select a date.</p>
                                     )}
                                 </div>
-                                <div>
-                                    <label htmlFor="time" className="block text-sm font-medium text-gray-700">
-                                       Booking Time
-                                    </label>
-                                    <div className={`flex flex-row items-center space-x-4 rounded-lg border ${isFocused ? 'border-brandPrimary' : 'border-gray-300'}`}>
-                                        <FontAwesomeIcon icon={faClock} className="px-4 text-brandPrimary" size='xl' />
+                                {
+                                    formData.selectedDate && hours && <div className="w-full">
+                                        <label htmlFor="time" className="block text-sm font-medium text-gray-700">
+                                            Booking Time
+                                        </label>
+                                        <div className={`flex flex-row items-center space-x-4 rounded-lg border ${isFocused ? 'border-brandPrimary' : 'border-gray-300'}`}>
+                                            <FontAwesomeIcon icon={faClock} className="px-4 text-brandPrimary" size='xl' />
 
-                                        <select
-                                            className={`w-1/2 outline-none border-none rounded-lg p-2 appearance-none text-brandPrimary ${validationErrors.selectedTime ? 'border-red-500' : 'border-gray-300'}`}
-                                            value={selectedHour}
-                                            onChange={(e) => setSelectedHour(e.target.value)}
-                                            required
-                                            onFocus={() => setIsFocused(true)}
-                                            onBlur={() => setIsFocused(false)}
-                                            style={{ WebkitAppearance: 'none', MozAppearance: 'none' }} 
-                                        >
-                                            <option value="" className="hidden text-center">Hour</option>
-                                            {hours.map((hour) => (
-                                                <option key={hour} value={hour} className="text-center">
-                                                    {hour > 12 ? `${hour - 12} PM` : `${hour} AM`}
-                                                </option>
-                                            ))}
-                                        </select>
+                                            <select
+                                                className={`w-1/2 outline-none border-none rounded-lg p-2 appearance-none text-brandPrimary ${validationErrors.selectedTime ? 'border-red-500' : 'border-gray-300'}`}
+                                                value={selectedHour}
+                                                onChange={(e) => setSelectedHour(e.target.value)}
+                                                required
+                                                onFocus={() => setIsFocused(true)}
+                                                onBlur={() => setIsFocused(false)}
+                                                style={{ WebkitAppearance: 'none', MozAppearance: 'none' }}
+                                            >
+                                                <option value="" className="hidden text-center">Hour</option>
+                                                {hours.map((hour) => (
+                                                    <option key={hour} value={hour} className="text-center">
+                                                        {hour > 12 ? `${hour - 12} PM` : `${hour} AM`}
+                                                    </option>
+                                                ))}
+                                            </select>
 
-                                        <span className="text-xl">:</span> 
+                                            <span className="text-xl">:</span>
 
-                                        <select
-                                            className={`w-1/2 outline-none border-none rounded-lg p-2 appearance-none text-brandPrimary ${validationErrors.selectedTime ? 'border-red-500' : 'border-gray-300'}`}
-                                            value={selectedMinute}
-                                            onChange={(e) => setSelectedMinute(e.target.value)}
-                                            onFocus={() => setIsFocused(true)}
-                                            onBlur={() => setIsFocused(false)}
-                                            style={{ WebkitAppearance: 'none', MozAppearance: 'none' }}
-                                        >
-                                            <option value="" className="hidden text-center">Minute</option>
-                                            {availableMinutes.map((minute) => (
-                                                <option key={minute} value={minute} className="text-center">
-                                                    {minute}
-                                                </option>
-                                            ))}
-                                        </select>
+                                            <select
+                                                className={`w-1/2 outline-none border-none rounded-lg p-2 appearance-none text-brandPrimary ${validationErrors.selectedTime ? 'border-red-500' : 'border-gray-300'}`}
+                                                value={selectedMinute}
+                                                onChange={(e) => setSelectedMinute(e.target.value)}
+                                                onFocus={() => setIsFocused(true)}
+                                                onBlur={() => setIsFocused(false)}
+                                                style={{ WebkitAppearance: 'none', MozAppearance: 'none' }}
+                                            >
+                                                <option value="" className="hidden text-center">Minute</option>
+                                                {availableMinutes.map((minute) => (
+                                                    <option key={minute} value={minute} className="text-center">
+                                                        {minute}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        {validationErrors.selectedTime && (
+                                            <p className="text-red-500 text-sm">Please select a time.</p>
+                                        )}
                                     </div>
-                                    {validationErrors.selectedTime && (
-                                        <p className="text-red-500 text-sm">Please select a time.</p>
-                                    )}
-                                </div>
+                                }
+
                             </div>
 
                             {/* 3rd Row: Phone Number Input */}
@@ -489,11 +474,11 @@ export const BookingModal: React.FC = () => {
                                 <input
                                     type="tel"
                                     id="phone"
-                                    name="phone" 
+                                    name="phone"
                                     value={formData.phone}
                                     onChange={handleChange}
                                     placeholder="(123) 456-7890"
-                                    pattern="[0-9]*" 
+                                    pattern="[0-9]*"
                                     inputMode="numeric"
                                     className={`mt-1 block w-full outline-none focus:border-brandPrimary focus:ring-brandPrimary border rounded-lg p-2 ${validationErrors.phone ? 'border-red-500' : 'border-gray-300'
                                         }`}
@@ -529,7 +514,7 @@ export const BookingModal: React.FC = () => {
                                         name="iHaveBeenInClinic"
                                         checked={formData.iHaveBeenInClinic}
                                         onChange={handleChange}
-                                        className="hidden" 
+                                        className="hidden"
                                     />
                                     <span
                                         className={`w-6 h-6 flex items-center justify-center border-2 rounded ${formData.iHaveBeenInClinic
