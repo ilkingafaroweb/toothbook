@@ -7,14 +7,11 @@ interface TeamMember {
 }
 
 const teamMembers: TeamMember[] = [
-    { name: 'Olivia Rhye', role: 'Founder & CEO', imageUrl: '/path-to-image/olivia.jpg' },
-    { name: 'Ulvı Mehdıyev', role: 'Manager', imageUrl: '/path-to-image/ulvi.jpg' },
-    { name: 'Lana Steiner', role: 'Backend Developer', imageUrl: '/path-to-image/lana.jpg' },
-    { name: 'Demi Wilkinson', role: 'Frontend Developer', imageUrl: '/path-to-image/demi.jpg' },
-    { name: 'Candice Wu', role: 'Backend Developer', imageUrl: '/path-to-image/candice.jpg' },
-    { name: 'Natali Craig', role: 'Product Designer', imageUrl: '/path-to-image/natali.jpg' },
-    { name: 'Drew Cano', role: 'UX Researcher', imageUrl: '/path-to-image/drew.jpg' },
-    { name: 'Orlando Diggs', role: 'Customer Success', imageUrl: '/path-to-image/orlando.jpg' },
+    { name: 'Ulvi Mehdiyev', role: 'Founder & CEO', imageUrl: 'https://images.toothbook.ca/src/assets/team/ulvi.jpg' },
+    { name: 'Arifali Baghirli', role: 'Backend Developer', imageUrl: 'https://images.toothbook.ca/src/assets/team/arif.png' },
+    { name: 'Ilkin Gafarov', role: 'Frontend Developer', imageUrl: 'https://images.toothbook.ca/src/assets/team/ilkin.png' },
+    { name: 'Aykhan Mastaliev', role: 'SEO Manager', imageUrl: 'https://images.toothbook.ca/src/assets/team/aykhan.png' },
+    { name: 'Harvey Gunner', role: 'Business Development Manager', imageUrl: 'https://images.toothbook.ca/src/assets/team/harvey.png' },
 ];
 
 export const OurTeam: React.FC = () => {
@@ -29,13 +26,12 @@ export const OurTeam: React.FC = () => {
                     for both patients and dental clinics.
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-4 gap-8 justify-items-center">
+                <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-5 gap-8 justify-items-center">
                     {teamMembers.map((member) => (
                         <div key={member.name} className="text-center font-inter">
                             <img
                                 className="w-24 h-24 object-cover rounded-full mx-auto mb-4"
-                                src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnSA1zygA3rubv-VK0DrVcQ02Po79kJhXo_A&s'
-                                // src={member.imageUrl}
+                                src={member.imageUrl}
                                 alt={member.name}
                             />
                             <h3 className="text-lg font-semibold leading-129">{member.name}</h3>

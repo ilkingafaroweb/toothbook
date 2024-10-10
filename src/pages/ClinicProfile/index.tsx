@@ -230,7 +230,7 @@ export const ClinicProfile: React.FC<RouteProps> = ({ name }) => {
                                 }}
                             />
                         </div>
-                        <div className='lg:hidden fixed bottom-0 w-full h-max border-t bg-white py-4'>
+                        <div className='lg:hidden fixed z-50 bottom-0 w-full h-max border-t bg-white py-4'>
                             <Button
                                 text="Book now"
                                 color='bg-brandPrimary'

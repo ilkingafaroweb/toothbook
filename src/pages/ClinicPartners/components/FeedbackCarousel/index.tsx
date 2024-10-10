@@ -15,16 +15,16 @@ const clientFeedback: Feedback[] = [
         position: "Golden Mile",
         feedback:
             "I'm not used to writing reviews, but this time I decided that I need to. I want to thank the Toothbook team for creating such a platform, for their responsiveness, as well as their promptness in solving problems. I hope our cooperation with you will continue to be successful!",
-        image: "/path/to/image.jpg",
+        image: "https://images.toothbook.ca/src/assets/testimonials/reza.svg",
         rating: 5,
     },
     {
-        name: "Dr. John Doe",
-        position: "Dental Clinic",
+        name: "Dr. Mohammad Al-Hamami",
+        position: "Oak Tree Dental Centre",
         feedback:
-            "Toothbook has been a wonderful tool for growing our business. The support is excellent, and I highly recommend it to others in the dental industry!",
-        image: "/path/to/image2.jpg",
-        rating: 4,
+            "Very cool! An interesting project that is beneficial for both us and the patients. Simple and easy to use, there is nothing superfluous.",
+        image: "https://images.toothbook.ca/src/assets/testimonials/hamami.svg",
+        rating: 5,
     },
 ];
 
