@@ -368,7 +368,7 @@ export const BookingModal: React.FC = () => {
                                     value={formData.selectedDoctor}
                                     onChange={handleChange}
                                     className={`rounded-lg border ${validationErrors.selectedDoctor ? 'border-red-500' : 'border-gray-300'
-                                        } focus:border-brandPrimary focus:ring-brandPrimary outline-none focus:ring-opacity-50 w-full p-2`}
+                                        } bg-white focus:border-brandPrimary focus:ring-brandPrimary outline-none focus:ring-opacity-50 w-full p-2`}
                                     style={{ WebkitAppearance: 'none', MozAppearance: 'none' }}
                                 >
                                     {doctors.map((doctor) => (
@@ -434,7 +434,7 @@ export const BookingModal: React.FC = () => {
                                             <FontAwesomeIcon icon={faClock} className="px-4 text-brandPrimary" size='xl' />
 
                                             <select
-                                                className={`w-1/2 outline-none border-none rounded-lg p-2 appearance-none text-brandPrimary ${validationErrors.selectedTime ? 'border-red-500' : 'border-gray-300'}`}
+                                                className={`w-1/2 outline-none bg-white border-none rounded-lg p-2 appearance-none text-brandPrimary ${validationErrors.selectedTime ? 'border-red-500' : 'border-gray-300'}`}
                                                 value={selectedHour}
                                                 onChange={(e) => setSelectedHour(e.target.value)}
                                                 required
@@ -453,7 +453,7 @@ export const BookingModal: React.FC = () => {
                                             <span className="text-xl">:</span>
 
                                             <select
-                                                className={`w-1/2 outline-none border-none rounded-lg p-2 appearance-none text-brandPrimary ${validationErrors.selectedTime ? 'border-red-500' : 'border-gray-300'}`}
+                                                className={`w-1/2 outline-none bg-white border-none rounded-lg p-2 appearance-none text-brandPrimary ${validationErrors.selectedTime ? 'border-red-500' : 'border-gray-300'}`}
                                                 value={selectedMinute}
                                                 onChange={(e) => setSelectedMinute(e.target.value)}
                                                 onFocus={() => setIsFocused(true)}
