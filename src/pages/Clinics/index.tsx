@@ -25,7 +25,7 @@ export const Clinics: React.FC<RouteProps> = ({ name }) => {
     const [mapCenter, setMapCenter] = useState({ lat: 40.4047907, lng: 49.8402033 });
 
     const log = sessionStorage.getItem('clinicsLog');
-    const [address, setAddress] = useState<string>('');
+    const [address, setAddress] = useState<string>(localStorage.getItem('your_address') || '');
     const [coordinates, setCoordinates] = useState<{ lat: number | null, lng: number | null }>({ lat: null, lng: null });
 
     const [selectedClinic, setSelectedClinic] = useState('')
