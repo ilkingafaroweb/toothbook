@@ -19,8 +19,8 @@ export const BookingChat: React.FC = () => {
 
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
   const [input, setInput] = useState('');
-  const [clinicName, setClinicName] = useState(sessionStorage.getItem('clinicName') || 'Clinic name')
-  const [clinicLogo, setClinicLogo] = useState(sessionStorage.getItem('clinicLogo') || 'Clinic logo')
+  const [clinicName] = useState(sessionStorage.getItem('clinicName') || 'Clinic name')
+  const [clinicLogo] = useState(sessionStorage.getItem('clinicLogo') || 'Clinic logo')
 
   const [messages, setMessages] = useState<MessageType[]>([]);
 

@@ -18,7 +18,7 @@ export const StepsLayout = ({ children }: LayoutProps) => {
     const [step, setStep] = useState<number>(0);
     const [initialPath, setInitialPath] = useState('/')
 
-    const { stepsData, resetData } = useStepsContext() 
+    const { stepsData } = useStepsContext() 
     
     useEffect(() => {
         if(sessionStorage.getItem('offer')){
