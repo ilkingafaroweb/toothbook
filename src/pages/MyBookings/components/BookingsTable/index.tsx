@@ -53,11 +53,11 @@ export const BookingsTable: React.FC = () => {
         Swal.fire({
             title: 'Declined!',
             text: responseBookingDecline,
-            icon: 'success', 
+            icon: 'success',
             confirmButtonText: 'OK'
         })
     }
-    
+
 
     if (errorBookingDecline) {
         Swal.fire({
@@ -84,7 +84,7 @@ export const BookingsTable: React.FC = () => {
     const getBookingDetails = (id: number) => {
         navigate(`/bookings/${id}`);
     };
-    
+
     useEffect(() => {
         callApi({ endpoint: apiEndpoints.bookings.get });
     }, [])
@@ -113,10 +113,10 @@ export const BookingsTable: React.FC = () => {
             }
         });
     }, [callBookingAccept]);
-    
+
 
     const handleDecline = (id: number) => {
-        
+
         Swal.fire({
             title: 'Are you sure?',
             text: "You want to decline this booking!",
@@ -232,16 +232,24 @@ export const BookingsTable: React.FC = () => {
                                                 <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="lg" className="text-bookingView" />
                                             </button>
                                         </Tooltip>
-                                        <Tooltip title="Accept Booking">
-                                            <button className="bg-bookingButton text-white px-3 py-2 rounded" onClick={() => handleAccept(booking.id)}>
-                                                <FontAwesomeIcon icon={faCheck} size="lg" className="text-bookingAccept" />
-                                            </button>
-                                        </Tooltip>
-                                        <Tooltip title="Decline Booking">
-                                            <button className="bg-bookingButton text-white px-3 py-2 rounded" onClick={() => handleDecline(booking.id)}>
-                                                <FontAwesomeIcon icon={faX} size="lg" className="text-bookingDecline" />
-                                            </button>
-                                        </Tooltip>
+                                        {
+                                            booking.bookingStatus.toLowerCase() === 'awaiting your confirmation' && <Tooltip title="Accept Booking">
+                                                <button className="bg-bookingButton text-white px-3 py-2 rounded" onClick={() => handleAccept(booking.id)}>
+                                                    <FontAwesomeIcon icon={faCheck} size="lg" className="text-bookingAccept" />
+                                                </button>
+                                            </Tooltip>
+                                        }
+                                        {
+                                            (booking.bookingStatus.toLowerCase() === 'scheduled' ||
+                                                booking.bookingStatus.toLowerCase() === 'awaiting your confirmation' ||
+                                                booking.bookingStatus.toLowerCase() === 'waiting for clinic') && (
+                                                <Tooltip title="Decline Booking">
+                                                    <button className="bg-bookingButton text-white px-3 py-2 rounded" onClick={() => handleDecline(booking.id)}>
+                                                        <FontAwesomeIcon icon={faX} size="lg" className="text-bookingDecline" />
+                                                    </button>
+                                                </Tooltip>
+                                            )
+                                        }
                                     </td>
                                 </tr>
                             ))}
@@ -256,7 +264,7 @@ export const BookingsTable: React.FC = () => {
                                     <h3 className="text-sm font-semibold">{booking.clinic}</h3>
                                     <div className="flex justify-end space-x-3">
                                         <button className="bg-bookingButton text-white px-3 py-2 rounded">
-                                            <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="lg" className="text-bookingView" onClick={() => getBookingDetails(booking.id)}/>
+                                            <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="lg" className="text-bookingView" onClick={() => getBookingDetails(booking.id)} />
                                         </button>
                                         <button className="bg-bookingButton text-white px-3 py-2 rounded" onClick={() => handleAccept(booking.id)}>
                                             <FontAwesomeIcon icon={faCheck} size="lg" className="text-bookingAccept" />
