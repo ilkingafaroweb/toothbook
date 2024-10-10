@@ -227,7 +227,7 @@ export const BookingsTable: React.FC = () => {
                                     </td>
 
                                     <td className="px-4 py-2 flex items-center gap-3">
-                                        <Tooltip title="View Booking">
+                                        <Tooltip title="Accept booking date offer">
                                             <button className="bg-bookingButton text-white px-3 py-2 rounded" onClick={() => getBookingDetails(booking.id)}>
                                                 <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="lg" className="text-bookingView" />
                                             </button>
@@ -243,7 +243,7 @@ export const BookingsTable: React.FC = () => {
                                             (booking.bookingStatus.toLowerCase() === 'scheduled' ||
                                                 booking.bookingStatus.toLowerCase() === 'awaiting your confirmation' ||
                                                 booking.bookingStatus.toLowerCase() === 'waiting for clinic') && (
-                                                <Tooltip title="Decline Booking">
+                                                <Tooltip title="Cancel booking">
                                                     <button className="bg-bookingButton text-white px-3 py-2 rounded" onClick={() => handleDecline(booking.id)}>
                                                         <FontAwesomeIcon icon={faX} size="lg" className="text-bookingDecline" />
                                                     </button>
